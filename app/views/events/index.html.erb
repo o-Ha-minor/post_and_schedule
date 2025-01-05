@@ -1,0 +1,14 @@
+<div class="create_wrapper">
+  <h1>新しいイベントを作成</h1>
+  <a class="form_bottun"><%= render 'form' %></a>
+</div>
+<div class="clender_parts">
+  <%= month_calendar(events: @events) do |date, events| %>
+    <div>
+      <strong><%= date.day %></strong>
+      <% events.each do |event| %>
+        <%= link_to event.title, edit_event_path(event), class: "event-link" %>
+      <% end %>
+    </div>
+  <% end %>
+</div>

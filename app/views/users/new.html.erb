@@ -1,0 +1,17 @@
+<div class="new_account_container">
+    <h2>Getting your account（アカウントをつくろう！）</h2>
+     <%= flash[:notice] %>
+    <%= form_with url: "/users/create", local: true do |u| %>
+    <div class="fill_information">
+        <h3>Name（ユーザー名）</h3>  
+        <p> <%= u.text_field :name %> </p> 
+        <h3>Password（パスワード）</h3>  
+        <p> <%= u.password_field :password %> </p>
+        <h3>E-mail（メールアドレス）</h3>  
+        <p> <%= u.text_field :email %> </p>  
+    </div>
+    <div class="account_bottun">
+        <p> <%= u.submit "Please get it!(アカウント作成)" %></p>  
+    </div>
+    <% end %>
+</div>

@@ -1,0 +1,7 @@
+<div class= "edit_conteiner">
+    <h1>Edit posts(投稿を編集)</h1>
+    <%= form_with(model: @post, local: true) do |form| %>
+        <%= form.text_field :content %>
+        <%= form.submit "Update（更新）"%>
+    <% end %>    
+</div>

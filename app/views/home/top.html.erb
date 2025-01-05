@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Post-Them</title>
+  </head>
+  <body>
+    <div class="option-wrapper">
+      <div class="option-container">
+        <h1 class="title">"Post-Them" </h1>
+        <h2>こんにちは</h2>
+        <div class="menus">
+          <div class="option-menu">
+            <img src="/schedule.png" alt="">
+            <%= link_to('Check!', "/events") %>
+            <p>スケジュール</p>
+          </div>
+          <div class="option-menu">
+            <img src="/chat.png" alt="">
+            <%= link_to('Check!', "/posts/index") %>
+            <p>掲示板</p>
+          </div>
+          <div class="option-menu">
+            <img src="/do.png" alt="">
+            <%= link_to('Check!', "/tasks") %>
+            <p>To do</p>
+          </div>
+
+        </div>
+       
+      </div>
+    </div>
+  </body>
+</html>

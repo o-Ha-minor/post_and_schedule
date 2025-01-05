@@ -1,0 +1,30 @@
+<div class="users_container">
+    <div class="user_card">
+        <% if @user.image.attached? %>
+            <%= image_tag @user.image, width: "100" %>
+        <% end %>
+        <br>
+        <%= @user.name %>
+        <br>
+        <%= @user.updated_at %>
+    </div>
+    
+</div>
+
+<% if @user == @current_user %>
+<div class="link_to_edit" style="display: inline-block;">
+    <%= link_to "/users/#{@user.id}/edit" do %>
+        <div class="btntextchange">
+         <span>Edit（編集）</span>
+        </div>
+    <%end%>
+<% end %>
+<div class="posts_container">
+    <% @user.posts.each do |post| %>
+        <div class="post_card">
+            <%= link_to(post.content,"/posts/#{post.id}") %>
+            <a class="post_time"><%= post.created_at%></a>
+        </div>
+    <% end %>
+ </div>
+</div>

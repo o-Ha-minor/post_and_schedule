@@ -1,0 +1,61 @@
+<div class="posts_show_container">
+    <div class="post_user_card">
+    <% if @user.image.attached? %>
+            <div class="poster_image">
+             <%=  image_tag @user.image, width: "100" %>
+             </div>
+        <% else %>
+           <img class="icon_image" src = "<%= "/user_images/#{@post.image_name}" %>" >
+       <% end %>
+        
+    
+    <div class="link_to_edit">
+        <div class="post_card">
+          <%= link_to(@post.user.name,"/users/#{@post.user.id}") %>  
+        </div>
+    </div>
+            </div>
+    <div class="post_show_card">
+        <%= @post.content %>
+        <br>
+        <%= @post.updated_at %>
+        <% if @post.avatar.attached? %>
+            <%= image_tag @post.avatar, width: "200" %>
+        <% end %>
+
+    </div>
+    <%="#{@post.likes_count} "+ "いいね！"%>
+    <% if @post.likes.exists?(user_id: @current_user.id) %>
+        <%= button_to 'いいね解除', like_path(post_id: @post.id), method: :delete, id: "unlike-button-#{@post.id}" %>
+    <% else %>
+        <%= button_to 'いいね', likes_path(post_id: @post.id), method: :post, id: "like-button-#{@post.id}" %>
+    <% end %>
+    <% if @post.user == @current_user %>
+        <%= link_to "/posts/#{@post.id}/edit" do %>
+            <div class="btntextchange">
+            <span>Edit（編集）</span>
+            </div>
+        <%end%>
+        </div>
+    <% end %>
+    <h3>コメントを加える</h3>
+   <%= form_with(model: [@post, @comment], local: true) do |f| %>
+        <p> <%= f.text_field :content %> </p> 
+        <p> <%= f.file_field :image %></p>
+        <p> <%= f.submit "Comment(コメントする)"%></p>  
+    <% end %>
+        <% @post.comments.each do |c| %>
+            <div class="post_card">
+                <%= c.user.name%><br>
+                <%= c.content %>  
+                <a class="post_time"><%= c.created_at%></a>
+                <%="#{c.likes_count} "+ "いいね！"%>
+                <%= button_to "×", "/posts/#{c.post_id}/comments/#{c.id}", data: { turbo_method: :delete } %>
+            </div>
+            <% if c.image.attached? %>
+                <%= image_tag c.image, width: "200" %>
+            <% end %>
+        <% end %>
+
+    </div>
+</div>

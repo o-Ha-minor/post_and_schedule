@@ -1,0 +1,35 @@
+<div class="posts_container">
+    <div class="post_card">
+        <p><%= @task.title %></p>
+         <p><%= @task.due_date %></p>
+         <% if @task.priority == 2 %>
+                <p>優先順位「高」</p>
+            <% elsif @task.priority == 1 %>
+                <p>優先順位「中」</p>
+            <% else %>
+                <p>優先順位「低」</p>
+            <% end %>
+        
+        <% if @task.category != nil %>
+            <%= @task.category %>
+        <% end %>
+    </div>
+    
+    <% if @task.status == "pending" %>
+        <div class="task_link_to_edit">
+            <%= link_to "/tasks/#{@task.id}/edit" do %>
+                    <div class="task_edit">
+                        <span>Edit（編集）</span>
+                    </div>
+                
+            <%end%>
+        </div>
+        <div class="complete_bottun">
+            <%= button_to("完了", "/tasks/#{@task.id}/completed",data: { turbo_method: :post }) %>
+        </div>
+    <% end %>
+    <div class="delete_bottun">
+        <%= button_to("Delete(削除)", "/tasks/#{@task.id}/destroy",data: { turbo_method: :delete }) %>
+    </div>
+
+</div>

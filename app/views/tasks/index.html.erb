@@ -1,0 +1,21 @@
+<div class="tasks_adding">
+    <p class= "add_link"><%= link_to 'add "to do" ', "/tasks/new" %></p>
+    <p>add your task! やることを加えましょう! </p>
+  </div>
+<div class="tasks_container">
+  <div class="tasks_views">
+    <h2>To do list   未完了</h2>
+    <% @tasks.each do |task| %>
+      <li class="task_title">
+        <%= link_to(task.title,"/tasks/#{task.id}") %> 
+      </li>
+    <% end %>
+  </div>
+  <div class="completed_tasks_views">
+  <h2>completed tasks   完了済</h2>
+    <% @completed_tasks.each do |c_task| %>
+      <li><%= link_to(c_task.title,"/tasks/#{c_task.id}") %> 
+      <a><%= c_task.completed_at %></a>
+    <% end %>
+  </div>
+</div>

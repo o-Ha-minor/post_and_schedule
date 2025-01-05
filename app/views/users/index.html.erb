@@ -1,0 +1,16 @@
+
+<body>
+    <%= flash[:notice] %>
+    <div class="users_container">
+      <% @users.each do |user| %>
+       <% if user.image.attached? %>
+            <%= image_tag user.image, width: "100" %>
+        <% else %>
+           <img class="icon_image" src = "<%= "/user_images/#{user.image_name}" %>" >
+       <% end %>
+        <div class="user_card">
+          <%= link_to(user.name,"/users/#{user.id}") %>  
+        </div>
+      <% end %>
+    </div>
+  </body>

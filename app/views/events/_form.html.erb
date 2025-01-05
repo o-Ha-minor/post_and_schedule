@@ -1,0 +1,25 @@
+<div class="event_container">
+    <%= form_with(model: Event.new, url: events_path, local: true) do |f| %>
+        
+            <div>
+                <%= f.label :title, "イベント名" %>
+                <%= f.text_field :title %>
+            </div>
+            <div>
+                <%= f.label :start, "開始日時" %>
+                <%= f.datetime_select :start %>
+            </div>
+            <div>
+                <%= f.label :end, "終了日時" %>
+                <%= f.datetime_select :end %>
+            </div>
+            <div>
+                <%= f.label :description, "詳細" %>
+                <%= f.text_area :description %>
+            </div>
+            <div>
+                <%= f.submit "作成" %>
+            </div>
+        
+    <% end %>
+</div>

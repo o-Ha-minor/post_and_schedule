@@ -1,0 +1,23 @@
+<div class= "edit_conteiner">
+
+<% if @user == @current_user %>
+    <h1>Edit user data(ユーザー情報を編集)</h1>
+    <%= form_with(model: @user, local: true,multipart: true) do |form| %>
+        <h2>"Name(ユーザー名)"</h2>
+        <%= form.text_field :name %>
+
+        <h2>"Password(パスワード)"</h2>
+        <%= form.text_field :password %>
+
+        <h2>"Image(画像)"</h2>
+        <%= form.file_field :image %>
+        <br>
+        <br>
+        <br>
+        <%= form.submit "Update(更新する)"%>
+    <% end %> 
+<% else %>   
+    <h1>アクセス権限がありません</h1>
+    <%= link_to 'homeへ戻る',"/" %>
+<% end %>
+</div>
