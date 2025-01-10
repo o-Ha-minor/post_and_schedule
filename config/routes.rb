@@ -1,7 +1,7 @@
 Rails.application.routes.draw do
-  resources :events, only: [:index, :create, :update, :destroy, :new, :edit, :show]
-  resources :likes, only: [:create, :destroy]
-  post '/events/:id', to: 'events#destroy'
+  resources :events, only: [ :index, :create, :update, :destroy, :new, :edit, :show ]
+  resources :likes, only: [ :create, :destroy ]
+  post "/events/:id", to: "events#destroy"
 
   get "/" => "home#top"
   get "about" => "home#about"
@@ -33,7 +33,7 @@ Rails.application.routes.draw do
   post "login" => "users#login"
   post "logout" => "users#logout"
   post "users/:id/destroy" => "users#destroy"
-  # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
+    # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
     resources :posts
     resources :users
     resources :tasks
@@ -42,11 +42,11 @@ Rails.application.routes.draw do
     end
     resources :posts do
       post "/comments/:id" => "comments#destroy"
-      resources :comments, only: [:create]do
-        resources :likes, only: [:create, :destroy]
+      resources :comments, only: [ :create ] do
+        resources :likes, only: [ :create, :destroy ]
       end
     end
-    
+
 
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
   # Can be used by load balancers and uptime monitors to verify that the app is live.
@@ -59,4 +59,3 @@ Rails.application.routes.draw do
   # Defines the root path route ("/")
   # root "posts#index"
 end
-

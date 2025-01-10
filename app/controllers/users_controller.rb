@@ -1,6 +1,5 @@
 class UsersController < ApplicationController
     def index
-        
         @users = User.all.order(created_at: :desc)
     end
     def new
@@ -23,12 +22,11 @@ class UsersController < ApplicationController
     end
     def show
         @user = User.find_by(id: params[:id])
-            if params[:id] == 'sign_in'
+            if params[:id] == "sign_in"
               redirect_to login_path  # ログインページへリダイレクト
             else
               @user = User.find_by(id: params[:id])  # 他のユーザー情報を取得
             end
-          
     end
 
     def edit
@@ -53,11 +51,10 @@ class UsersController < ApplicationController
     end
 
     def user_params
-        params.require(:user).permit(:name,:image,:email)
+        params.require(:user).permit(:name, :image, :email)
     end
 
     def login_form
-        
     end
     def login
         @user = User.find_by(name: params[:name])
@@ -69,7 +66,6 @@ class UsersController < ApplicationController
             flash[:alert] = "失敗しました"
             render("users/login_form")
         end
-        
     end
 
     def logout
@@ -88,7 +84,6 @@ class UsersController < ApplicationController
             render("home/top")
         end
     end
-
 end
 
 private

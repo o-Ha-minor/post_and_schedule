@@ -5,7 +5,6 @@ class PostsController < ApplicationController
         if @current_user
             @like = Like.where(user_id: @current_user.id).pluck(:post_id)
         end
-       
     end
     def new
         @post = Post.new
@@ -30,7 +29,7 @@ class PostsController < ApplicationController
         @comment = Comment.new
         if @post == nil
             flash[:alert] = "Post not found（投稿が見つかりませんでした）"
-            redirect_to() 
+            redirect_to()
         end
     end
 
@@ -49,7 +48,7 @@ class PostsController < ApplicationController
     def edit
         @post = Post.find(params[:id])
     end
-    
+
     def update
         @post = Post.find_by(id: params[:id])
         if @post.update(post_params)
@@ -64,7 +63,7 @@ class PostsController < ApplicationController
         params.require(:post).permit(:content, :avatar)
     end
 
-before_action :authorize_post, only: [:edit, :update, :destroy]
+before_action :authorize_post, only: [ :edit, :update, :destroy ]
 
 private
 
@@ -72,6 +71,4 @@ def authorize_post
   @post = Post.find(params[:id])
   redirect_to posts_path, alert: "権限が不足しています" if @post.user != @current_user
 end
-    
-    
 end
