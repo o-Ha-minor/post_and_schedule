@@ -9,8 +9,37 @@
     <%= csp_meta_tag %>
 
     <%= yield :head %>
-<p>start
-</p>
+ <div class="option-wrapper">
+  <div class="option-container">
+    <h1 class="title">Let's start "post-them" はじめまして
+    </h1>
+    <h2>このアプリでは『スケジュール』、『掲示板』、『To do』の管理ができます。
+    </h2>
+    <div class="menus">
+      <div class="option-menu">
+        <img src="/schedule.png" alt="">
+          <p>スケジュール</p>
+            <h3>カレンダーを使って</h3>
+            <h3>他のユーザと予定を共有できます。</h3>
+      </div>
+        <div class="option-menu">
+        <img src="/chat.png" alt="">
+          <p>掲示板</p>
+            <h3>話題を作り、それに対して、</h3>
+            <h3>コメントを加えることができます。</h3>
+        </div>
+        <div class="option-menu">
+          <img src="/do.png" alt="">
+            <p>To do</p>
+              <h3>タスクを作り、カレンダーに共有、</h3>
+              <h3>および完了できます。</h3>
+        </div>
+    </div>
+    <h2>ユーザ登録をしてPost-themを使いましょう！
+    <h2>
+  </div>
+</div>
+
     <%# Enable PWA manifest for installable apps (make sure to enable in config/routes.rb too!) %>
     <%#= tag.link rel: "manifest", href: pwa_manifest_path(format: :json) %>
 

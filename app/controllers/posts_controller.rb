@@ -11,12 +11,16 @@ class PostsController < ApplicationController
         @post = Post.new
     end
     def create
-        @post = @current_user.posts.build(post_params)
-        if @post.save
-            flash[:notice] = "Post has created(投稿できました)"
-            redirect_to(@post)
+        if @current_user
+            @post = @current_user.posts.build(post_params)
+            if @post.save
+                flash[:notice] = "Post has created(投稿できました)"
+                redirect_to(@post)
+            else
+                render("posts/index")
+            end
         else
-            render("posts/index")
+            redirect_to("/login")
         end
     end
     def show
