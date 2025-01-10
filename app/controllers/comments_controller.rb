@@ -10,10 +10,8 @@ class CommentsController < ApplicationController
         if @comment.save
             flash[:notice] = "Comment has created(コメントできました)"
             redirect_to(@post)
-        
         else
             render :new
-            
         end
     end
     def destroy
@@ -25,5 +23,4 @@ class CommentsController < ApplicationController
     def comment_params
         params.require(:comment) .permit(:content)
     end
-
 end

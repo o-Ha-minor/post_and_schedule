@@ -1,7 +1,7 @@
 class TasksController < ApplicationController
     def index
-        @tasks = Task.where(status: 'pending')# ここで @tasks に未完成タスク一覧を代入
-        @completed_tasks = Task.where(status: 'completed').order(completed_at: :desc)# ここで @tasks に完了済タスク一覧を代入
+        @tasks = Task.where(status: "pending")# ここで @tasks に未完成タスク一覧を代入
+        @completed_tasks = Task.where(status: "completed").order(completed_at: :desc)# ここで @tasks に完了済タスク一覧を代入
     end
     def new
     end
@@ -77,6 +77,6 @@ class TasksController < ApplicationController
 
 
     def task_params
-        params.require(:task).permit(:title,:category,:priority,:status,:completed_at, :due_date)
+        params.require(:task).permit(:title, :category, :priority, :status, :completed_at, :due_date)
     end
 end
