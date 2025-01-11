@@ -2,6 +2,5 @@
 /log/*
 /tmp/*
 /storage/*
-*.lock
 node_modules/
 vendor/bundle/
