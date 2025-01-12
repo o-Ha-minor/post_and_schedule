@@ -114,11 +114,13 @@ GEM
     et-orbi (1.2.11)
       tzinfo
     ffi (1.17.1-aarch64-linux-gnu)
+    ffi (1.17.1-aarch64-linux-musl)
     ffi (1.17.1-arm-linux-gnu)
+    ffi (1.17.1-arm-linux-musl)
     ffi (1.17.1-arm64-darwin)
-    ffi (1.17.1-x86-linux-gnu)
     ffi (1.17.1-x86_64-darwin)
     ffi (1.17.1-x86_64-linux-gnu)
+    ffi (1.17.1-x86_64-linux-musl)
     fugit (1.11.1)
       et-orbi (~> 1, >= 1.2.11)
       raabro (~> 1.4)
@@ -181,7 +183,6 @@ GEM
     matrix (0.4.2)
     mini_magick (4.13.2)
     mini_mime (1.1.5)
-    mini_portile2 (2.8.8)
     minitest (5.25.4)
     momentjs-rails (2.29.4.1)
       railties (>= 3.1)
@@ -201,18 +202,21 @@ GEM
       net-protocol
     net-ssh (7.3.0)
     nio4r (2.7.4)
-    nokogiri (1.18.1)
-      mini_portile2 (~> 2.8.2)
-      racc (~> 1.4)
     nokogiri (1.18.1-aarch64-linux-gnu)
       racc (~> 1.4)
+    nokogiri (1.18.1-aarch64-linux-musl)
+      racc (~> 1.4)
     nokogiri (1.18.1-arm-linux-gnu)
+      racc (~> 1.4)
+    nokogiri (1.18.1-arm-linux-musl)
       racc (~> 1.4)
     nokogiri (1.18.1-arm64-darwin)
       racc (~> 1.4)
     nokogiri (1.18.1-x86_64-darwin)
       racc (~> 1.4)
     nokogiri (1.18.1-x86_64-linux-gnu)
+      racc (~> 1.4)
+    nokogiri (1.18.1-x86_64-linux-musl)
       racc (~> 1.4)
     ostruct (0.6.1)
     parallel (1.26.3)
@@ -407,11 +411,15 @@ GEM
 
 PLATFORMS
   aarch64-linux
-  arm-linux
+  aarch64-linux-gnu
+  aarch64-linux-musl
+  arm-linux-gnu
+  arm-linux-musl
   arm64-darwin
-  x86-linux
   x86_64-darwin
   x86_64-linux
+  x86_64-linux-gnu
+  x86_64-linux-musl
 
 DEPENDENCIES
   bcrypt (~> 3.1.20)
