@@ -3,7 +3,7 @@ Rails.application.routes.draw do
   resources :likes, only: [ :create, :destroy ]
   post "/events/:id", to: "events#destroy"
 
-  get "/" => "home#top"
+  get "/" => "home#top", as: "home_top"
   get "about" => "home#about"
 
   get "/posts/index" => "posts#index"
