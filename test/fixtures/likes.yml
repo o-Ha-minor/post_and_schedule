@@ -1,9 +1,12 @@
 # Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 one:
+  id: 1
   user: one
-  comment: one
+  post: one
 
 two:
+  id: 2
   user: two
-  comment: two
+  post: two
+  
