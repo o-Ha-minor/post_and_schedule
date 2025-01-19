@@ -42,6 +42,9 @@
    <%= form_with(model: [@post, @comment], local: true) do |f| %>
         <p> <%= f.text_field :content %> </p> 
         <p> <%= f.file_field :image %></p>
+        <div class="delete_bottun">
+            <%= button_to("Delete(削除)", "/posts/#{@post.id}/destroy",data: { turbo_method: :delete }) %>
+        </div>
         <p> <%= f.submit "Comment(コメントする)"%></p>  
     <% end %>
         <% @post.comments.each do |c| %>
