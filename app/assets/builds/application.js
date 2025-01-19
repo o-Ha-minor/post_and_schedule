@@ -1,1 +1,3 @@
-//# sourceMappingURL=/assets/application.js.map
+(() => {
+})();
+//# sourceMappingURL=application.js.map
