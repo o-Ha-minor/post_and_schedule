@@ -34,6 +34,7 @@
         <%= link_to image_tag("/logo_Post-them.png", class:"logo"), "/" %>
       </div>
       <div class="header-right">
+        <span class="fa fa-bars menu-icon"></span>
       <% if session[:user_id] && @current_user %>
               <li>
                 <%= link_to "#{@current_user.name}","/users/#{@current_user.id}" %>
