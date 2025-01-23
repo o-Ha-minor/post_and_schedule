@@ -33,7 +33,7 @@
       <div class="header-left">
         <%= link_to image_tag("/logo_Post-them.png", class:"logo"), "/" %>
       </div>
-        <img src="<%= asset_path('menu.png') %>" alt="menu" id="menu-button" class="menu-icon">
+      <img src="/menu.png" alt="menu" id="menu-button" class="menu-icon">
       <div class="header-right">
       <div id="menu" class="menu">
         <% if session[:user_id] && @current_user %>
