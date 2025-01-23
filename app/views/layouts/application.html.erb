@@ -33,29 +33,29 @@
       <div class="header-left">
         <%= link_to image_tag("/logo_Post-them.png", class:"logo"), "/" %>
       </div>
+      <img src="/menu.png" alt="menu" id="menu-button" class="menu-icon">
       <div class="header-right">
-        <img src="/menu.png" alt="メニュー" id="menu-button" class="menu-icon">
       <div id="menu" class="menu">
         <% if session[:user_id] && @current_user %>
-                <li>
+                <a>
                   <%= link_to "#{@current_user.name}","/users/#{@current_user.id}" %>
-                </li>
-                <li>
+                </a>
+                <a>
                   <%= link_to 'Users', "/users/index" %>
-                </li>
-                <li>
+                </a>
+                <a>
                   <%= button_to 'Logout', logout_path, method: :post, class: "btn btn-danger" %>
-                </li>
+                </a>
             <% else %>
-                <li>
+                <a>
                   <%= link_to 'About app', "/about" %>
-                </li>
-                <li>
+                </a>
+                <a>
                   <%= link_to 'Resistration', "/users/new" %>
-                </li>
-                <li>
+                </a>
+                <a>
                   <%= link_to 'Login', "/login" %>
-                </li>
+                </a>
           
         <% end %>
       </div>

@@ -446,7 +446,7 @@ flex-direction: column;
   .menu-icon {
     display:block;
   }
-}
+
 
 .menu-icon {
   width: 40px;
@@ -468,7 +468,7 @@ flex-direction: column;
   border-radius: 5px;
 }
 
-.menu li {
+.menu a {
   display: block;
   padding: 10px 15px;
   color: #333;
@@ -476,10 +476,11 @@ flex-direction: column;
   border-bottom: 1px solid #eee;
 }
 
-.menu li :last-child {
+.menu a :last-child {
   border-bottom: none;
 }
 
-.menu li:hover {
+.menu a:hover {
   background-color: #f2f2f2;
+}
 }
