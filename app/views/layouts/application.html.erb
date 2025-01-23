@@ -34,33 +34,33 @@
         <%= link_to image_tag("/logo_Post-them.png", class:"logo"), "/" %>
       </div>
       <div class="header-right">
-        <span class="fa fa-bars menu-icon"></span>
-      <% if session[:user_id] && @current_user %>
-              <li>
-                <%= link_to "#{@current_user.name}","/users/#{@current_user.id}" %>
-              </li>
-              <li>
-                <%= link_to 'Users', "/users/index" %>
-              </li>
-              <li>
-                <%= button_to 'Logout', logout_path, method: :post, class: "btn btn-danger" %>
-              </li>
-          <% else %>
-              <li>
-                <%= link_to 'About app', "/about" %>
-              </li>
-              <li>
-                <%= link_to 'Resistration', "/users/new" %>
-              </li>
-              <li>
-                 <%= link_to 'Login', "/login" %>
-               </li>
-        
-      <% end %>
-      
-        
-      
-        
+        <img src="/menu.png" alt="メニュー" id="menu-button" class="menu-icon">
+      <div id="menu" class="menu">
+        <% if session[:user_id] && @current_user %>
+                <li>
+                  <%= link_to "#{@current_user.name}","/users/#{@current_user.id}" %>
+                </li>
+                <li>
+                  <%= link_to 'Users', "/users/index" %>
+                </li>
+                <li>
+                  <%= button_to 'Logout', logout_path, method: :post, class: "btn btn-danger" %>
+                </li>
+            <% else %>
+                <li>
+                  <%= link_to 'About app', "/about" %>
+                </li>
+                <li>
+                  <%= link_to 'Resistration', "/users/new" %>
+                </li>
+                <li>
+                  <%= link_to 'Login', "/login" %>
+                </li>
+          
+        <% end %>
+      </div>
+      <script src="scripts.js"></script>
+
       </div>
 </header>
   <%= flash[:notice] %>

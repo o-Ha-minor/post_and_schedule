@@ -447,3 +447,39 @@ flex-direction: column;
     display:block;
   }
 }
+
+.menu-icon {
+  width: 40px;
+  height: 40px;
+  cursor: pointer;
+  position: absolute;
+  top: 20px;
+  left: 20px;
+}
+
+.menu {
+  display: none; /* 初期状態で非表示 */
+  position: absolute;
+  top: 70px;
+  left: 20px;
+  background-color: white;
+  border: 1px solid #ddd;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  border-radius: 5px;
+}
+
+.menu li {
+  display: block;
+  padding: 10px 15px;
+  color: #333;
+  text-decoration: none;
+  border-bottom: 1px solid #eee;
+}
+
+.menu li :last-child {
+  border-bottom: none;
+}
+
+.menu li:hover {
+  background-color: #f2f2f2;
+}
