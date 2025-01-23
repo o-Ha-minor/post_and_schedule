@@ -441,7 +441,7 @@ flex-direction: column;
 }
 
 .menu {
-  display: none;
+  display: block;
   position: absolute;
   top: 70px;
   right: 20px;
