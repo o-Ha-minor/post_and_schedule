@@ -25,6 +25,7 @@
     <%= stylesheet_link_tag 'application', media: 'all' %>
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
 
+
     <%= javascript_importmap_tags %>
   </head>
 
@@ -33,34 +34,20 @@
       <div class="header-left">
         <%= link_to image_tag("/logo_Post-them.png", class:"logo"), "/" %>
       </div>
-      <img src="/menu.png" alt="menu" id="menu-button" class="menu-icon">
-      <div class="header-right">
-      <div id="menu" class="menu">
+      <input type="checkbox" id="menu-toggle" class="menu-checkbox" />
+      <label for="menu-toggle" class="menu-icon">
+        <img src="/menu.png" alt="menu" />
+      </label>
+      <div class="menu">
         <% if session[:user_id] && @current_user %>
-                <a>
-                  <%= link_to "#{@current_user.name}","/users/#{@current_user.id}" %>
-                </a>
-                <a>
-                  <%= link_to 'Users', "/users/index" %>
-                </a>
-                <a>
-                  <%= button_to 'Logout', logout_path, method: :post, class: "btn btn-danger" %>
-                </a>
-            <% else %>
-                <a>
-                  <%= link_to 'About app', "/about" %>
-                </a>
-                <a>
-                  <%= link_to 'Resistration', "/users/new" %>
-                </a>
-                <a>
-                  <%= link_to 'Login', "/login" %>
-                </a>
-          
+          <a><%= link_to "#{@current_user.name}", "/users/#{@current_user.id}" %></a>
+          <a><%= link_to 'Users', "/users/index" %></a>
+          <a><%= button_to 'Logout', logout_path, method: :post, class: "btn btn-danger" %></a>
+        <% else %>
+          <a><%= link_to 'About app', "/about" %></a>
+          <a><%= link_to 'Registration', "/users/new" %></a>
+          <a><%= link_to 'Login', "/login" %></a>
         <% end %>
-      </div>
-      <script src="scripts.js"></script>
-
       </div>
 </header>
   <%= flash[:notice] %>
