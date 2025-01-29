@@ -31,8 +31,9 @@
       </div>
         <div class="posts_container">
           <% @posts.each do |post| %>
-            <div class="post_card">
+            <div class="post_card post">
               <%= link_to(post.content,"/posts/#{post.id}") %>  
+              <br>
               <a class="post_time"><%= post.created_at%></a>
               <%="#{post.likes_count} "+ "いいね！"%>
             </div>

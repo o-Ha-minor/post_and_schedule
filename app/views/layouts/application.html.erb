@@ -38,11 +38,11 @@
       <label for="menu-toggle" class="menu-icon">
         <img src="/menu.png" alt="menu" />
       </label>
-      <div class="menu">
+      <div class="menu btn">
         <% if session[:user_id] && @current_user %>
           <a><%= link_to "#{@current_user.name}", "/users/#{@current_user.id}" %></a>
           <a><%= link_to 'Users', "/users/index" %></a>
-          <a><%= button_to 'Logout', logout_path, method: :post, class: "btn btn-danger" %></a>
+          <a><%= button_to 'Logout', logout_path, method: :post , class: "btn btn-danger" %></a>
         <% else %>
           <a><%= link_to 'About app', "/about" %></a>
           <a><%= link_to 'Registration', "/users/new" %></a>

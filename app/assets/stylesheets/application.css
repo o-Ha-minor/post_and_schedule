@@ -89,10 +89,8 @@ height: auto; /* アスペクト比を維持 */
   border: 2px solid #ccc; /* ポストイットらしい枠線 */
   border-radius: 5px; /* 角を少し丸める */
   box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.2); /* 影をつけて浮いている感を出す */
-  transform: rotate(-3deg); /* 少し傾けてラフな感じを演出 */
-
-
 }
+
 .users_container {
   display: flex;
   flex-wrap: wrap;  /* 必要に応じてカードを横方向に複数並べる */
@@ -117,7 +115,6 @@ height: auto; /* アスペクト比を維持 */
   border: 2px solid #ccc; /* ポストイットらしい枠線 */
   border-radius: 5px; /* 角を少し丸める */
   box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.2); /* 影をつけて浮いている感を出す */
-  transform: rotate(3deg); /* 少し傾けてラフな感じを演出 */
 
 
 }
@@ -313,30 +310,8 @@ flex-direction: column;
   border-radius: 10px;
   box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
 }
-.btntextchange {
-  display: inline-block;
-  width: 20%;
-  padding: 10px 20px;
-  background-color: #fffa65; /* ポストイット風の淡い黄色 */
-  color: #333; /* テキスト色 */
-  font-weight: bold;
-  font-size: 16px;
-  text-align: center;
-  border: 2px solid #ccc; /* ポストイットらしい枠線 */
-  border-radius: 5px; /* 角を少し丸める */
-  box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.2); /* 影をつけて浮いている感を出す */
-  transform: rotate(-3deg); /* 少し傾けてラフな感じを演出 */
-  transition: all 0.3s ease; /* ホバーアニメーション用 */
-}
 
-.btntextchange:hover {
-  transform: rotate(0deg); /* ホバー時はまっすぐに */
-  box-shadow: 8px 8px 15px rgba(0, 0, 0, 0.3); /* ホバーで影を強調 */
-  background-color: #fff200; /* ホバー時に少し濃い黄色に */
-  cursor: pointer;
-}
-
-.delete_bottun {
+.btn {
   display: inline-block;
   width: 20%;
   padding: 10px 20px;
@@ -348,58 +323,15 @@ flex-direction: column;
   border: 2px solid #ccc; /* ポストイットらしい枠線 */
   border-radius: 5px; /* 角を少し丸める */
   box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.2); /* 影をつけて浮いている感を出す */
-  transform: rotate(3deg); /* 少し傾けてラフな感じを演出 */
   transition: all 0.3s ease; /* ホバーアニメーション用 */
 }
-.delete_bottun:hover {
+.btn:hover {
   transform: rotate(0deg); /* ホバー時はまっすぐに */
   box-shadow: 8px 8px 15px rgba(0, 0, 0, 0.3); /* ホバーで影を強調 */
   background-color: #ff8400; /* ホバー時に少し濃い黄色に */
   cursor: pointer;
 }
 
-.complete_bottun {
-  display: inline-block;
-  width: 20%;
-  padding: 10px 20px;
-  background-color: #bcff65; /* ポストイット風の淡い黄色 */
-  color: #333; /* テキスト色 */
-  font-weight: bold;
-  font-size: 16px;
-  text-align: center;
-  border: 2px solid #ccc; /* ポストイットらしい枠線 */
-  border-radius: 5px; /* 角を少し丸める */
-  box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.2); /* 影をつけて浮いている感を出す */
-  transform: rotate(-5deg); /* 少し傾けてラフな感じを演出 */
-  transition: all 0.3s ease; /* ホバーアニメーション用 */
-}
-.complete_bottun:hover {
-  transform: rotate(0deg); /* ホバー時はまっすぐに */
-  box-shadow: 8px 8px 15px rgba(0, 0, 0, 0.3); /* ホバーで影を強調 */
-  background-color: #00ff1e; /* ホバー時に少し濃い黄色に */
-  cursor: pointer;
-}
-.task_edit {
-  display: inline-block;
-  width: 100%;
-  padding: 10px 20px;
-  background-color: #fffa65; /* ポストイット風の淡い黄色 */
-  color: #333; /* テキスト色 */
-  font-weight: bold;
-  font-size: 16px;
-  text-align: center;
-  border: 2px solid #ccc; /* ポストイットらしい枠線 */
-  border-radius: 5px; /* 角を少し丸める */
-  box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.2); /* 影をつけて浮いている感を出す */
-  transform: rotate(-3deg); /* 少し傾けてラフな感じを演出 */
-  transition: all 0.3s ease; /* ホバーアニメーション用 */
-}
-.task_edit:hover {
-  transform: rotate(0deg);
-  box-shadow: 8px 8px 15px rgba(0, 0, 0, 0.3);
-  background-color: #fff200;
-  cursor: pointer;
-}
 .post_user_card {
   margin: 5px;
   background-color: #ffffffe0;
@@ -472,4 +404,18 @@ flex-direction: column;
 /* チェックボックスがオンのときにメニューを表示 */
 .menu-checkbox:checked + .menu-icon + .menu {
   display: block;
+}
+user_name {
+  margin: 5px;
+  background-color: #e8e8e8;
+  border:1px solid #000;
+  padding: 20px;
+  justify-content: left; 
+  display: inline-block;
+  color: #333; /* テキスト色 */
+  font-weight: bold;
+  font-size: 16px;
+  border: 2px solid #ccc; /* ポストイットらしい枠線 */
+  border-radius: 5px; /* 角を少し丸める */
+  box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.2); /* 影をつけて浮いている感を出す */
 }
