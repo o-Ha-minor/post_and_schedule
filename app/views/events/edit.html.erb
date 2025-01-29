@@ -19,11 +19,11 @@
             <%= f.label :description, "詳細" %>
             <%= f.text_area :description %>
         </div>
-        <div class="btntextchange">
+        <div class="btn">
             <%= f.submit "update(更新)" %>
         </div>
         <% end %>
-        <div class="delete_bottun">
+        <div class="delete_bottun btn">
             <%= button_to "Delete(削除)", event_path(@event), method: :delete, data: { confirm: "本当に削除しますか？" } %>
         </div>
         </div>

@@ -24,11 +24,11 @@
                 
             <%end%>
         </div>
-        <div class="complete_bottun">
+        <div class="btn">
             <%= button_to("完了", "/tasks/#{@task.id}/completed",data: { turbo_method: :post }) %>
         </div>
     <% end %>
-    <div class="delete_bottun">
+    <div class="btn">
         <%= button_to("Delete(削除)", "/tasks/#{@task.id}/destroy",data: { turbo_method: :delete }) %>
     </div>
 
