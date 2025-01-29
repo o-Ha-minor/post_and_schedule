@@ -2,30 +2,32 @@
 <% if @event.user_id == @current_user.id %>
     <h1>Editting イベントの編集</h1>
         <div>
-        <%= form_with(model: @event, local: true) do |f| %>
-        <div>
-            <%= f.label :title, "イベント名" %>
-            <%= f.text_field :title %>
-        </div>
-        <div>
-            <%= f.label :start, "開始日時" %>
-            <%= f.datetime_select :start %>
-        </div>
-        <div>
-            <%= f.label :end, "終了日時" %>
-            <%= f.datetime_select :end %>
-        </div>
-        <div>
-            <%= f.label :description, "詳細" %>
-            <%= f.text_area :description %>
-        </div>
-        <div class="btn">
-            <%= f.submit "update(更新)" %>
-        </div>
-        <% end %>
-        <div class="delete_bottun btn">
-            <%= button_to "Delete(削除)", event_path(@event), method: :delete, data: { confirm: "本当に削除しますか？" } %>
-        </div>
+            <%= form_with(model: @event, local: true) do |f| %>
+                <div>
+                    <%= f.label :title, "イベント名" %>
+                    <%= f.text_field :title %>
+                </div>
+                <div>
+                    <%= f.label :start, "開始日時" %>
+                    <%= f.datetime_select :start %>
+                </div>
+                <div>
+                    <%= f.label :end, "終了日時" %>
+                    <%= f.datetime_select :end %>
+                </div>
+                <div>
+                    <%= f.label :description, "詳細" %>
+                    <%= f.text_area :description %>
+                </div>
+                <div class="btn">
+                    <%= f.submit "update(更新)" %>
+                </div>
+            <% end %>
+            <div class="delete_bottun btn">
+                <%= link_to "Delete(削除)", event_path(@event), 
+                class: "btn btn-danger", 
+                data: { turbo_method: :delete, confirm: "本当に削除しますか？" } %>
+            </div>
         </div>
     <% else %>
         <h1>他のユーザーのイベント</h1>

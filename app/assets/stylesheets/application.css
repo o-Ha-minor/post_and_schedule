@@ -119,7 +119,7 @@ height: auto; /* アスペクト比を維持 */
 
 }
 .post_time {
-  float: right;
+  float: left;
   font-size: smaller;
 }
 
