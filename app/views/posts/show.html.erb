@@ -27,23 +27,25 @@
             <%="#{@post.likes_count} "+ "いいね！"%>
         <% end %>
     </div>
-    <div  class="btn">
+    <div>
         <% if @post.likes.exists?(user_id: @current_user.id) %>
             <%= button_to 'いいね解除', like_path(post_id: @post.id), method: :delete, id: "unlike-button-#{@post.id}" %>
         <% else %>
             <%= button_to 'いいね', likes_path(post_id: @post.id), method: :post, id: "like-button-#{@post.id}" %>
         <% end %>
     </div>
-    <div  class="btn">
-        <% if @post.user == @current_user %>
-            <%= link_to "/posts/#{@post.id}/edit" do %>
-                <span>編集</span>
-            <%end%>
+    
+    <% if @post.user == @current_user %>
+        <%= link_to "/posts/#{@post.id}/edit" do %>
+        <div  class="btn">
+            <span>編集</span>
+        </div>
         <%end%>
-    </div>
+    <%end%>
+    
     <div class="btn">
             <%= link_to "削除", post_path(@post), 
-            class: "btn btn-danger", 
+            class: "btn", 
             data: { turbo_method: :delete} %>
     </div>
     <h3>コメントを加える</h3>
@@ -58,7 +60,7 @@
             <%= c.content %>  
                  <a class="post_time"><%= c.created_at%></a>
             <%="#{c.likes_count} "+ "いいね！"%>
-            <div class="btn">
+            <div>
                 <%= button_to "×削除", "/posts/#{c.post_id}/comments/#{c.id}", data: { turbo_method: :delete }%>
             </div>
             <% if c.image.attached? %>
