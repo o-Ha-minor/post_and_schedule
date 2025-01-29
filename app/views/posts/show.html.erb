@@ -13,35 +13,44 @@
            <img class="icon_image" src="<%= "/images/default_post_image.png" %>" alt="default image">
         <% end %>
     </div>
-    <div class="post_show_card">
+    <div class="post_card">
         <%= @post.content %>
         <br>
         <%= @post.updated_at %>
         <% if @post.avatar.attached? %>
             <%= image_tag @post.avatar, width: "200" %>
         <% end %>
-
+        <br>
+        <% if @post.likes_count == nil %>
+            <%="0"+ "いいね！"%>
+        <% else %>
+            <%="#{@post.likes_count} "+ "いいね！"%>
+        <% end %>
     </div>
-    <div class="btn">
-        <%="#{@post.likes_count} "+ "いいね！"%>
+    <div  class="btn">
         <% if @post.likes.exists?(user_id: @current_user.id) %>
             <%= button_to 'いいね解除', like_path(post_id: @post.id), method: :delete, id: "unlike-button-#{@post.id}" %>
         <% else %>
             <%= button_to 'いいね', likes_path(post_id: @post.id), method: :post, id: "like-button-#{@post.id}" %>
         <% end %>
+    </div>
+    <div  class="btn">
         <% if @post.user == @current_user %>
             <%= link_to "/posts/#{@post.id}/edit" do %>
-            <span>Edit（編集）</span>
+                <span>編集</span>
+            <%end%>
         <%end%>
+    </div>
+    <div class="btn">
+            <%= link_to "削除", post_path(@post), 
+            class: "btn btn-danger", 
+            data: { turbo_method: :delete} %>
     </div>
     <h3>コメントを加える</h3>
     <%= form_with(model: [@post, @comment], local: true) do |f| %>
-        <div class="btn">
         <p> <%= f.text_field :content %> </p> 
         <p> <%= f.file_field :image %></p>
-            <%= button_to "Delete(削除)", "/posts/#{@post.id}/destroy",data: { turbo_method: :delete } %>
-        </div>
-        <p> <%= f.submit "Comment(コメントする)"%></p>  
+        <p> <%= f.submit "コメントする"%></p>  
     <% end %>
     <% @post.comments.each do |c| %>
         <div class="post_card">
@@ -50,13 +59,12 @@
                  <a class="post_time"><%= c.created_at%></a>
             <%="#{c.likes_count} "+ "いいね！"%>
             <div class="btn">
-                <%= button_to "×", "/posts/#{c.post_id}/comments/#{c.id}", data: { turbo_method: :delete }%>
+                <%= button_to "×削除", "/posts/#{c.post_id}/comments/#{c.id}", data: { turbo_method: :delete }%>
             </div>
-        </div>
             <% if c.image.attached? %>
                 <%= image_tag c.image, width: "200" %>
             <% end %>
-        <% end %>
+        </div>
 
     <% end %>
 

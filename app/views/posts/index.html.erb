@@ -34,8 +34,9 @@
             <div class="post_card post">
               <%= link_to(post.content,"/posts/#{post.id}") %>  
               <br>
-              <a class="post_time"><%= post.created_at%></a>
               <%="#{post.likes_count} "+ "いいね！"%>
+              <br>
+              <a class="post_time"><%= post.created_at%></a>
             </div>
           <% end %>
         </div>
