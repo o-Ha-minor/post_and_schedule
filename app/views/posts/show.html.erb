@@ -45,7 +45,6 @@
     
     <div class="btn">
             <%= link_to "削除", post_path(@post), 
-            class: "btn", 
             data: { turbo_method: :delete} %>
     </div>
     <h3>コメントを加える</h3>
@@ -57,7 +56,7 @@
     <% @post.comments.each do |c| %>
         <div class="post_card">
             <%= c.user.name%><br>
-            <%= c.content %>  
+            <%= c.content %>  <br>
                  <a class="post_time"><%= c.created_at%></a>
             <%="#{c.likes_count} "+ "いいね！"%>
             <div>
