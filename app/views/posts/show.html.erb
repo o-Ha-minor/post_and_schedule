@@ -44,8 +44,7 @@
     <%end%>
     
     <div class="btn">
-            <%= link_to "削除", post_path(@post), 
-            data: { turbo_method: :delete} %>
+            <%= button_to("Delete(削除)", "/posts/#{@post.id}/destroy",data: { turbo_method: :delete }) %>
     </div>
     <h3>コメントを加える</h3>
     <%= form_with(model: [@post, @comment], local: true) do |f| %>

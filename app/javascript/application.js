@@ -3,4 +3,6 @@
 import "@hotwired/turbo-rails"
 import "controllers"
 import "menu"
+import Rails from "@rails/ujs";
 
+Rails.start();
