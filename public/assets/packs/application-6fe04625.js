@@ -20,7 +20,7 @@ require("bootstrap").start()
 require("@rails/activestorage").start()
 require("channels").
 require_tree .
-console.log('Hello World from Webpacker')
+console.log('')
 import Rails from 'rails-ujs'
 import "@hotwired/turbo-rails"
 Rails.start()

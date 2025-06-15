@@ -45,16 +45,7 @@ height: auto; /* アスペクト比を維持 */
 }
 
 .posts_wrapper {
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-end;  /* 右端に寄せる */
-  text-decoration: none;
-  color: #333;
-  font-weight: bold;
-  font-size: 16px;
-}
-.posts_wrapper {
-  display: flex;
+  display: flexbox;
   width: 100%;
   max-width: 3650px;
   vertical-align: middle;
@@ -98,9 +89,10 @@ height: auto; /* アスペクト比を維持 */
   border: 2px solid #ccc; /* ポストイットらしい枠線 */
   border-radius: 5px; /* 角を少し丸める */
   box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.2); /* 影をつけて浮いている感を出す */
+  transform: rotate(-3deg); /* 少し傾けてラフな感じを演出 */
+
 
 }
-
 .users_container {
   display: flex;
   flex-wrap: wrap;  /* 必要に応じてカードを横方向に複数並べる */
@@ -125,11 +117,12 @@ height: auto; /* アスペクト比を維持 */
   border: 2px solid #ccc; /* ポストイットらしい枠線 */
   border-radius: 5px; /* 角を少し丸める */
   box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.2); /* 影をつけて浮いている感を出す */
+  transform: rotate(3deg); /* 少し傾けてラフな感じを演出 */
 
 
 }
 .post_time {
-  float: left;
+  float: right;
   font-size: smaller;
 }
 
@@ -223,12 +216,18 @@ flex-direction: column;
 .completed_tasks_views a{
   text-align: right;
 }
+.simple-calendar {
+  max-width: 3600px;
+  width: 100%;
+  margin: 10px auto;
+  display: flexbox;
+  }
   
   .simple-calendar .day {
   font-size: auto;
   text-align: start;
   width: 12%;
-  padding: 10px 10px 30px 10px;
+  padding: 10px,10px,30px,10px;
   border: 1px solid #ddd;
   
   }
@@ -246,11 +245,6 @@ flex-direction: column;
 .simple-calendar {
   .day {
     background: #fff9ee;
-    max-width: 3600px;
-    width: 100%;
-    margin: 10px auto;   /* ← これで中央寄せ */
-    display: flex;
-    justify-content: center; /* ← 子要素を中央に */
   }
   .wday-0 {
     background: #ffeaea;
@@ -289,7 +283,15 @@ flex-direction: column;
   white-space: nowrap;
   font-size: 0.8em; /* イベント名を少し小さくする */
   margin-top: 10px; /* 日付から少し離す */
-
+}
+.users_container {
+  display: flex;
+    flex-direction: column;
+    align-items: center; /* 中央に配置 */
+    justify-content: center; /* 縦方向中央 */
+    text-align: center; /* テキストを中央寄せ */
+    margin-top: 20px;
+}
 .link_to_edit {
   margin-top: 20px;
     display: flex; /* Flexboxで配置を調整 */
@@ -323,10 +325,12 @@ flex-direction: column;
   border: 2px solid #ccc; /* ポストイットらしい枠線 */
   border-radius: 5px; /* 角を少し丸める */
   box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.2); /* 影をつけて浮いている感を出す */
+  transform: rotate(-3deg); /* 少し傾けてラフな感じを演出 */
   transition: all 0.3s ease; /* ホバーアニメーション用 */
 }
 
 .btntextchange:hover {
+  transform: rotate(0deg); /* ホバー時はまっすぐに */
   box-shadow: 8px 8px 15px rgba(0, 0, 0, 0.3); /* ホバーで影を強調 */
   background-color: #fff200; /* ホバー時に少し濃い黄色に */
   cursor: pointer;
@@ -344,6 +348,7 @@ flex-direction: column;
   border: 2px solid #ccc; /* ポストイットらしい枠線 */
   border-radius: 5px; /* 角を少し丸める */
   box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.2); /* 影をつけて浮いている感を出す */
+  transform: rotate(3deg); /* 少し傾けてラフな感じを演出 */
   transition: all 0.3s ease; /* ホバーアニメーション用 */
 }
 .delete_bottun:hover {
@@ -351,15 +356,6 @@ flex-direction: column;
   box-shadow: 8px 8px 15px rgba(0, 0, 0, 0.3); /* ホバーで影を強調 */
   background-color: #ff8400; /* ホバー時に少し濃い黄色に */
   cursor: pointer;
-}
-
-@media (max-width: 768px) {
-  .post_card, .user_card {
-    width: 90%;
-  }
-  .btntextchange, .delete_bottun {
-    width: 90%;
-  }
 }
 
 .complete_bottun {
@@ -374,9 +370,11 @@ flex-direction: column;
   border: 2px solid #ccc; /* ポストイットらしい枠線 */
   border-radius: 5px; /* 角を少し丸める */
   box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.2); /* 影をつけて浮いている感を出す */
+  transform: rotate(-5deg); /* 少し傾けてラフな感じを演出 */
   transition: all 0.3s ease; /* ホバーアニメーション用 */
 }
 .complete_bottun:hover {
+  transform: rotate(0deg); /* ホバー時はまっすぐに */
   box-shadow: 8px 8px 15px rgba(0, 0, 0, 0.3); /* ホバーで影を強調 */
   background-color: #00ff1e; /* ホバー時に少し濃い黄色に */
   cursor: pointer;
@@ -393,9 +391,11 @@ flex-direction: column;
   border: 2px solid #ccc; /* ポストイットらしい枠線 */
   border-radius: 5px; /* 角を少し丸める */
   box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.2); /* 影をつけて浮いている感を出す */
+  transform: rotate(-3deg); /* 少し傾けてラフな感じを演出 */
   transition: all 0.3s ease; /* ホバーアニメーション用 */
 }
 .task_edit:hover {
+  transform: rotate(0deg);
   box-shadow: 8px 8px 15px rgba(0, 0, 0, 0.3);
   background-color: #fff200;
   cursor: pointer;
@@ -422,4 +422,54 @@ flex-direction: column;
   gap: 20px;  /* カード間の余白 */
   padding: 20px;
 }
+/* メニューアイコン */
+.menu-icon {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 40px;
+  height: 40px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.menu-icon img {
+  width: 100%;
+  height: auto;
+}
+
+/* メニューのスタイル */
+.menu {
+  display: none;
+  position: absolute;
+  top: 60px;
+  right: 10px;
+  background-color: white;
+  border: 1px solid #ddd;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  border-radius: 5px;
+  z-index: 1000;
+}
+
+.menu a {
+  display: block;
+  padding: 10px 15px;
+  color: #333;
+  text-decoration: none;
+  border-bottom: 1px solid #eee;
+}
+
+.menu a:last-child {
+  border-bottom: none;
+}
+
+.menu a:hover {
+  background-color: #f2f2f2;
+}
+
+/* チェックボックスがオンのときにメニューを表示 */
+.menu-checkbox:checked + .menu-icon + .menu {
+  display: block;
 }

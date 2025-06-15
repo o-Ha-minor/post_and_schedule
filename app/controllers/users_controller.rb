@@ -61,7 +61,7 @@ class UsersController < ApplicationController
         if @user&.authenticate(params[:password])
             session[:user_id] = @user.id
             flash[:notice] = "ログインしました"
-            render("home/top")
+            redirect_to("/")
         else
             flash[:alert] = "失敗しました"
             render("users/login_form")
