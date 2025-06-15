@@ -1,9 +1,14 @@
 <div class="posts_show_container">
     <div class="post_user_card">
-    <% if @user.image.attached? %>
+        <div class="link_to_edit">
+            <div class="user_name">
+                <%= link_to(@post.user.name,"/users/#{@post.user.id}") %>  
+            </div>
+        </div>
+        <% if @user.image.attached? %>
             <div class="poster_image">
-             <%=  image_tag @user.image, width: "100" %>
-             </div>
+                <%= image_tag @user.image, width: "100" %>
+            </div>
         <% else %>
            <img class="icon_image" src = "<%= "/user_images/#{@user.image_name}" %>" >
        <% end %>
@@ -14,47 +19,58 @@
           <%= link_to(@post.user.name,"/users/#{@post.user.id}") %>  
         </div>
     </div>
-            </div>
-    <div class="post_show_card">
+    <div class="post_card">
         <%= @post.content %>
         <br>
         <%= @post.updated_at %>
         <% if @post.avatar.attached? %>
             <%= image_tag @post.avatar, width: "200" %>
         <% end %>
-
+        <br>
+        <% if @post.likes_count == nil %>
+            <%="0"+ "いいね！"%>
+        <% else %>
+            <%="#{@post.likes_count} "+ "いいね！"%>
+        <% end %>
     </div>
-    <%="#{@post.likes_count} "+ "いいね！"%>
-    <% if @post.likes.exists?(user_id: @current_user.id) %>
-        <%= button_to 'いいね解除', like_path(post_id: @post.id), method: :delete, id: "unlike-button-#{@post.id}" %>
-    <% else %>
-        <%= button_to 'いいね', likes_path(post_id: @post.id), method: :post, id: "like-button-#{@post.id}" %>
-    <% end %>
+    <div>
+        <% if @post.likes.exists?(user_id: @current_user.id) %>
+            <%= button_to 'いいね解除', like_path(post_id: @post.id), method: :delete, id: "unlike-button-#{@post.id}" %>
+        <% else %>
+            <%= button_to 'いいね', likes_path(post_id: @post.id), method: :post, id: "like-button-#{@post.id}" %>
+        <% end %>
+    </div>
+    
     <% if @post.user == @current_user %>
         <%= link_to "/posts/#{@post.id}/edit" do %>
-            <div class="btntextchange">
-            <span>Edit（編集）</span>
-            </div>
-        <%end%>
+        <div  class="btn">
+            <span>編集</span>
         </div>
-    <% end %>
+        <%end%>
+    <%end%>
+    
+    <div class="btn">
+            <%= button_to("Delete(削除)", "/posts/#{@post.id}/destroy",data: { turbo_method: :delete }) %>
+    </div>
     <h3>コメントを加える</h3>
-   <%= form_with(model: [@post, @comment], local: true) do |f| %>
+    <%= form_with(model: [@post, @comment], local: true) do |f| %>
         <p> <%= f.text_field :content %> </p> 
         <p> <%= f.submit "Comment(コメントする)"%></p>  
     <% end %>
-        <% @post.comments.each do |c| %>
-            <div class="post_card">
-                <%= c.user.name%><br>
-                <%= c.content %>  
-                <a class="post_time"><%= c.created_at%></a>
-                <%="#{c.likes_count} "+ "いいね！"%>
-                <%= button_to "×", "/posts/#{c.post_id}/comments/#{c.id}", data: { turbo_method: :delete } %>
+    <% @post.comments.each do |c| %>
+        <div class="post_card">
+            <%= c.user.name%><br>
+            <%= c.content %>  <br>
+                 <a class="post_time"><%= c.created_at%></a>
+            <%="#{c.likes_count} "+ "いいね！"%>
+            <div>
+                <%= button_to "×削除", "/posts/#{c.post_id}/comments/#{c.id}", data: { turbo_method: :delete }%>
             </div>
             <% if c.image.attached? %>
                 <%= image_tag c.image, width: "200" %>
             <% end %>
-        <% end %>
+        </div>
 
-    </div>
+    <% end %>
+
 </div>

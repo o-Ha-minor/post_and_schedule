@@ -6,7 +6,7 @@
        <% if user.image.attached? %>
             <%= image_tag user.image, width: "100" %>
         <% else %>
-           <img class="icon_image" src = "<%= "/user_images/#{user.image_name}" %>" >
+           <img class="icon_image" src="<%= "/user_images/default_avatar.png" %>" alt="default image"> 
        <% end %>
         <div class="user_card">
           <%= link_to(user.name,"/users/#{user.id}") %>  
