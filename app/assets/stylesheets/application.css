@@ -248,7 +248,7 @@ flex-direction: column;
     background: #fff9ee;
     max-width: 3600px;
     width: 100%;
-    margin: 10px auto;   /* ← これで中央寄せ */
+    margin: 20px auto;   /* ← これで中央寄せ */
     display: flex;
     justify-content: center; /* ← 子要素を中央に */
   }

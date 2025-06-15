@@ -12,13 +12,7 @@
         <% else %>
            <img class="icon_image" src = "<%= "/user_images/#{@user.image_name}" %>" >
        <% end %>
-        
-    
-    <div class="link_to_edit">
-        <div class="post_card">
-          <%= link_to(@post.user.name,"/users/#{@post.user.id}") %>  
-        </div>
-    </div>
+
     <div class="post_card">
         <%= @post.content %>
         <br>
