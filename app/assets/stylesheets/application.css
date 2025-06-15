@@ -49,7 +49,7 @@ height: auto; /* アスペクト比を維持 */
   font-size: 16px;
 }
 .posts_wrapper {
-  display: flexbox;
+  display: flex;
   width: 100%;
   max-width: 3650px;
   vertical-align: middle;
@@ -93,8 +93,6 @@ height: auto; /* アスペクト比を維持 */
   border: 2px solid #ccc; /* ポストイットらしい枠線 */
   border-radius: 5px; /* 角を少し丸める */
   box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.2); /* 影をつけて浮いている感を出す */
-  transform: rotate(-3deg); /* 少し傾けてラフな感じを演出 */
-
 
 }
 .users_container {
@@ -121,7 +119,6 @@ height: auto; /* アスペクト比を維持 */
   border: 2px solid #ccc; /* ポストイットらしい枠線 */
   border-radius: 5px; /* 角を少し丸める */
   box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.2); /* 影をつけて浮いている感を出す */
-  transform: rotate(3deg); /* 少し傾けてラフな感じを演出 */
 
 
 }
@@ -220,18 +217,12 @@ flex-direction: column;
 .completed_tasks_views a{
   text-align: right;
 }
-.simple-calendar {
-  max-width: 3600px;
-  width: 100%;
-  margin: 10px auto;
-  display: flexbox;
-  }
   
   .simple-calendar .day {
   font-size: auto;
   text-align: start;
   width: 12%;
-  padding: 10px,10px,30px,10px;
+  padding: 10px 10px 30px 10px;
   border: 1px solid #ddd;
   
   }
@@ -249,6 +240,11 @@ flex-direction: column;
 .simple-calendar {
   .day {
     background: #fff9ee;
+    max-width: 3600px;
+    width: 100%;
+    margin: 10px auto;   /* ← これで中央寄せ */
+    display: flex;
+    justify-content: center; /* ← 子要素を中央に */
   }
   .wday-0 {
     background: #ffeaea;
@@ -287,15 +283,7 @@ flex-direction: column;
   white-space: nowrap;
   font-size: 0.8em; /* イベント名を少し小さくする */
   margin-top: 10px; /* 日付から少し離す */
-}
-.users_container {
-  display: flex;
-    flex-direction: column;
-    align-items: center; /* 中央に配置 */
-    justify-content: center; /* 縦方向中央 */
-    text-align: center; /* テキストを中央寄せ */
-    margin-top: 20px;
-}
+
 .link_to_edit {
   margin-top: 20px;
     display: flex; /* Flexboxで配置を調整 */
@@ -329,12 +317,10 @@ flex-direction: column;
   border: 2px solid #ccc; /* ポストイットらしい枠線 */
   border-radius: 5px; /* 角を少し丸める */
   box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.2); /* 影をつけて浮いている感を出す */
-  transform: rotate(-3deg); /* 少し傾けてラフな感じを演出 */
   transition: all 0.3s ease; /* ホバーアニメーション用 */
 }
 
 .btntextchange:hover {
-  transform: rotate(0deg); /* ホバー時はまっすぐに */
   box-shadow: 8px 8px 15px rgba(0, 0, 0, 0.3); /* ホバーで影を強調 */
   background-color: #fff200; /* ホバー時に少し濃い黄色に */
   cursor: pointer;
@@ -352,14 +338,21 @@ flex-direction: column;
   border: 2px solid #ccc; /* ポストイットらしい枠線 */
   border-radius: 5px; /* 角を少し丸める */
   box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.2); /* 影をつけて浮いている感を出す */
-  transform: rotate(3deg); /* 少し傾けてラフな感じを演出 */
   transition: all 0.3s ease; /* ホバーアニメーション用 */
 }
 .delete_bottun:hover {
-  transform: rotate(0deg); /* ホバー時はまっすぐに */
   box-shadow: 8px 8px 15px rgba(0, 0, 0, 0.3); /* ホバーで影を強調 */
   background-color: #ff8400; /* ホバー時に少し濃い黄色に */
   cursor: pointer;
+}
+
+@media (max-width: 768px) {
+  .post_card, .user_card {
+    width: 90%;
+  }
+  .btntextchange, .delete_bottun {
+    width: 90%;
+  }
 }
 
 .complete_bottun {
@@ -374,11 +367,9 @@ flex-direction: column;
   border: 2px solid #ccc; /* ポストイットらしい枠線 */
   border-radius: 5px; /* 角を少し丸める */
   box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.2); /* 影をつけて浮いている感を出す */
-  transform: rotate(-5deg); /* 少し傾けてラフな感じを演出 */
   transition: all 0.3s ease; /* ホバーアニメーション用 */
 }
 .complete_bottun:hover {
-  transform: rotate(0deg); /* ホバー時はまっすぐに */
   box-shadow: 8px 8px 15px rgba(0, 0, 0, 0.3); /* ホバーで影を強調 */
   background-color: #00ff1e; /* ホバー時に少し濃い黄色に */
   cursor: pointer;
@@ -395,11 +386,9 @@ flex-direction: column;
   border: 2px solid #ccc; /* ポストイットらしい枠線 */
   border-radius: 5px; /* 角を少し丸める */
   box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.2); /* 影をつけて浮いている感を出す */
-  transform: rotate(-3deg); /* 少し傾けてラフな感じを演出 */
   transition: all 0.3s ease; /* ホバーアニメーション用 */
 }
 .task_edit:hover {
-  transform: rotate(0deg);
   box-shadow: 8px 8px 15px rgba(0, 0, 0, 0.3);
   background-color: #fff200;
   cursor: pointer;
@@ -425,4 +414,5 @@ flex-direction: column;
   align-items: center;  /* 垂直軸方向に中央寄せ */
   gap: 20px;  /* カード間の余白 */
   padding: 20px;
+}
 }
