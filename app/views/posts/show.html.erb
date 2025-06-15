@@ -5,7 +5,7 @@
              <%=  image_tag @user.image, width: "100" %>
              </div>
         <% else %>
-           <img class="icon_image" src = "<%= "/user_images/#{@post.image_name}" %>" >
+           <img class="icon_image" src = "<%= "/user_images/#{@user.image_name}" %>" >
        <% end %>
         
     
@@ -41,7 +41,6 @@
     <h3>コメントを加える</h3>
    <%= form_with(model: [@post, @comment], local: true) do |f| %>
         <p> <%= f.text_field :content %> </p> 
-        <p> <%= f.file_field :image %></p>
         <p> <%= f.submit "Comment(コメントする)"%></p>  
     <% end %>
         <% @post.comments.each do |c| %>
