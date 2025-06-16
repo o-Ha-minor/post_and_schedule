@@ -336,7 +336,7 @@ flex-direction: column;
   cursor: pointer;
 }
 
-.delete_bottun {
+.delete_button {
   display: inline-block;
   width: 20%;
   padding: 10px 20px;
@@ -351,14 +351,14 @@ flex-direction: column;
   transform: rotate(3deg); /* 少し傾けてラフな感じを演出 */
   transition: all 0.3s ease; /* ホバーアニメーション用 */
 }
-.delete_bottun:hover {
+.delete_button:hover {
   transform: rotate(0deg); /* ホバー時はまっすぐに */
   box-shadow: 8px 8px 15px rgba(0, 0, 0, 0.3); /* ホバーで影を強調 */
   background-color: #ff8400; /* ホバー時に少し濃い黄色に */
   cursor: pointer;
 }
 
-.complete_bottun {
+.complete_button {
   display: inline-block;
   width: 20%;
   padding: 10px 20px;
@@ -373,7 +373,7 @@ flex-direction: column;
   transform: rotate(-5deg); /* 少し傾けてラフな感じを演出 */
   transition: all 0.3s ease; /* ホバーアニメーション用 */
 }
-.complete_bottun:hover {
+.complete_button:hover {
   transform: rotate(0deg); /* ホバー時はまっすぐに */
   box-shadow: 8px 8px 15px rgba(0, 0, 0, 0.3); /* ホバーで影を強調 */
   background-color: #00ff1e; /* ホバー時に少し濃い黄色に */

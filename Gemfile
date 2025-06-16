@@ -64,7 +64,6 @@ end
 
 
 gem "jquery-rails"
-gem "fullcalendar-rails"
 gem "momentjs-rails"
 
 gem "simple_calendar"
