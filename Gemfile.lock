@@ -124,10 +124,6 @@ GEM
     fugit (1.11.1)
       et-orbi (~> 1, >= 1.2.11)
       raabro (~> 1.4)
-    fullcalendar-rails (3.9.0.0)
-      jquery-rails (>= 4.0.5, < 5.0.0)
-      jquery-ui-rails (>= 5.0.2)
-      momentjs-rails (>= 2.9.0)
     globalid (1.2.1)
       activesupport (>= 6.1)
     i18n (1.14.6)
@@ -419,7 +415,6 @@ DEPENDENCIES
   brakeman
   capybara
   debug
-  fullcalendar-rails
   image_processing (~> 1.2)
   importmap-rails
   jbuilder

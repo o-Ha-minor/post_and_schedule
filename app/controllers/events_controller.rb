@@ -9,7 +9,7 @@ class EventsController < ApplicationController
             if event.save
               redirect_to events_path, notice: "Added events イベントを作成しました"
             else
-              render :new, alart: "Faild 失敗しました"
+              render :new, alert: "Faild 失敗しました"
             end
           else
             redirect_to("/login")
@@ -22,7 +22,7 @@ class EventsController < ApplicationController
           if @event.update(event_params)
             redirect_to events_path, notice: "Update events イベントを更新しました"
           else
-            render :edit, alart: "Faild 失敗しました"
+            render :edit, alert: "Faild 失敗しました"
           end
         end
         def destroy

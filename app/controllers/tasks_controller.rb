@@ -26,8 +26,9 @@ class TasksController < ApplicationController
                 redirect_to("/tasks")
                 flash[:notice] = "to doを追加しました"
             else
-                render("tasks/index")
                 flash[:notice] = "to doが保存できませんでした"
+                render("tasks/index")
+
             end
         else
             redirect_to("/login")

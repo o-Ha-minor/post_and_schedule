@@ -24,11 +24,6 @@ console.log('')
 import Rails from 'rails-ujs'
 import "@hotwired/turbo-rails"
 Rails.start()
-import { Calendar } from '@fullcalendar/core';
-import dayGridPlugin from '@fullcalendar/daygrid';
-import interactionPlugin from '@fullcalendar/interaction';
-import timeGridPlugin from '@fullcalendar/timegrid';
-import listPlugin from '@fullcalendar/list';
 
 document.addEventListener('DOMContentLoaded', () => {
   const calendarEl = document.getElementById('calendar');
@@ -54,17 +49,8 @@ document.addEventListener('DOMContentLoaded', () => {
 //= require turbolinks
 //= require jquery
 //= require moment
-//= require fullcalendar
 //= require_tree 
-//= require fullcalendar/locale-all
 
-$('#calendar').fullCalendar({});
-
-import { Calendar } from '@fullcalendar/core';
-import dayGridPlugin from '@fullcalendar/daygrid';
-import interactionPlugin from '@fullcalendar/interaction';
-import timeGridPlugin from '@fullcalendar/timegrid';
-import listPlugin from '@fullcalendar/list';
 
 document.addEventListener('DOMContentLoaded', () => {
   const calendarEl = document.getElementById('calendar');
@@ -89,7 +75,4 @@ document.addEventListener('DOMContentLoaded', () => {
     console.error('カレンダー要素が見つかりませんでした');
   }
 });
-
-import '@fullcalendar/core/main.css';
-import '@fullcalendar/daygrid/main.css';
 

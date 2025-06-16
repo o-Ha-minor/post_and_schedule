@@ -23,7 +23,7 @@
                     <%= f.submit "update(更新)" %>
                 </div>
             <% end %>
-            <div class="delete_bottun btn">
+            <div class="delete_button btn">
                 <%= link_to "Delete(削除)", event_path(@event), 
                 class: "btn btn-danger", 
                 data: { turbo_method: :delete, confirm: "本当に削除しますか？" } %>
