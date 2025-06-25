@@ -7,7 +7,7 @@ Post and Schedule は、投稿・コメント・タスク・予定を一元管�
 趣味の音楽活動の中で、スケジュール調整やタスク共有、話題の管理が煩雑になっていた課題を解決するために開発しました。  
 投稿機能やToDo管理、カレンダー連携など、日々のやり取りを効率化できる機能をまとめています。
 
-- ![](./public/app_image/a_home.png)
+![](./public/app_image/a_home.png)
 
 ## 制作の目的と背景
 
@@ -31,19 +31,22 @@ Post and Schedule は、投稿・コメント・タスク・予定を一元管�
 -   投稿（Post）
   - ユーザーによる自由な投稿（画像アップロード対応）
   - コメント・いいね機能付き
-  - ![](./public/app_image/d_post.png)
+    ![](./public/app_image/d_post.png)
+    ![](./public/app_image/h_post_show.png)
 
 -   コメント（Comment）
   - 投稿に対するコメント
   - ユーザー間のやり取りが可能
+    ![](./public/app_image/j_comment.png)
 
 -   いいね（Like）
   - 投稿へのリアクション機能
+    ![](./public/app_image/i_post_index.png)
 
 -   タスク管理（Task）
   - 日々のタスク登録・一覧表示
   - カレンダーと連携した可視化
-  - ![](./public/app_image/e_To_do.png)
+    ![](./public/app_image/e_To_do.png)
 
 -   イベント（Event）
   - スケジュールの追加・表示
@@ -52,7 +55,7 @@ Post and Schedule は、投稿・コメント・タスク・予定を一元管�
 
 -   ユーザー管理（User）
   - `if @user&.authenticate(params[:password])` による独自認証あり
-  - ![](./public/app_image/b_sign_in.png)
+    ![](./public/app_image/b_sign_in.png)
 
 ##  ディレクトリ構成（主要部抜粋）
 
