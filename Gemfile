@@ -64,7 +64,7 @@ end
 
 
 gem "jquery-rails"
-gem "momentjs-rails"
+# gem "momentjs-rails"
 
 gem "simple_calendar"
 gem "solargraph"

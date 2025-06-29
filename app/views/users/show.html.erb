@@ -2,6 +2,8 @@
     <div class="user_card">
         <% if @user.image.attached? %>
             <%= image_tag @user.image, width: "100" %>
+        <% else %>
+            <img class="icon_image" src="<%= "/user_images/default_image.png" %>" alt="default image"> 
         <% end %>
         <br>
         <%= @user.name %>
