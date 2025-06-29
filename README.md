@@ -20,8 +20,8 @@ Post and Schedule は、投稿・コメント・タスク・予定を一元管�
 
 - フレームワーク: Ruby on Rails 8.0.1
 - 言語: Ruby, JavaScript, HTML, CSS
-- フロントエンド: importmap, Rails UJS
-- データベース: SQLite3（開発環境）
+- フロントエンド: HTML, CSS, JavaScript（Turbo）
+- データベース: PostgleSQL
 - デプロイ: Render（※無料プラン使用経験あり）、AWS移行予定（2025年7月中）
 - セキュリティ: brakeman（静的コード解析）
 - 画像アップロード: ActiveStorage（アバター機能で使用）
