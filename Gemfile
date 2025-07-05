@@ -68,3 +68,10 @@ gem "jquery-rails"
 
 gem "simple_calendar"
 gem "solargraph"
+
+# gem "dotenv-rails"
+gem 'dotenv-rails', groups: [:development, :test, :production]
+
+# Gemfile
+
+gem 'dotenv-rails', groups: [:development, :test, :production]  # ← production追加！
