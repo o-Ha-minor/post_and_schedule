@@ -13,8 +13,7 @@
     
 </div>
 
-<% if @user == @current_u
-ser %>
+<% if @user == @current_user %>
 <div class="link_to_edit" style="display: inline-block;">
     <%= link_to "/users/#{@user.id}/edit" do %>
         <div class="btn">
