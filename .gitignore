@@ -13,3 +13,4 @@ yarn-debug.log*
 .yarn-integrity
 .env.production
 .DS_Store
+.bundle/

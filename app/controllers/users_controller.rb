@@ -3,23 +3,20 @@ class UsersController < ApplicationController
         @users = User.all.order(created_at: :desc)
     end
     def new
+        @user = User.new
     end
     def create
-        @user = User.new(
-            name: params[:name],
-            password: params[:password],
-            email: params[:email],
-            image_name: "default_image.png"
-            )
+        @user = User.new(user_params)
         if    @user.save
-            flash[:notice] = "You got account!(登録できました)"
+            flash[:notice] = "登録完了"
             session[:user_id] = @user.id
-            redirect_to("/users/index")
+            redirect_to users_path
         else
             flash[:alert] = @user.errors.full_messages
             render("users/new")
         end
     end
+
     def show
         @user = User.find_by(id: params[:id])
             if params[:id] == "sign_in"
@@ -42,16 +39,12 @@ class UsersController < ApplicationController
             if params[:image].present?
             @user.image.attach(params[:image])
             end
-           flash[:notice] = "success(編集しました)"
+           flash[:notice] = "編集しました"
            render("home/top")
         else
-           flash[:alert] = "faild(失敗しました)"
+           flash[:alert] = "失敗しました"
            render("posts/:id/edit")
         end
-    end
-
-    def user_params
-        params.require(:user).permit(:name, :image, :email)
     end
 
     def login_form
@@ -77,13 +70,17 @@ class UsersController < ApplicationController
         @user = User.find_by(id: params[:id])
         if @user != nil
             @user.destroy
-            flash[:notice] = "deleted（削除しました）"
+            flash[:notice] = "削除しました"
             render("home/top")
         else
-            flash[:alert] = "not found(対象が見つかりません)"
+            flash[:alert] = "対象が見つかりません"
             render("home/top")
         end
     end
 end
 
 private
+
+def user_params
+    params.require(:user).permit(:name, :password, :email, :image_name)
+end

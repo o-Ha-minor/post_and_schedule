@@ -1,7 +1,7 @@
 class EventsController < ApplicationController
         def index
             @event = Event.new
-            @events = Event.all # カレンダーに表示するイベント
+            @events = Event.all
         end
         def create
           if @current_user
@@ -16,7 +16,6 @@ class EventsController < ApplicationController
           end
         end
         def update
-          # イベントを更新
           @event = @current_user.events.find(params[:id])
           Rails.logger.debug "Updating event with ID: #{params[:id]}"
           if @event.update(event_params)
@@ -43,8 +42,6 @@ class EventsController < ApplicationController
         end
         before_action :authorize_event, only: [ :edit, :update, :destroy ]
 
-        private
-
         def authorize_event
           @event = Event.find_by(id: params[:id])
           if @event.user != @current_user
@@ -57,7 +54,8 @@ class EventsController < ApplicationController
         def show
           @event = Event.find_by(id: params[:id])
           if @event.nil?
-            redirect_to events_path, alert: "イベントが見つかりませんでした。"
+            redirect_to events_path, alert: "イベントが見つかりませんでした。" and return
           end
         end
+        private
 end
