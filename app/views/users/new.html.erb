@@ -1,7 +1,7 @@
 <div class="new_account_container">
-    <h2>Getting your account（アカウントをつくろう！）</h2>
+    <h2>アカウントを作成</h2>
      <%= flash[:notice] %>
-    <%= form_with url: "/users/create", local: true do |u| %>
+    <%= form_with model: @user, local: true do |u| %>
     <div class="fill_information">
         <h3>Name（ユーザー名）</h3>  
         <p> <%= u.text_field :name %> </p> 

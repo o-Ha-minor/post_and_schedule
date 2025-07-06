@@ -1,6 +1,6 @@
 class PostsController < ApplicationController
     def index
-        @posts = Post.order(created_at: :desc)  # 作成日が新しい順に並ぶ
+        @posts = Post.order(created_at: :desc)
         @post = Post.find_by(id: params[:id])
         if @current_user
             @like = Like.where(user_id: @current_user.id).pluck(:post_id)
@@ -24,13 +24,13 @@ class PostsController < ApplicationController
     end
     def show
         @post = Post.find_by(id: params[:id])
+        if @post.nil?
+          flash[:alert] = "投稿が見つかりませんでした"
+          redirect_to posts_path and return
+        end
         @like = Like.where(user_id: @current_user.id).pluck(:post_id)
         @user = User.find_by(id: @post.user_id)
         @comment = Comment.new
-        if @post == nil
-            flash[:alert] = "Post not found（投稿が見つかりませんでした）"
-            redirect_to()
-        end
     end
 
     def destroy
@@ -38,11 +38,10 @@ class PostsController < ApplicationController
         if @post != nil
             @post.destroy
             flash[:notice] = "deleted（削除しました）"
-            render("home/top")
         else
             flash[:alert] = "not found(対象が見つかりません)"
-            render("home/top")
         end
+        redirect_to root_path
     end
 
     def edit
@@ -56,19 +55,19 @@ class PostsController < ApplicationController
            render("home/top")
         else
            flash[:alert] = "faild(失敗しました)"
-           render("posts/:id/edit")
+           render "posts/edit"
         end
     end
+
     def post_params
         params.require(:post).permit(:content, :avatar)
     end
 
 before_action :authorize_post, only: [ :edit, :update, :destroy ]
 
-private
-
-def authorize_post
-  @post = Post.find(params[:id])
-  redirect_to posts_path, alert: "権限が不足しています" if @post.user != @current_user
-end
+    private
+        def authorize_post
+        @post = Post.find(params[:id])
+        redirect_to posts_path, alert: "権限が不足しています" if @post.user != @current_user
+        end
 end
