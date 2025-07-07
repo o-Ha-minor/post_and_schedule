@@ -60,7 +60,7 @@ class PostsController < ApplicationController
     end
 
     def post_params
-        params.require(:post).permit(:content, :avatar)
+        params.require(:post).permit(:content, :image)
     end
 
 before_action :authorize_post, only: [ :edit, :update, :destroy ]

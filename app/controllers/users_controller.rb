@@ -19,10 +19,11 @@ class UsersController < ApplicationController
 
     def show
         @user = User.find_by(id: params[:id])
-            if params[:id] == "sign_in"
-              redirect_to login_path  # ログインページへリダイレクト
+            if @user.nil?
+                flash[:alert] = "ユーザが見つかりません"
+              redirect_to users_path and return
             else
-              @user = User.find_by(id: params[:id])  # 他のユーザー情報を取得
+              @user = User.find_by(id: params[:id])
             end
     end
 
@@ -36,8 +37,8 @@ class UsersController < ApplicationController
         Rails.logger.debug "======================="
         @user = User.find_by(id: params[:id])
         if @user.update(user_params)
-            if params[:image].present?
-            @user.image.attach(params[:image])
+            if params[:user][:image].present?
+            @user.image.attach(params[:user][:image])
             end
            flash[:notice] = "編集しました"
            render("home/top")
@@ -82,5 +83,5 @@ end
 private
 
 def user_params
-    params.require(:user).permit(:name, :password, :email, :image_name)
+    params.require(:user).permit(:name, :password, :email, :image)
 end

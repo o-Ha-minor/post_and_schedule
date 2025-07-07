@@ -1,7 +1,7 @@
 <div class="users_container">
     <div class="user_card">
-        <% if @user.image.attached? %>
-            <%= image_tag @user.image, width: "100" %>
+        <% if @user && @user.image.attached? %>
+            <%= image_tag @user.image %>
         <% else %>
             <img class="icon_image" src="<%= "/user_images/default_image.png" %>" alt="default image"> 
         <% end %>
