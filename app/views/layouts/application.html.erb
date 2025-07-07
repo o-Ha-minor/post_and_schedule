@@ -37,23 +37,23 @@
       <div class="header-right">
       <% if session[:user_id] && @current_user %>
               <li>
-                <%= link_to "#{@current_user.name}","/users/#{@current_user.id}" %>
+                <%= link_to "#{@current_user.name}", user_path(@current_user.id) %>
               </li>
               <li>
-                <%= link_to 'Users', "/users/index" %>
+                <%= link_to 'ユーザ一覧', users_path %>
               </li>
               <li>
-                <%= button_to 'Logout', logout_path, method: :post, class: "btn btn-danger" %>
+                <%= button_to 'ログアウト', logout_path, method: :post %>
               </li>
           <% else %>
               <li>
-                <%= link_to 'About app', "/about" %>
+                <%= link_to 'アプリについて', about_path %>
               </li>
               <li>
-                <%= link_to 'Sign up', "/users/new" %>
+                <%= link_to '登録', new_user_path %>
               </li>
               <li>
-                 <%= link_to 'Login', "/login" %>
+                 <%= link_to 'ログイン', login_path %>
                </li>
         
       <% end %>

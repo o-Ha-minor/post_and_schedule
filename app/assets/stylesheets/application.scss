@@ -99,7 +99,7 @@ height: auto; /* アスペクト比を維持 */
   align-items: center;  /* 垂直軸方向に中央寄せ */
   gap: 20px;  /* カード間の余白 */
   padding: 20px;
-  
+}
 .post_time {
   float: left;
   font-size: smaller;
@@ -135,7 +135,7 @@ text-decoration: none;
 }
 .tasks_container {
 max-width: 100%;
-width: 100%; /* 親要素の幅をブラウザ全体に広げる */
+width: 100%;
 margin: 0 auto;
 display: flex;
 justify-content:center;
@@ -261,6 +261,7 @@ flex-direction: column;
   white-space: nowrap;
   font-size: 0.8em; /* イベント名を少し小さくする */
   margin-top: 10px; /* 日付から少し離す */
+}
 
 .link_to_edit {
   margin-top: 20px;
@@ -396,12 +397,11 @@ flex-direction: column;
   border: 2px solid #ccc; /* ポストイットらしい枠線 */
   border-radius: 5px; /* 角を少し丸める */
   box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.2); /* 影をつけて浮いている感を出す */
-}_
+}
 .poster_image{
   display: flex;
   justify-content: center;  /* 水平軸方向に中央寄せ */
   align-items: center;  /* 垂直軸方向に中央寄せ */
   gap: 20px;  /* カード間の余白 */
   padding: 20px;
-}
 }

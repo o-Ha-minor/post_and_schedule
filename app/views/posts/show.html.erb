@@ -17,8 +17,8 @@
         <%= @post.content %>
         <br>
         <%= @post.updated_at %>
-        <% if @post.avatar.attached? %>
-            <%= image_tag @post.avatar, width: "200" %>
+        <% if @post.image.attached? %>
+            <%= image_tag @post.image, width: "200" %>
         <% end %>
         <br>
         <% if @post.likes_count == nil %>

@@ -1,0 +1,27 @@
+.simple-calendar {
+    table {
+      width: 100%;
+      border-collapse: collapse;
+  
+      th, td {
+        border: 1px solid #ddd;
+        padding: 8px;
+        vertical-align: top;
+        height: 100px;
+      }
+  
+      th {
+        background-color: #f9f9f9;
+        text-align: center;
+      }
+  
+      td {
+        text-align: left;
+      }
+  
+      .today {
+        background-color: #fffbe6;
+      }
+    }
+  }
+  
