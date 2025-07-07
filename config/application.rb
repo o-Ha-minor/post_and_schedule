@@ -1,8 +1,8 @@
 require_relative "boot"
 
 require "rails/all"
-require 'dotenv'
-Dotenv.load('.env.production')
+require "dotenv"
+Dotenv.load(".env.production")
 
 
 # Require the gems listed in Gemfile, including any gems

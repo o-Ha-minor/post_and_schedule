@@ -70,8 +70,8 @@ gem "simple_calendar"
 gem "solargraph"
 
 # gem "dotenv-rails"
-gem 'dotenv-rails', groups: [:development, :test, :production]
+gem "dotenv-rails", groups: [ :development, :test, :production ]
 
 group :development, :test do
-  gem 'debug', platforms: [:mri]
+  gem "debug", platforms: [ :mri ]
 end
