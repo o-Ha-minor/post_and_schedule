@@ -100,6 +100,26 @@ height: auto; /* アスペクト比を維持 */
   gap: 20px;  /* カード間の余白 */
   padding: 20px;
 }
+
+.user_card {
+  margin: 5px;
+  background-color: #fff09e;
+  width: 40%;
+  border:1px solid #000;
+  padding: 20px;
+  justify-content: left; 
+  display: inline-block;
+  background-color: #fffa65; /* ポストイット風の淡い黄色 */
+  color: #333; /* テキスト色 */
+  font-weight: bold;
+  font-size: 16px;
+  border: 2px solid #ccc; /* ポストイットらしい枠線 */
+  border-radius: 5px; /* 角を少し丸める */
+  box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.2); /* 影をつけて浮いている感を出す */
+  
+  
+}
+
 .post_time {
   float: left;
   font-size: smaller;
@@ -208,24 +228,7 @@ flex-direction: column;
   justify-content: flex-start; /* 左寄せに変更 */
   width: 100%; /* 親幅を指定 */
 }
-.user_card {
-  margin: 5px;
-  background-color: #fff09e;
-  width: 40%;
-  border:1px solid #000;
-  padding: 20px;
-  justify-content: left; 
-  display: inline-block;
-  background-color: #fffa65; /* ポストイット風の淡い黄色 */
-  color: #333; /* テキスト色 */
-  font-weight: bold;
-  font-size: 16px;
-  border: 2px solid #ccc; /* ポストイットらしい枠線 */
-  border-radius: 5px; /* 角を少し丸める */
-  box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.2); /* 影をつけて浮いている感を出す */
-  
-  
-}
+
 .btntextchange {
   display: inline-block;
   width: 20%;
@@ -266,15 +269,6 @@ flex-direction: column;
   box-shadow: 8px 8px 15px rgba(0, 0, 0, 0.3); /* ホバーで影を強調 */
   background-color: #ff8400; /* ホバー時に少し濃い黄色に */
   cursor: pointer;
-}
-
-@media (max-width: 768px) {
-  .post_card, .user_card {
-    width: 90%;
-  }
-  .btntextchange, .delete_button {
-    width: 90%;
-  }
 }
 
 .complete_button {
@@ -338,12 +332,13 @@ flex-direction: column;
   padding: 20px;
 }
 
-  
- 
+/*
+*= require_tree .
+*= require_self
+*/
 @import "simple_calendar";
-.simple-calendar {
-  .day {
-    background: #fff9ee;
+.simple-calendar.day {
+    background: hwb(40 69% 0%);
     max-width: 3600px;
     width: 100%;
     margin: 20px auto;   /* ← これで中央寄せ */
@@ -353,29 +348,29 @@ flex-direction: column;
     text-align: start;
     width: 12%;
     padding: 10px 10px 30px 10px;
-    border: 1px solid #ddd;
-  }
-  .wday-0 {
+    border: 1px solid #ffd7d7;
+}
+.simple-calendar.wday-0 {
     background: #ffeaea;
     color: #ff505c;
-  }
-  .wday-6 {
+}
+.simple-calendar.wday-6 {
     background: #d4ebff;
     color: #5984dc;
-  }
-  .today {
+}
+.simple-calendar.today {
     background: #FFA0A0;
     font-weight: bold; /* 日付の数字を目立たせる */
     background-color: #f0f8ff;
-  }
-  .event-name {
+}
+.simple-calendar.event-name {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
     font-size: 0.8em; /* イベント名を少し小さくする */
     margin-top: 10px; /* 日付から少し離す */
-  }
 }
+
 .simple-calendar td {
   width: 50px; /* 好きな幅を指定 */
   height: 75px; /* 好きな高さを指定 */
