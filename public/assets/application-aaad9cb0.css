@@ -99,6 +99,7 @@ height: auto; /* アスペクト比を維持 */
   align-items: center;  /* 垂直軸方向に中央寄せ */
   gap: 20px;  /* カード間の余白 */
   padding: 20px;
+}
   
 .post_time {
   float: left;
@@ -261,6 +262,7 @@ flex-direction: column;
   white-space: nowrap;
   font-size: 0.8em; /* イベント名を少し小さくする */
   margin-top: 10px; /* 日付から少し離す */
+}
 
 .link_to_edit {
   margin-top: 20px;
@@ -403,5 +405,4 @@ flex-direction: column;
   align-items: center;  /* 垂直軸方向に中央寄せ */
   gap: 20px;  /* カード間の余白 */
   padding: 20px;
-}
 }
