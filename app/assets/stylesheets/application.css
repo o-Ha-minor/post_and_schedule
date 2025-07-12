@@ -100,7 +100,6 @@ height: auto; /* アスペクト比を維持 */
   gap: 20px;  /* カード間の余白 */
   padding: 20px;
 }
-  
 .post_time {
   float: left;
   font-size: smaller;
@@ -114,7 +113,7 @@ flex-direction: column;
 .post_show_card {
 font-size: larger;
 }
-body .icon_image {
+.body .icon_image {
 width: 150px; 
 height: 150px; 
 border: 2px solid #000; 
@@ -136,7 +135,7 @@ text-decoration: none;
 }
 .tasks_container {
 max-width: 100%;
-width: 100%; /* 親要素の幅をブラウザ全体に広げる */
+width: 100%;
 margin: 0 auto;
 display: flex;
 justify-content:center;
@@ -196,74 +195,6 @@ flex-direction: column;
 .completed_tasks_views a{
   text-align: right;
 }
-  
-  .simple-calendar .day {
-  font-size: auto;
-  text-align: start;
-  width: 12%;
-  padding: 10px 10px 30px 10px;
-  border: 1px solid #ddd;
-  
-  }
-  
-  .simple-calendar .day.today {
-  font-weight: bold; /* 日付の数字を目立たせる */
-  background-color: #f0f8ff;
-  }
-/*
-*= require_tree .
-*= require_self
-*/
-@import "simple_calendar";
-
-.simple-calendar {
-  .day {
-    background: #fff9ee;
-    max-width: 3600px;
-    width: 100%;
-    margin: 20px auto;   /* ← これで中央寄せ */
-    display: flex;
-    justify-content: center; /* ← 子要素を中央に */
-  }
-  .wday-0 {
-    background: #ffeaea;
-    color: #ff505c;
-  }
-  .wday-6 {
-    background: #d4ebff;
-    color: #5984dc;
-  }
-  .today {
-    background: #FFA0A0;
-  }
-}
-/* ホバーした際の背景色 tableタグにcalender_tableクラスを追記しています*/
-.calendar-table tr td:hover {
-  background-color: #FFFF8c;    
-}
-.event_container {
-  background-color: #d4ebff;
-  border:1px dotted #000;
-  padding-left: 5%;
-}
-.simple-calendar td {
-  width: 50px; /* 好きな幅を指定 */
-  height: 75px; /* 好きな高さを指定 */
-  overflow: hidden; /* コンテンツがはみ出さないように */
-  text-overflow: ellipsis; /* テキストが長い場合は省略記号を表示 */
-  white-space: nowrap; /* テキストを1行にする */
-  border: 1px solid #ddd; /* マス目の境界線 */
-  text-align: left; /* テキストをleft */
-  vertical-align: top; /* 縦方向上 */
-}
-.simple-calendar .day .event-name {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  font-size: 0.8em; /* イベント名を少し小さくする */
-  margin-top: 10px; /* 日付から少し離す */
-}
-
 .link_to_edit {
   margin-top: 20px;
     display: flex; /* Flexboxで配置を調整 */
@@ -398,11 +329,69 @@ flex-direction: column;
   border: 2px solid #ccc; /* ポストイットらしい枠線 */
   border-radius: 5px; /* 角を少し丸める */
   box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.2); /* 影をつけて浮いている感を出す */
-}_
+}
 .poster_image{
   display: flex;
   justify-content: center;  /* 水平軸方向に中央寄せ */
   align-items: center;  /* 垂直軸方向に中央寄せ */
   gap: 20px;  /* カード間の余白 */
   padding: 20px;
+}
+
+  
+ 
+@import "simple_calendar";
+.simple-calendar {
+  .day {
+    background: #fff9ee;
+    max-width: 3600px;
+    width: 100%;
+    margin: 20px auto;   /* ← これで中央寄せ */
+    display: flex;
+    justify-content: center; /* ← 子要素を中央に */
+    font-size: auto;
+    text-align: start;
+    width: 12%;
+    padding: 10px 10px 30px 10px;
+    border: 1px solid #ddd;
+  }
+  .wday-0 {
+    background: #ffeaea;
+    color: #ff505c;
+  }
+  .wday-6 {
+    background: #d4ebff;
+    color: #5984dc;
+  }
+  .today {
+    background: #FFA0A0;
+    font-weight: bold; /* 日付の数字を目立たせる */
+    background-color: #f0f8ff;
+  }
+  .event-name {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: 0.8em; /* イベント名を少し小さくする */
+    margin-top: 10px; /* 日付から少し離す */
+  }
+}
+.simple-calendar td {
+  width: 50px; /* 好きな幅を指定 */
+  height: 75px; /* 好きな高さを指定 */
+  overflow: hidden; /* コンテンツがはみ出さないように */
+  text-overflow: ellipsis; /* テキストが長い場合は省略記号を表示 */
+  white-space: nowrap; /* テキストを1行にする */
+  border: 1px solid #ddd; /* マス目の境界線 */
+  text-align: left; /* テキストをleft */
+  vertical-align: top; /* 縦方向上 */
+}
+/* ホバーした際の背景色 tableタグにcalender_tableクラスを追記しています*/
+.calendar-table tr td:hover {
+  background-color: #FFFF8c;    
+}
+.event_container {
+  background-color: #d4ebff;
+  border:1px dotted #000;
+  padding-left: 5%;
 }
