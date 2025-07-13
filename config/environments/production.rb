@@ -1,6 +1,9 @@
 require "active_support/core_ext/integer/time"
 
 Rails.application.configure do
+  RAILS_SERVE_STATIC_FILES=true
+  config.public_file_server.enabled = true
+
   # Settings specified here will take precedence over those in config/application.rb.
   config.assets.compile = false  # 本番はfalseが推奨（デフォルト）
   config.assets.digest = true    # デフォルトはtrue
@@ -17,7 +20,6 @@ Rails.application.configure do
 
   # Turn on fragment caching in view templates.
   config.action_controller.perform_caching = true
-  # allow connecting on http
   config.action_controller.forgery_protection_origin_check = false
   # Cache assets for far-future expiry since they are all digest stamped.
   config.public_file_server.headers = { "cache-control" => "public, max-age=#{1.year.to_i}" }

@@ -14,3 +14,4 @@ yarn-debug.log*
 .env.production
 .DS_Store
 .bundle/
+.config.environments.production.rb
