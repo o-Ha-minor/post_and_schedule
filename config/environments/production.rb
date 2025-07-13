@@ -7,7 +7,7 @@ Rails.application.configure do
   config.public_file_server.enabled = ENV["RAILS_SERVE_STATIC_FILES"].present?
 
   # Code is not reloaded between requests.
-  config.enable_reloading = falses
+  config.enable_reloading = false
 
   # Eager load code on boot for better performance and memory savings (ignored by Rake tasks).
   config.eager_load = true
@@ -17,7 +17,8 @@ Rails.application.configure do
 
   # Turn on fragment caching in view templates.
   config.action_controller.perform_caching = true
-
+  # allow connecting on http
+  config.action_controller.forgery_protection_origin_check = false
   # Cache assets for far-future expiry since they are all digest stamped.
   config.public_file_server.headers = { "cache-control" => "public, max-age=#{1.year.to_i}" }
 
@@ -28,7 +29,7 @@ Rails.application.configure do
   config.active_storage.service = :local
 
   # Assume all access to the app is happening through a SSL-terminating reverse proxy.
-  config.assume_ssl = true
+  config.assume_ssl = false
 
   # Force all access to the app over SSL, use Strict-Transport-Security, and use secure cookies.
   config.force_ssl = false
