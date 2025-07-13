@@ -378,7 +378,7 @@ flex-direction: column;
   border: 1px solid #ffd7d7;
   text-overflow: ellipsis; /* テキストが長い場合は省略記号を表示 */
   text-align: left; /* テキストをleft */
-  background: #ffe5d5;
+  background: #FFA0A0;
   font-weight: bold; /* 日付の数字を目立たせる */
   background-color: #ffdec0;
 }

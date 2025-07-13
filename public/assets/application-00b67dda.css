@@ -368,23 +368,21 @@ flex-direction: column;
 }
 
 .simple-calendar td {
-  background: hwb(40 69% 0%);
-  max-width: 3600px;
-  margin: 20px auto;   /* ← これで中央寄せ */
-  font-size: auto;
-  text-align: start;
-  width: 12%;
-  padding: 10px 10px 30px 10px;
-  border: 1px solid #ffd7d7;
+  width: 50px; /* 好きな幅を指定 */
+  height: 75px; /* 好きな高さを指定 */
+  overflow: hidden; /* コンテンツがはみ出さないように */
   text-overflow: ellipsis; /* テキストが長い場合は省略記号を表示 */
+  white-space: nowrap; /* テキストを1行にする */
+  border: 1px solid #ddd; /* マス目の境界線 */
   text-align: left; /* テキストをleft */
-  background: #ffe5d5;
+  vertical-align: top; /* 縦方向上 */
+  background: #FFA0A0;
   font-weight: bold; /* 日付の数字を目立たせる */
-  background-color: #ffdec0;
+  background-color: #ffd182;
 }
 /* ホバーした際の背景色 tableタグにcalender_tableクラスを追記しています*/
 .calendar-table tr td:hover {
-  background-color: #fff7c7;    
+  background-color: #FFFF8c;    
 }
 .event_container {
   background-color: #d4ebff;
