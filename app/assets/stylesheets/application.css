@@ -380,7 +380,7 @@ flex-direction: column;
   text-align: left; /* テキストをleft */
   background: #ffe5d5;
   font-weight: bold; /* 日付の数字を目立たせる */
-  background-color: #ffdec0;
+  background-color: #fff1e4;
 }
 /* ホバーした際の背景色 tableタグにcalender_tableクラスを追記しています*/
 .calendar-table tr td:hover {
