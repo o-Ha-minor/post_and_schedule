@@ -20,13 +20,11 @@
                     <%= f.text_area :description %>
                 </div>
                 <div class="btn">
-                    <%= f.submit "update(更新)" %>
+                    <%= f.submit "更新" %>
                 </div>
             <% end %>
-            <div class="delete_button btn">
-                <%= link_to "Delete(削除)", event_path(@event), 
-                class: "btn btn-danger", 
-                data: { turbo_method: :delete, confirm: "本当に削除しますか？" } %>
+            <div class="btn">
+                <%= button_to("削除", event_path(@event),method: :delete, date: { confirm: "本当に削除しますか？" }) %>
             </div>
         </div>
     <% else %>
