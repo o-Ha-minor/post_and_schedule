@@ -26,10 +26,12 @@
   }
 
   td {
+    background: hwb(40 69% 0%);
     padding: 6px;
     vertical-align: top;
     width: 14%;
-
+    max-width: 1600px;
+    font-weight: bold;
     border: 1px solid #ddd;
     border-top-color: rgb(221, 221, 221);
     border-top-style: solid;
@@ -51,15 +53,32 @@
 
   .day {
     height: 80px;
+    background: hwb(40 69% 0%);
+    max-width: 1600px;
+    width: 100%;
+    margin: 20px auto;   /* ← これで中央寄せ */
+    display: flex;
+    justify-content: center; /* ← 子要素を中央に */
+    font-size: auto;
+    text-align: start;
+    width: 12%;
+    padding: 10px 10px 30px 10px;
+    border: 1px solid #ffd7d7;
   }
 
-  .wday-0 {}
+  .wday-0 {
+    background: #ffeaea;
+    color: #ff505c;
+   }
   .wday-1 {}
   .wday-2 {}
   .wday-3 {}
   .wday-4 {}
   .wday-5 {}
-  .wday-6 {}
+  .wday-6 {
+    background: #d4ebff;
+    color: #5984dc;
+    }
 
   .today {
     background: #FFFFC0
@@ -78,5 +97,11 @@
   }
   .current-month {}
 
-  .has-events {}
+  .has-events {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: 0.8em; /* イベント名を少し小さくする */
+    margin-top: 10px; /* 日付から少し離す */
+    }
 }
