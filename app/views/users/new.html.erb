@@ -1,3 +1,13 @@
+<% if @user.errors.any? %>
+  <div class = "form_errors">
+    <ul>
+        <% @user.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+        <% end %>
+    </ul>
+  </div>
+<% end %>
+
 <div class="new_account_container">
     <h2>アカウントを作成</h2>
      <%= flash[:notice] %>

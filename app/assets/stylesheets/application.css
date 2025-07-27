@@ -1,9 +1,4 @@
-/*
-*= require_tree .
-*= require_self
-*/
-@import "simple_calendar";
-
+@import url("simple_calendar.css");
 * {
   box-sizing:border-box;
 }
@@ -354,58 +349,25 @@ flex-direction: column;
   padding: 20px;
 }
 
-.simple-calendar.day {
-    background: hwb(40 69% 0%);
-    max-width: 3600px;
-    width: 100%;
-    margin: 20px auto;   /* ← これで中央寄せ */
-    display: flex;
-    justify-content: center; /* ← 子要素を中央に */
-    font-size: auto;
-    text-align: start;
-    width: 12%;
-    padding: 10px 10px 30px 10px;
-    border: 1px solid #ffd7d7;
-}
-.simple-calendar.wday-0 {
-    background: #ffeaea;
-    color: #ff505c;
-}
-.simple-calendar.wday-6 {
-    background: #d4ebff;
-    color: #5984dc;
-}
-
-.simple-calendar.event-name {
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    font-size: 0.8em; /* イベント名を少し小さくする */
-    margin-top: 10px; /* 日付から少し離す */
-}
-
-.simple-calendar td {
-  background: hwb(40 69% 0%);
-  max-width: 3600px;
-  min-width: 80%;
-  margin: 20px auto;   /* ← これで中央寄せ */
-  font-size: auto;
-  text-align: start;
-  width: 12%;
-  padding: 10px 10px 30px 10px;
-  border: 1px solid #ffd7d7;
-  text-overflow: ellipsis; /* テキストが長い場合は省略記号を表示 */
-  text-align: left; /* テキストをleft */
-  background: #ffe5d5;
-  font-weight: bold; /* 日付の数字を目立たせる */
-  background-color: #fff1e4;
-}
-/* ホバーした際の背景色 tableタグにcalender_tableクラスを追記しています*/
-.calendar-table tr td:hover {
-  background-color: #fff7c7;    
-}
 .event_container {
   background-color: #d4ebff;
   border:1px dotted #000;
   padding-left: 5%;
+}
+.form_errors {
+  background-color: #ffe0e0;
+  padding: 10px;
+  border: 1px solid red;
+  border-radius: 5px;
+  margin-bottom: 10px;
+}
+button {
+  background: none;
+  border: none;
+  padding: 0;
+  margin: 0;
+  color: blue; /* リンクの色に */
+  text-decoration: underline; /* 下線をつけたいなら */
+  cursor: pointer;
+  font: inherit; /* フォントを周囲に合わせる */
 }

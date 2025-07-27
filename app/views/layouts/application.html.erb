@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="mobile-web-app-capable" content="yes">
-
+    
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
 
@@ -20,47 +20,45 @@
 
     <%# Includes all stylesheet files in app/assets/stylesheets %>
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
-
-
     <%= javascript_importmap_tags %>
   </head>
 
   <body>
-  <header>
+    <header>
       <div class="header-left">
         <%= link_to image_tag("/logo_Post-them.png", class:"logo"), "/" %>
       </div>
       <div class="header-right">
-      <% if session[:user_id] && @current_user %>
-              <li>
-                <%= link_to "#{@current_user.name}", user_path(@current_user.id) %>
-              </li>
-              <li>
-                <%= link_to 'ユーザ一覧', users_path %>
-              </li>
-              <li>
-                <%= button_to 'ログアウト', logout_path, method: :post %>
-              </li>
-          <% else %>
-              <li>
-                <%= link_to 'アプリについて', about_path %>
-              </li>
-              <li>
-                <%= link_to '登録', new_user_path %>
-              </li>
-              <li>
-                 <%= link_to 'ログイン', login_path %>
-               </li>
-        
-      <% end %>
-      
-        
-      
-        
+        <% if session[:user_id] && @current_user %>
+          <li>
+            <%= link_to "#{@current_user.name}", user_path(@current_user.id) %>
+          </li>
+          <li>
+            <%= link_to 'ユーザ一覧', users_path %>
+          </li>
+          <li>
+            <%= button_to 'ログアウト', logout_path, method: :post %>
+          </li>
+        <% else %>
+          <li>
+            <%= link_to 'アプリについて', about_path %>
+          </li>
+          <li>
+            <%= link_to '登録', new_user_path %>
+          </li>
+          <li>
+            <%= link_to 'ログイン', login_path %>
+          </li>
+        <% end %>
       </div>
-</header>
-  <%= flash[:notice] %>
-  <%= flash[:alert] %>
-    <%= yield %>
+    </header>
+  <% if flash[:alert].present? && request.referer != request.original_url %>
+    <p class="alert"><%= flash[:alert] %></p>
+  <% end %>
+
+  <% if flash[:notice].present? %>
+    <%= flash[:notice] %>
+  <% end %>
+  <%= yield %>
   </body>
 </html>

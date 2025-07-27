@@ -24,12 +24,14 @@ class PostsController < ApplicationController
     end
     def show
         @post = Post.find_by(id: params[:id])
-        if @post.nil?
-          flash[:alert] = "投稿が見つかりませんでした"
-          redirect_to posts_path and return
+        unless @post
+          redirect_to posts_path
         end
-        @like = Like.where(user_id: @current_user.id).pluck(:post_id)
-        @user = User.find_by(id: @post.user_id)
+        @like = []
+        if @current_user
+          @like = Like.where(user_id: @current_user.id).pluck(:post_id)
+          @user = User.find_by(id: @post.user_id)
+        end
         @comment = Comment.new
     end
 
@@ -37,9 +39,9 @@ class PostsController < ApplicationController
         @post = Post.find_by(id: params[:id])
         if @post != nil
             @post.destroy
-            flash[:notice] = "deleted（削除しました）"
+            flash[:notice] = "削除しました"
         else
-            flash[:alert] = "not found(対象が見つかりません)"
+            flash[:alert] = "対象が見つかりません"
         end
         redirect_to root_path
     end
@@ -51,10 +53,10 @@ class PostsController < ApplicationController
     def update
         @post = Post.find_by(id: params[:id])
         if @post.update(post_params)
-           flash[:notice] = "success(編集しました)"
+           flash[:notice] = "編集しました"
            render("home/top")
         else
-           flash[:alert] = "faild(失敗しました)"
+           flash[:alert] = "失敗しました"
            render "posts/edit"
         end
     end

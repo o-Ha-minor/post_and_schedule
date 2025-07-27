@@ -1,6 +1,6 @@
 class User < ApplicationRecord
-    validates :name, { length: { maximum: 20 }, presence: true }
-    validates :email, { length: { minimum: 1 } }
+    validates :name, { length: { maximum: 20 }, presence: true, uniqueness: true }
+    validates :email, { length: { minimum: 1 }, uniqueness: true }
     has_secure_password
 
     # Active Storageのアタッチメント設定
