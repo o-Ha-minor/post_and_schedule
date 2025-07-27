@@ -7,7 +7,6 @@ Rails.application.configure do
   # Settings specified here will take precedence over those in config/application.rb.
   config.assets.compile = false  # 本番はfalseが推奨（デフォルト）
   config.assets.digest = true    # デフォルトはtrue
-  
   # Code is not reloaded between requests.
   config.enable_reloading = false
 
