@@ -13,10 +13,12 @@
   max-width: 100%;
   border-collapse: collapse;
   background-color: transparent;
+  table-layout: fixed;
 }
 
 .simple-calendar tr {
   border-collapse: collapse;
+  width: 100%;
 }
 
 .simple-calendar th {
@@ -31,17 +33,18 @@
   padding: 8px;
   height: 120px; /* 見やすい高さに調整 */
   vertical-align: top;
-  width: 14.285%; /* 均等割 */
+  width: 14.258%; /* 均等割 */
   border: 1px solid #ddd;
   background: hwb(40 69% 0%);
   box-sizing: border-box;
   position: relative;
+  overflow: hidden;
 }
 
 /* 日付の数字部分（.day はクラス） */
 .simple-calendar .day {
   font-weight: bold;
-  margin-bottom: 4px;
+  width: 100%;
 }
 
 /* 曜日別スタイル */
@@ -69,11 +72,22 @@
 
 /* イベントありの日 */
 .simple-calendar .has-events {
+  display: block;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  font-size: 1.5em;
-  margin-top: 10px;
+  width: 100%;    
+  font-size: 1em;
+  -webkit-text-overflow: ellipsis; /* Safari用 */
+  -o-text-overflow: ellipsis; /* Opera用 */
+}
+
+.simple-calendar .event-link {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  width: 100%;
 }
 
 /* カレンダーのナビゲーション */
