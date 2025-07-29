@@ -61,6 +61,7 @@
 /* 今日 */
 .simple-calendar .today {
   background-color: #ffffc0;
+　border: 1px solid #000000;
 }
 
 /* 前月・翌月の日 */
@@ -72,7 +73,6 @@
 
 /* イベントありの日 */
 .simple-calendar .has-events {
-  display: block;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -82,16 +82,37 @@
   -o-text-overflow: ellipsis; /* Opera用 */
 }
 
-.simple-calendar .event-link {
-  display: block;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  width: 100%;
-}
-
 /* カレンダーのナビゲーション */
 .simple-calendar .calendar-heading nav {
-  display: inline-block;
+  display: flex;
   margin-bottom: 10px;
+}
+.day-box {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: 4px;
+  box-sizing: border-box;
+}
+
+.event-link-wrapper {
+  display: flex;
+  border: 1px solid;
+　gap: 2px;
+  overflow: hidden;
+  background-color: #ddd; 
+}
+
+.event-link {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  flex-shrink: 1;
+  min-width: 0;
+  font-size: 12px;
+  background-color: #fff;
+  padding: 2px 4px;
+  border-radius: 4px;
+  text-decoration: none;
+  color: #333;
 }
