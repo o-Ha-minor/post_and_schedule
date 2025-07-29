@@ -1,4 +1,4 @@
-#  Post and Schedule
+#  Post and Schedule(POST-Them)
 
 ## 概要
 
@@ -20,22 +20,22 @@ Post and Schedule は、投稿・コメント・タスク・予定を一元管�
 
 - フレームワーク: Ruby on Rails 8.0.1
 - 言語: Ruby, JavaScript, HTML, CSS
-- フロントエンド: HTML, CSS, JavaScript（Turbo）
+- フロントエンド: HTML, CSS, Turbo
 - データベース: PostgleSQL
-- デプロイ: Render（※無料プラン使用経験あり）、AWS移行予定（2025年7月中）
+- デプロイ: AWS EC2 (Nginx + Puma)
 - セキュリティ: brakeman（静的コード解析）
-- 画像アップロード: ActiveStorage（アバター機能で使用）
+- 画像アップロード: ActiveStorage（image機能で使用）
 
 ##  主な機能
 
 -   投稿（Post）
-  - ユーザーによる自由な投稿（画像アップロード対応）
+  - ユーザーによる自由な投稿（画像添付に対応）
   - コメント・いいね機能付き
     ![](./public/app_image/d_post.png)
     ![](./public/app_image/h_post_show.png)
 
 -   コメント（Comment）
-  - 投稿に対するコメント
+  - 投稿に対するコメント機能
   - ユーザー間のやり取りが可能
     ![](./public/app_image/j_comment.png)
 
@@ -54,8 +54,14 @@ Post and Schedule は、投稿・コメント・タスク・予定を一元管�
   - ![](./public/app_image/f_event.png)
 
 -   ユーザー管理（User）
-  - `if @user&.authenticate(params[:password])` による独自認証あり
+  - `if @user&.authenticate(params[:password])` を実装
     ![](./public/app_image/b_sign_in.png)
+
+##  ディレクトリ構成（主要部抜粋）
+-   アプリURL（デプロイ済）
+  - 本番環境はこちらからアクセス可能：
+    http://54.65.172.159/
+    ※AWS EC2（Ubuntu, Nginx, Puma）で構築・運用しています。
 
 ##  ディレクトリ構成（主要部抜粋）
 
@@ -86,26 +92,18 @@ rails s
 
 投稿に画像を添付可能。  
 ファイルアップロードには ActiveStorage を使用。  
-ユーザーのアバターなどでも活用中。
+ユーザーのアイコン画像でも活用中。
 
 ## UIの工夫
 
-- 「ポストイット」風の明るく使いやすい見た目を意識してデザイン
-- Bootstrapなどは使用せず、Rails標準の仕組みでスタイルを調整
+- 「付箋風」で親しみやすく、直感的なUIを意識してデザイン
+- Bootstrapなどは使用せず、Rails標準とCSSでカスタマイズ
 
 ##  今後の予定・ToDo
 
-- [ ] Deviseによるユーザー認証の導入
-- [ ] テストの追加（RSpec or Minitest）
-- [ ] UI/UXの改善・デザイン統一
-- [ ] READMEに画面キャプチャやGIFの追加
-- [ ] AWSへの本番デプロイ対応
-
-## デモリンク（準備中）
-
-現在は非公開ですが、AWSまたはRenderでの再デプロイを予定しています。  
-※2025年7月中に公開予定です。
-
+- [△] UI/UXの改善・デザイン統一
+- [⚪︎] READMEに画面キャプチャやGIFの追加
+- [⚪︎] AWSへの本番デプロイ対応
 
 ## 👤 作者
 
