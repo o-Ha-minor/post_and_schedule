@@ -4,7 +4,7 @@
 </div>
 <div class="clender_parts">
   <%= month_calendar(events: @events) do |date, events| %>
-    <div>
+    <div class="day-box">
       <strong><%= date.day %></strong>
       <% events.each do |event| %>
         <%= link_to event.title, edit_event_path(event), class: "event-link" %>
