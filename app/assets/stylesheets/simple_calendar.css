@@ -30,7 +30,7 @@
 }
 
 .simple-calendar td {
-  padding: 8px;
+  padding: 1px;
   height: 120px; /* 見やすい高さに調整 */
   vertical-align: top;
   width: 14.258%; /* 均等割 */
@@ -109,9 +109,9 @@
   text-overflow: ellipsis;
   flex-shrink: 1;
   min-width: 0;
-  font-size: 12px;
+  font-size: 5px;
   background-color: #fff;
-  padding: 2px 4px;
+  padding: 1px 2px;
   border-radius: 4px;
   text-decoration: none;
   color: #333;
