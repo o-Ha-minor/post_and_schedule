@@ -5,19 +5,27 @@
                 <%= f.label :title, "イベント名" %>
                 <%= f.text_field :title %>
             </div>
-            <div>
-                <%= f.label :start, "開始日時" %>
-                <%= f.datetime_select :start %>
+            <div class="datetime-wrapper">
+                <label>開始日</label>
+                <%= f.date_select :start,{ order: [:year, :month, :day] }, class: "date-select" %>
+                <span>日</span>
+                <br>
+                <label>開始時刻</label>
+                <%= f.time_select :start, { minute_step: 1 }, class: "time-select" %>
+                <span>（時：分）</span>
             </div>
-            <div>
-                <%= f.label :end, "終了日時" %>
-                <%= f.datetime_select :end %>
+            <div class="datetime-wrapper2">
+                <label>終了日</label>
+                <%= f.date_select :end,{ order: [:year, :month, :day] }, class: "date-select" %>
+                <span>日</span>
+                <br>
+                <label>終了時刻</label>
+                <%= f.time_select :end, { minute_step: 1 }, class: "time-select" %>
+                <span>（時：分）</span>
             </div>
             <div>
                 <%= f.label :description, "詳細" %>
                 <%= f.text_area :description %>
-            </div>
-            <div>
                 <%= f.submit "作成" %>
             </div>
         

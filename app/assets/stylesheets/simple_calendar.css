@@ -27,6 +27,7 @@
   background-color: #f0f0f0;
   border: 1px solid #ccc;
   width: 14.285%; /* 7等分 */
+  height: 14.285%;
 }
 
 .simple-calendar td {
@@ -39,6 +40,7 @@
   box-sizing: border-box;
   position: relative;
   overflow: hidden;
+  height: 14.285%;
 }
 
 /* 日付の数字部分（.day はクラス） */
@@ -61,7 +63,7 @@
 /* 今日 */
 .simple-calendar .today {
   background-color: #ffffc0;
-　border: 1px solid #000000;
+  border: 1px solid #000000;
 }
 
 /* 前月・翌月の日 */
@@ -98,7 +100,7 @@
 .event-link-wrapper {
   display: flex;
   border: 1px solid;
-　gap: 2px;
+  gap: 2px;
   overflow: hidden;
   background-color: #ddd; 
 }
