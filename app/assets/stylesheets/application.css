@@ -371,3 +371,17 @@ button {
   cursor: pointer;
   font: inherit; /* フォントを周囲に合わせる */
 }
+
+.create_wrapper {
+  width: 100%;
+}
+
+.create_wrapper h1 {
+  font-size: 1.0em;
+  margin: 1% auto;
+  text-align: center;
+}
+
+.create_wrapper {
+  margin: auto;
+}
