@@ -1,6 +1,13 @@
 <h2>新しい話題を加える</h2>
 <%= form_with model: @post, local: true do |f| %>
-  <p> <%= f.text_field :content %> </p> 
- <p> <%= f.file_field :image %></p>
-  <p> <%= f.submit "Post it!(投稿する)" %></p>  
+  <%= f.label :content, "投稿内容" %><br>
+  <%= f.text_field :content %><br>
+
+  <%= f.label :image, "画像の追加" %><br>  
+  <%= f.file_field :image %><br><br>
+
+  <%= f.label :group_id, "投稿先グループ" %>
+  <%= f.collection_select :group_id, @current_user.groups, :id, :name, prompt: "選択してください" %>
+  
+  <%= f.submit "投稿する" %></p>  
 <% end %>

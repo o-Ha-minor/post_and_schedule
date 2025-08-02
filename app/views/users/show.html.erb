@@ -10,23 +10,29 @@
         <br>
         <%= @user.updated_at %>
     </div>
-    
-</div>
-
-<% if @user == @current_user %>
-<div class="link_to_edit" style="display: inline-block;">
-    <%= link_to "/users/#{@user.id}/edit" do %>
-        <div class="btn">
-         <span>編集</span>
-        </div>
-    <%end%>
-<% end %>
-<div class="posts_container">
-    <% @user.posts.each do |post| %>
-        <div class="post_card">
-            <%= link_to(post.content,"/posts/#{post.id}") %>
-            <a class="post_time"><%= post.created_at%></a>
-        </div>
+    <% if @user == @current_user %>
+    <div class="link_to_edit" style="display: inline-block;">
+        <%= link_to "/users/#{@user.id}/edit" do %>
+            <div class="btn">
+            <span>編集</span>
+            </div>
+        <%end%>
     <% end %>
- </div>
+    <h2>所属しているグループ</h2>
+    <ul>
+        <% @user.groups.each do |group| %>
+            <li>
+              <%= link_to group.name, group_path(group) %> (<%= group.description %>)
+            </li>
+        <% end %>
+    </ul>
+
+    <div class="posts_container">
+        <% @user.posts.each do |post| %>
+            <div class="post_card">
+                <%= link_to(post.content,"/posts/#{post.id}") %>
+                <a class="post_time"><%= post.created_at%></a>
+            </div>
+        <% end %>
+    </div>
 </div>

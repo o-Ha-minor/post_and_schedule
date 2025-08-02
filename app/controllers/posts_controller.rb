@@ -1,6 +1,6 @@
 class PostsController < ApplicationController
     def index
-        @posts = Post.order(created_at: :desc)
+        @posts = Post.where(group: @current_user.groups).order(created_at: :desc)
         @post = Post.find_by(id: params[:id])
         if @current_user
             @like = Like.where(user_id: @current_user.id).pluck(:post_id)
@@ -8,18 +8,19 @@ class PostsController < ApplicationController
     end
     def new
         @post = Post.new
+        @groups = @current_user.groups
     end
     def create
         if @current_user
             @post = @current_user.posts.build(post_params)
+            @post.group ||= @current_user.groups.first
             if @post.save
-                flash[:notice] = "Post has created(投稿できました)"
-                redirect_to(@post)
+                redirect_to posts_path, notice: "投稿しました"
             else
                 render("posts/index")
             end
         else
-            redirect_to("/login")
+            redirect_to login_path
         end
     end
     def show
@@ -62,7 +63,7 @@ class PostsController < ApplicationController
     end
 
     def post_params
-        params.require(:post).permit(:content, :image)
+        params.require(:post).permit(:content, :image, :group_id)
     end
 
 before_action :authorize_post, only: [ :edit, :update, :destroy ]

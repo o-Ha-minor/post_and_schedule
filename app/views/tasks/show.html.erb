@@ -18,14 +18,11 @@
     </div>
     
     <% if @task.status == "pending" %>
-        <div class="task_link_to_edit">
-            <%= link_to "/tasks/#{@task.id}/edit" do %>
-                    <div class="task_edit">
-                        <span>Edit（編集）</span>
-                    </div>
-                
-            <%end%>
-        </div>
+        <%= link_to "/tasks/#{@task.id}/edit" do %>
+            <div class="btn">
+                <span>編集</span>
+            </div>
+        <%end%>
         <div class="btn">
             <%= button_to("完了", "/tasks/#{@task.id}/completed",data: { turbo_method: :post }) %>
         </div>

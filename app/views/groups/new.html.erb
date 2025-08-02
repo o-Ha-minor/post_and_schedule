@@ -1,0 +1,15 @@
+<h2>新らしいグループを作成</h2>
+
+<%= form_with model: @group, local: true do |f| %>
+    <div class="group_container">
+        <div class="group_name">
+            <%= f.label :name, "グループ名" %><br>
+            <%= f.text_field :name %>
+        </div>
+        <div class="group_description">
+            <%= f.label :description, "グループの説明 "%><br>
+            <%= f.text_area :description %>
+        </div>
+        <%= f.submit "グループを作成する" %>
+    </div>
+<% end %>

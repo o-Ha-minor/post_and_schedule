@@ -1,14 +1,15 @@
 class TasksController < ApplicationController
     def index
-        @tasks = Task.where(status: "pending")
-        @completed_tasks = Task.where(status: "completed").order(completed_at: :desc)
+        @tasks = Task.where(group: @current_user.groups, status: "pending").order(created_at: :desc)
+        @completed_tasks = Task.where(group: @current_user.groups, status: "completed").order(completed_at: :desc)
     end
     def new
         @task = Task.new
     end
     def create
         if @current_user
-            @task = @current_user.tasks.build(task_params)
+            @group = @current_user.groups.first
+            @task = @current_user.tasks.build(task_params.merge(group: @group))
             @task.status = "pending"
 
             if @task.save
@@ -20,11 +21,10 @@ class TasksController < ApplicationController
                     end: @task.due_date,
                     description: "To doから登録" + (@task.category || "")
                   )
-                flash[:notice] = "to doを追加しました"
-                redirect_to tasks_path
+                redirect_to tasks_path, notice: "イベントを作成しました"
             else
                 flash[:notice] = "to doが保存できませんでした"
-                render "tasks/index"
+                redirect_to login_path
 
             end
         else
@@ -59,10 +59,10 @@ class TasksController < ApplicationController
         @task = Task.find_by(id: params[:id])
         if @task.update(task_params)
            @task.save
-           flash[:notice] = "success(編集しました)"
+           flash[:notice] = "編集しました"
            redirect_to("/tasks")
         else
-           flash[:alert] = "faild(失敗しました)"
+           flash[:alert] = "編集できませんでした)"
            render("tasks/edit")
         end
     end

@@ -13,6 +13,10 @@
         <%= f.label :priority, "優先度「低」" %></p>
   </div>
   <h3>カテゴリの入力(任意)</h3>
-  <%= f.text_field :category %>
-  <p> <%= f.submit "CREATE" %></p>  
+  <%= f.text_field :category %><br>
+
+  <%= f.label :group_id, "投稿先グループ" %>
+  <%= f.collection_select :group_id, @current_user.groups, :id, :name, prompt: "選択してください" %>
+  
+  <p> <%= f.submit "作成" %></p>  
 <% end %>

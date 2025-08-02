@@ -37,7 +37,7 @@
     
     <% if @post.user == @current_user %>
         <div class="btn">
-            <%= button_to("Delete(削除)", post_path(@post), method: :delete, data: { confirm: "本当に削除しますか？" }) %>
+            <%= button_to("削除", post_path(@post), method: :delete, data: { confirm: "本当に削除しますか？" }) %>
         </div>
         <%= link_to "/posts/#{@post.id}/edit" do %>
         <div  class="btn">
@@ -49,7 +49,7 @@
     <h3>コメントを加える</h3>
     <%= form_with(model: [@post, @comment], local: true) do |f| %>
         <p> <%= f.text_field :content %> </p> 
-        <p> <%= f.submit "Comment(コメントする)"%></p>  
+        <p> <%= f.submit "コメントする"%></p>  
     <% end %>
     <% @post.comments.each do |c| %>
         <div class="post_card">
@@ -61,7 +61,7 @@
                 <%= button_to "×削除", post_comment_path(@post, c), method: :delete, data: { confirm: "本当に削除しますか？" }%>
             </div>
             <% if c.image.attached? %>
-                <%= image_tag c.image, width: "200" %>
+                <%= image_tag c.image.variant(resize_to_limit: [50, 50]) %>
             <% end %>
         </div>
 

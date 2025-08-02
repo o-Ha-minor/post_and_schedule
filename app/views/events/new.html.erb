@@ -1,0 +1,14 @@
+<!-- app/views/events/new.html.erb -->
+<h2>イベント作成フォーム</h2>
+
+<%= form_with model: @event, local: true do |form| %>
+  <%= form.text_field :title %>
+  <%= form.datetime_select :start %>
+  <%= form.datetime_select :end %>
+  <%= form.text_area :description %>
+
+  <!-- 追加：グループ選択 -->
+  <%= form.collection_select :group_id, @current_user.groups, :id, :name %>
+
+  <%= form.submit "作成する" %>
+<% end %>
