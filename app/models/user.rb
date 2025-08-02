@@ -3,6 +3,10 @@ class User < ApplicationRecord
     validates :email, { length: { minimum: 1 }, uniqueness: true }
     has_secure_password
 
+    # グループ機能の実装
+    has_many :group_users
+    has_many :groups, through: :group_users
+
     # Active Storageのアタッチメント設定
     has_one_attached :image
     has_many :events, dependent: :destroy

@@ -8,4 +8,5 @@ class Event < ApplicationRecord
   belongs_to :user
   validates :user_id, presence: true
   belongs_to :task, optional: true
+  belongs_to :group
 end

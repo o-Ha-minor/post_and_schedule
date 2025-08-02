@@ -1,10 +1,10 @@
 <div class="tasks_adding">
-    <p class= "add_link"><%= link_to 'add "to do" ', "/tasks/new" %></p>
-    <p>add your task! やることを加えましょう! </p>
+    <p class= "add_link"><%= link_to 'タスクを追加', "/tasks/new" %></p>
+    <p>タスクを管理しましょう</p>
   </div>
 <div class="tasks_container">
   <div class="tasks_views">
-    <h2>To do list   未完了</h2>
+    <h2>未完了のタスク</h2>
     <% @tasks.each do |task| %>
       <li class="task_title">
         <%= link_to task.title, task_path(task) %> 
@@ -12,7 +12,7 @@
     <% end %>
   </div>
   <div class="completed_tasks_views">
-  <h2>completed tasks   完了済</h2>
+  <h2>完了済のタスク</h2>
     <% @completed_tasks.each do |c_task| %>
       <li><%= link_to c_task.title, task_path(c_task) %> 
       <a><%= c_task.completed_at %></a>

@@ -1,27 +1,28 @@
 class EventsController < ApplicationController
         def index
             @event = Event.new
-            @events = Event.all
+            @events = Event.where(group: @current_user.groups).order(created_at: :desc)
         end
         def create
           if @current_user
-            event = @current_user.events.build(event_params)
-            if event.save
-              redirect_to events_path, notice: "Added events イベントを作成しました"
+            @group = @current_user.groups.first
+            @event = @current_user.events.build(event_params.merge(group: @group))
+            if @event.save
+              redirect_to events_path, notice: "イベントを作成しました"
             else
-              render :new, alert: "Faild 失敗しました"
+              render :new, alert: "イベントを作成できませんでした"
             end
           else
-            redirect_to("/login")
+            redirect_to login_path
           end
         end
         def update
           @event = @current_user.events.find(params[:id])
           Rails.logger.debug "Updating event with ID: #{params[:id]}"
           if @event.update(event_params)
-            redirect_to events_path, notice: "Update events イベントを更新しました"
+            redirect_to events_path, notice: "イベントを更新しました"
           else
-            render :edit, alert: "Faild 失敗しました"
+            render :edit, alert: "更新に失敗しました"
           end
         end
         def destroy

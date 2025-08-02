@@ -1,0 +1,21 @@
+<div class="user_card">
+    <h2><%= @group.name %></h2>
+    <p>グループの説明</p>
+    <h3><%= @group.description %></h3>
+</div>
+
+<% @users.each do |user| %>
+    <li>
+        <p>所属しているユーザー</p>
+         <%= link_to user.name, user_path(user) %>
+        <% if user.image.attached? %>
+            <%= image_tag user.image.variant(resize_to_limit: [50, 50]) %>
+        <% end %>
+    </li>
+<% end %>
+
+<% if @group.present? && @current_user.groups.include?(@group)%>
+    <%= button_to "グループを退会する", leave_group_path(@group.id), method: :post%>
+<% else %>
+    <%= button_to "グループに参加する", join_group_path(@group.id), method: :post %>
+<% end %>

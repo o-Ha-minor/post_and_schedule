@@ -21,8 +21,12 @@
                 <br>
                 <label>終了時刻</label>
                 <%= f.time_select :end, { minute_step: 1 }, class: "time-select" %>
-                <span>（時：分）</span>
+                <span>（時：分）</span><br>
             </div>
+
+            <%= f.label :group_id, "投稿先グループ" %>
+            <%= f.collection_select :group_id, @current_user.groups, :id, :name, prompt: "選択してください" %>
+  
             <div>
                 <%= f.label :description, "詳細" %>
                 <%= f.text_area :description %>

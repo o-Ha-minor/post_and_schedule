@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_01_11_233036) do
+ActiveRecord::Schema[8.0].define(version: 2025_08_02_095129) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -65,7 +65,25 @@ ActiveRecord::Schema[8.0].define(version: 2025_01_11_233036) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "task_id"
+    t.bigint "group_id"
+    t.index ["group_id"], name: "index_events_on_group_id"
     t.index ["user_id"], name: "index_events_on_user_id"
+  end
+
+  create_table "group_users", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "group_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["group_id"], name: "index_group_users_on_group_id"
+    t.index ["user_id"], name: "index_group_users_on_user_id"
+  end
+
+  create_table "groups", force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "description"
   end
 
   create_table "likes", force: :cascade do |t|
@@ -84,6 +102,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_01_11_233036) do
     t.datetime "updated_at", null: false
     t.integer "user_id", null: false
     t.integer "likes_count"
+    t.bigint "group_id"
+    t.index ["group_id"], name: "index_posts_on_group_id"
   end
 
   create_table "tasks", force: :cascade do |t|
@@ -96,6 +116,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_01_11_233036) do
     t.integer "priority"
     t.integer "user_id"
     t.datetime "due_date"
+    t.bigint "group_id"
+    t.index ["group_id"], name: "index_tasks_on_group_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -116,7 +138,12 @@ ActiveRecord::Schema[8.0].define(version: 2025_01_11_233036) do
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "comments", "posts"
   add_foreign_key "comments", "users"
+  add_foreign_key "events", "groups"
   add_foreign_key "events", "users"
+  add_foreign_key "group_users", "groups"
+  add_foreign_key "group_users", "users"
   add_foreign_key "likes", "posts"
   add_foreign_key "likes", "users"
+  add_foreign_key "posts", "groups"
+  add_foreign_key "tasks", "groups"
 end
