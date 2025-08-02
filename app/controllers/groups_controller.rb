@@ -7,7 +7,7 @@ class GroupsController < ApplicationController
     else
       flash[:alert] = "すでに参加しています"
     end
-    redirect_to group_path(group)
+    redirect_to root_path
   end
 
   def leave
@@ -18,7 +18,7 @@ class GroupsController < ApplicationController
   else
     flash[:alert] = "参加していません"
   end
-  redirect_to groups_path
+  redirect_to root_path
   end
 
   def index
@@ -33,7 +33,7 @@ class GroupsController < ApplicationController
     @group = Group.new(group_params)
     if @group.save
       @group.users << @current_user
-      redirect_to groups_path, notice: "グループを作成しました"
+      redirect_to root_path, notice: "グループを作成しました"
     else
       render :new, alert: "作成に失敗しました"
     end
@@ -41,7 +41,7 @@ class GroupsController < ApplicationController
   def show
     @group = Group.find_by(id: params[:id])
     unless @group
-      redirect_to groups_path, alert: "グループが見つかりません" and return
+      redirect_to root_path, alert: "グループが見つかりません" and return
     end
     @users = @group.users.order(created_at: :desc)
   end
