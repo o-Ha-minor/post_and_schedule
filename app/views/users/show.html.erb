@@ -27,6 +27,10 @@
         <% end %>
     </ul>
 
+    <div>
+        <%= link_to "新しいグループを作る", new_group_path %>
+    </div>
+
     <div class="posts_container">
         <% @user.posts.each do |post| %>
             <div class="post_card">
