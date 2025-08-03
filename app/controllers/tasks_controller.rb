@@ -1,7 +1,11 @@
 class TasksController < ApplicationController
     def index
-        @tasks = Task.where(group: @current_user.groups, status: "pending").order(created_at: :desc)
-        @completed_tasks = Task.where(group: @current_user.groups, status: "completed").order(completed_at: :desc)
+        if @current_user
+            @tasks = Task.where(group: @current_user.groups, status: "pending").order(created_at: :desc)
+            @completed_tasks = Task.where(group: @current_user.groups, status: "completed").order(completed_at: :desc)
+        else
+            redirect_to root_path, alert: "ログインしてください"
+        end
     end
     def new
         @task = Task.new
