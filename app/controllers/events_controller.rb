@@ -6,7 +6,8 @@ class EventsController < ApplicationController
         def create
           if @current_user
             @group = @current_user.groups.first
-            @event = @current_user.events.build(event_params.merge(group: @group))
+            @event = @current_user.events.build(event_params)
+
             if @event.save
               redirect_to events_path, notice: "イベントを作成しました"
             else
@@ -50,7 +51,7 @@ class EventsController < ApplicationController
           end
         end
         def event_params
-          params.require(:event).permit(:title, :start, :end, :description)
+          params.require(:event).permit(:title, :start, :end, :description, :group_id)
         end
         def show
           @event = Event.find_by(id: params[:id])

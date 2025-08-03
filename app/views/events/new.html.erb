@@ -1,7 +1,7 @@
 <!-- app/views/events/new.html.erb -->
 <h2>イベント作成フォーム</h2>
 
-<%= form_with model: @event, local: true do |form| %>
+<%= form_with(model: @event, local: true) do |f| %>
   <%= form.text_field :title %>
   <%= form.datetime_select :start %>
   <%= form.datetime_select :end %>
