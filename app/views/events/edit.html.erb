@@ -9,20 +9,20 @@
         </div>
         <div class="datetime-wrapper">
             <label>開始日</label>
-            <%= f.date_field :start_date, class: "date-select" %>
+            <%= f.date_field :start_date, class: "date-select",  value: @event.start&.to_date %>
              <span>日</span>
             <br>
             <label>開始時刻</label>
-            <%= f.time_field :start_time, class: "time-select" %>
+            <%= f.time_field :start_time, class: "time-select", value: @event.start&.strftime("%H:%M") %>
             <span>（時：分）</span>
         </div>
         <div class="datetime-wrapper2">
             <label>終了日</label>
-            <%= f.date_field :end_date, class: "date-select" %>
+            <%= f.date_field :end_date, class: "date-select", value: @event.end&.to_date %>
             <span>日</span>
             <br>
             <label>終了時刻</label>
-            <%= f.time_field :end_time, class: "time-select" %>
+            <%= f.time_field :end_time, class: "time-select", value: @event.end&.strftime("%H:%M") %>
             <span>（時：分）</span><br>
         </div>
 
