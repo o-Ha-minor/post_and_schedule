@@ -71,7 +71,7 @@ class EventsController < ApplicationController
     end
     private
     def to_datetime(date_str, time_str)
-      DateTime.parse("#{date_str} #{time_str}")
+      Time.zone.parse("#{date_str} #{time_str}")
     rescue ArgumentError
       nil
     end
