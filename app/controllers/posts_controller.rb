@@ -1,9 +1,11 @@
 class PostsController < ApplicationController
     def index
-        @posts = Post.where(group: @current_user.groups).order(created_at: :desc)
-        @post = Post.find_by(id: params[:id])
         if @current_user
+            @posts = Post.where(group: @current_user.groups).order(created_at: :desc)
+            @post = Post.find_by(id: params[:id])
             @like = Like.where(user_id: @current_user.id).pluck(:post_id)
+        else
+            redirect_to root_path, alert: "ログインしてください"
         end
     end
     def new
