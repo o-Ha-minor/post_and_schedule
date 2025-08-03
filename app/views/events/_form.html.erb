@@ -1,5 +1,5 @@
 <div class="event_container">
-    <%= form_with(model: Event.new, url: events_path, local: true) do |f| %>
+    <%= form_with(model: @event, local: true) do |f| %>
         
             <div>
                 <%= f.label :title, "イベント名" %>
