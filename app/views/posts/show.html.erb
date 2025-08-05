@@ -46,6 +46,15 @@
         <%end%>
     <%end%>
     
+    <div class>
+        <h3>コンシェルジュのひとこと</h3>
+        <div class="ai_comment">
+            <p><%= @post.ai_comment %></p>
+        </div>
+        <p>感情判定: <%= @post.sentiment || "解析中..." %></p>
+        <p>信頼度スコア: <%= @post.sentiment_score ? @post.sentiment_score.round(3) : "-" %></p>
+    </div>
+
     <h3>コメントを加える</h3>
     <%= form_with(model: [@post, @comment], local: true) do |f| %>
         <p> <%= f.text_field :content %> </p> 

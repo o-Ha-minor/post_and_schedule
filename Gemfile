@@ -67,11 +67,17 @@ gem "jquery-rails"
 # gem "momentjs-rails"
 
 gem "simple_calendar"
+gem "faraday"
 gem "solargraph"
+
+# GPTコメント機能に利用
+gem "ruby-openai", "~> 3.2"
+
 
 # gem "dotenv-rails"
 gem "dotenv-rails", groups: [ :development, :test, :production ]
 
 group :development, :test do
   gem "debug", platforms: [ :mri ]
+
 end

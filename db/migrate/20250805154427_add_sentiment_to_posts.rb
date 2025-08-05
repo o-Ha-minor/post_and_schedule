@@ -1,0 +1,7 @@
+class AddSentimentToPosts < ActiveRecord::Migration[8.0]
+  def change
+    add_column :posts, :sentiment, :string
+    add_column :posts, :sentiment_score, :float
+    add_column :posts, :ai_comment, :text
+  end
+end
