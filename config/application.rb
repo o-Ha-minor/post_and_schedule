@@ -30,4 +30,16 @@ module SampleApp
     config.active_record.default_timezone = :local
     # config.eager_load_paths << Rails.root.join("extras")
   end
+
+  module AiDiary
+    class Application < Rails::Application
+      config.load_defaults 8.0
+
+      config.autoload_lib(ignore: %w[assets tasks])
+
+      config.time_zone = "Tokyo"
+      config.i18n.default_locale = :ja
+      config.i18n.available_locales = [ :en, :ja ]
+    end
+  end
 end

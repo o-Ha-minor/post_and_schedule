@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_08_02_095129) do
+ActiveRecord::Schema[8.0].define(version: 2025_08_05_164441) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -103,6 +103,9 @@ ActiveRecord::Schema[8.0].define(version: 2025_08_02_095129) do
     t.integer "user_id", null: false
     t.integer "likes_count"
     t.bigint "group_id"
+    t.string "sentiment"
+    t.float "sentiment_score"
+    t.text "ai_comment"
     t.index ["group_id"], name: "index_posts_on_group_id"
   end
 

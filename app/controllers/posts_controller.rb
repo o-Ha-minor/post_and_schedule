@@ -17,9 +17,21 @@ class PostsController < ApplicationController
             @post = @current_user.posts.build(post_params)
             @post.group ||= @current_user.groups.first
             if @post.save
-                redirect_to posts_path, notice: "投稿しました"
+                Rails.logger.info("DEBUG: Post content = #{@post.content.inspect}")
+                sentiment_result = EmotionAnalyzer.analyze(@post.content)
+                ai_comment = AiCommentGenerator.generate_comment(
+                    @post.content,
+                    sentiment_result[:label],
+                    sentiment_result[:score])
+
+                @post.update(
+                    sentiment: sentiment_result[:label],
+                    sentiment_score: sentiment_result[:score],
+                    ai_comment: ai_comment
+                )
+                redirect_to post_path(@post), notice: "投稿しました"
             else
-                render("posts/index")
+                render :new
             end
         else
             redirect_to login_path
