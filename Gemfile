@@ -79,5 +79,4 @@ gem "dotenv-rails", groups: [ :development, :test, :production ]
 
 group :development, :test do
   gem "debug", platforms: [ :mri ]
-
 end
