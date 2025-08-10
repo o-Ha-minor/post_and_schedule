@@ -359,3 +359,9 @@ button {
 .create_wrapper {
   margin: auto;
 }
+
+.ai_comment {
+  color: rgb(255, 158, 30);
+  font-family: Arial, Helvetica, sans-serif;
+
+}

@@ -87,8 +87,8 @@ production:
   primary: &primary_production
     <<: *default
     url: <%= ENV['DATABASE_URL'] %>
-    username: sample_app
-    password: <%= ENV["SAMPLE_APP_DATABASE_PASSWORD"] %>
+    username: deploy_user
+    password: <%= ENV["DATABASE_PASSWORD"] %>
   cache:
     <<: *primary_production
     url: <%= ENV['DATABASE_URL'] %>
