@@ -16,18 +16,16 @@ class PostsController < ApplicationController
         if @current_user
             @post = @current_user.posts.build(post_params)
             @post.group ||= @current_user.groups.first
+
             if @post.save
                 Rails.logger.info("DEBUG: Post content = #{@post.content.inspect}")
-                sentiment_result = EmotionAnalyzer.analyze(@post.content)
-                ai_comment = AiCommentGenerator.generate_comment(
-                    @post.content,
-                    sentiment_result[:label],
-                    sentiment_result[:score])
+                ai_comment = AiCommentGenerator.generate_comment(@post.content)
+                Rails.logger.info("DEBUG: ai_comment = #{ai_comment.inspect}")
 
                 @post.update(
-                    sentiment: sentiment_result[:label],
-                    sentiment_score: sentiment_result[:score],
-                    ai_comment: ai_comment
+                    sentiment: ai_comment[:label],
+                    sentiment_score: ai_comment[:score],
+                    ai_comment: ai_comment[:comment]
                 )
                 redirect_to post_path(@post), notice: "投稿しました"
             else

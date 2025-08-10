@@ -4,7 +4,7 @@ class EventsController < ApplicationController
         @event = Event.new
         @events = Event.where(group: @current_user.groups).order(created_at: :desc)
       else
-        redirect_to root_path alert: "ログインしてください"
+        redirect_to root_path, alert: "ログインしてください"
       end
     end
     def create

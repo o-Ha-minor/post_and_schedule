@@ -1,13 +1,18 @@
 require "openai"
 
 class AiCommentGenerator
-  def self.generate_comment(text, label, score)
+  def self.strip_code_block(text)
+    text.gsub(/\A```json\s*|```\z/, "").strip
+  end
+
+  def self.generate_comment(text)
     prompt = <<~PROMPT
       以下はユーザーの日記です：
       "#{text}"
-
-      感情分析の結果は "#{label} (#{score.round(2)})" でした。
-      この投稿に対して、50文字以内で共感あるコメントを生成してください。
+      この投稿に対して、感情分析を行い、（positive, negative, neutral）のうちどれかを"label"、
+      感情の度合いを0〜1で通知化し"score"としてください。
+      さらに、50文字以内で共感あるコメントを生成し、"comment"としてください。
+      結果はJSON形式で返してください。
     PROMPT
 
     client = OpenAI::Client.new(access_token: ENV["OPENAI_API_KEY"])
@@ -21,9 +26,16 @@ class AiCommentGenerator
         ]
       }
     )
-    response.dig("choices", 0, "message", "content")
+
+    content = response.dig("choices", 0, "message", "content")
+    content = strip_code_block(content)
+
+    JSON.parse(content, symbolize_names: true)
+  rescue JSON::ParserError => e
+    Rails.logger.error("JSON.parse error: #{e.message}")
+    { label: "neutral", score: 0.5, comment: "コメント生成に失敗しました" }
   rescue => e
     Rails.logger.error("OpenAI Error: #{e.message}")
-    "コメント生成に失敗しました"
+    { label: "neutral", score: 0.5, comment: "コメント生成に失敗しました" }
   end
 end

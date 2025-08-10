@@ -1,14 +1,14 @@
 <div class="new_account_container">
-    <h2>Let's login ログインしよう！）</h2>
+    <h2>ログインしましょう</h2>
     <%= form_with(url:"/login", local: true) do |l| %>
     <div class="fill_information">
-        <h3>Name（ユーザー名）</h3>  
+        <h3>ユーザー名</h3>  
         <p> <%= l.text_field :name %> </p> 
-        <h3>Password（パスワード）</h3>  
+        <h3>パスワード</h3>  
         <p> <%= l.password_field :password %> </p>
     </div>
     <div class="account_button">
-        <p> <%= l.submit "Login(ログイン)" %></p>  
+        <p> <%= l.submit "ログイン" %></p>  
     </div>
     <% end %>
 </div>
