@@ -17,3 +17,5 @@ yarn-debug.log*
 .config.environments.production.rb
 # Ignore all environment files.
 /.env*.env
+.env
+env
