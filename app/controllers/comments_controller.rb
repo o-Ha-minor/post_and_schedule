@@ -5,13 +5,13 @@ class CommentsController < ApplicationController
     def create
         @post = Post.find_by(id: params[:post_id])
         if @post == nil
-            flash[:alert] = "Post not found（投稿が見つかりません）"
+            flash[:alert] = "投稿が見つかりません"
             redirect_to(posts_path)
             return
         end
         @comment = @post.comments.new(comment_params.merge(user_id: @current_user.id))
         if @comment.save
-            flash[:notice] = "Comment has created(コメントできました)"
+            flash[:notice] = "コメントできました"
             redirect_to(@post)
         else
             render :new

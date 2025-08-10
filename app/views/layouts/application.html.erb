@@ -55,9 +55,6 @@
   <% flash.each do |key, message| %>
     <p class="alert <%= key %>"><%= message %></p>
   <% end %>
-  <% if flash[:notice].present? %>
-    <%= flash[:notice] %>
-  <% end %>
   <%= yield %>
   </body>
 </html>
