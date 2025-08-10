@@ -6,13 +6,14 @@ class Diary < ApplicationRecord
   private
 
   def analyze_and_comment
-    emotion = EmotionAnalyzer.analyze(content)  # ここは @post じゃなくて content だよ
-    comment = AiCommentGenerator.generate_comment(content, emotion[:label], emotion[:score])
+    # contentだけ渡して、GPTから感情ラベル・スコア・コメントを含むハッシュをもらう
+    result = AiCommentGenerator.generate_comment(content)
 
+    # DBを更新（ラベル名はカラム名に合わせて調整してね）
     update(
-      sentiment_score: emotion[:score],
-      sentiment_label: emotion[:label],
-      ai_comment: comment
+      sentiment_label: result[:label],
+      sentiment_score: result[:score],
+      ai_comment: result[:comment]
     )
   end
 end
