@@ -19,7 +19,7 @@ Post and Schedule は、投稿・コメント・タスク・予定を一元管�
 ##  使用技術
 
 - フレームワーク: Ruby on Rails 8.0.1
-- 言語: Ruby, JavaScript, HTML, CSS
+- 言語: Ruby, HTML, CSS
 - フロントエンド: HTML, CSS, Turbo
 - データベース: PostgleSQL
 - デプロイ: AWS EC2 (Nginx + Puma)
@@ -56,6 +56,9 @@ Post and Schedule は、投稿・コメント・タスク・予定を一元管�
 -   ユーザー管理（User）
   - `if @user&.authenticate(params[:password])` を実装
     ![](./public/app_image/b_sign_in.png)
+
+-   グループ機能(Group)
+  - グループを作成し、投稿・イベント・タスクを共有できる機能です。
 
 ##  ディレクトリ構成（主要部抜粋）
 -   アプリURL（デプロイ済）
@@ -97,7 +100,7 @@ rails s
 ## UIの工夫
 
 - 「付箋風」で親しみやすく、直感的なUIを意識してデザイン
-- Bootstrapなどは使用せず、Rails標準とCSSでカスタマイズ
+- Rails標準とCSSでカスタマイズ
 
 ##  今後の予定・ToDo
 
@@ -109,5 +112,5 @@ rails s
 
 - **名前**：o-Ha-minor
 - **経歴**：事務職8年目 → ITエンジニア転職を目指して開発中  
-- **資格**：基本情報技術者、ITパスポート、AWSクラウドプラクティショナー、Python3基礎
+- **資格**：応用情報技術者、基本情報技術者、ITパスポート、AWSクラウドプラクティショナー、Python3基礎
 - **学習中**：Rails, Python, AWS, HTML/CSS, Photoshop
