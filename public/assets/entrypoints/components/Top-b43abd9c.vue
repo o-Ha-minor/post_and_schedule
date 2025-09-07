@@ -1,0 +1,46 @@
+<template>
+   <div class="bg-sky-50 min-h-screen flex flex-col items-center py-10">
+        <h1 class="text-indigo-800 text-3xl text-center font-extrabold mb-2">Post-Them </h1>
+        <h2 class="text-lg text-gray-600 mb-8 text-center">こんにちは</h2>
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-6 w-full max-w-3xl px-4">
+            <a href="/events" class="group bg-white shadow-lg rounded-2xl p-6 flex flex-col 
+                items-center shadow-2xl transition transform hover:-translate-y-1 hover:scale-105">
+                <img :src="eventsUrl" class="h-16 w-16 mb-3" />
+                <span class="text-gray-800 font-midium group-hover:text-indigo-600">
+                スケジュール</span>
+            </a>
+            <a href="/posts" class="group bg-white shadow-lg rounded-2xl p-6 flex flex-col 
+                items-center shadow-2xl transition transform hover:-translate-y-1 hover:scale-105">
+                <img :src="postsUrl" class="h-16 w-16 mb-3" />
+                <span class="text-gray-800 font-midium group-hover:text-indigo-600">
+                    投稿</span>
+            </a>
+            <a href="/tasks" class="group bg-white shadow-lg rounded-2xl p-6 flex flex-col 
+                items-center shadow-2xl transition transform hover:-translate-y-1 hover:scale-105">
+                <img :src="tasksUrl" class="h-16 w-16 mb-3" />
+                <span class="text-gray-800 font-midium group-hover:text-indigo-600">
+                    タスク</span>
+            </a>
+        </div>
+    </div>
+</template>
+
+<script>
+    // Viteが管理する画像をインポート
+    import eventsImage from '../../images/schedule.png'
+    import postsImage from '../../images/chat.png'
+    import tasksImage from '../../images/do.png'
+
+    export default {
+        name: 'Top',
+        props: ['isLoggedIn', 'currentUserId', 'currentUserName'],
+        data() {
+            return {
+                showMobileMenu: false,
+                eventsUrl: eventsImage,
+                postsUrl: postsImage,
+                tasksUrl: tasksImage
+            }
+        }
+    }
+</script>

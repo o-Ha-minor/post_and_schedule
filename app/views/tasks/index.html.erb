@@ -1,21 +1,9 @@
-<div class="tasks_adding">
-    <p class= "add_link"><%= link_to 'タスクを追加', "/tasks/new" %></p>
-    <p>タスクを管理しましょう</p>
-  </div>
-<div class="tasks_container">
-  <div class="tasks_views">
-    <h2>未完了のタスク</h2>
-    <% @tasks.each do |task| %>
-      <li class="task_title">
-        <%= link_to task.title, task_path(task) %> 
-      </li>
-    <% end %>
-  </div>
-  <div class="completed_tasks_views">
-  <h2>完了済のタスク</h2>
-    <% @completed_tasks.each do |c_task| %>
-      <li><%= link_to c_task.title, task_path(c_task) %> 
-      <a><%= c_task.completed_at %></a>
-    <% end %>
-  </div>
-</div>
+<div 
+  id="vue-tasklist"
+  data-is-logged-in="<%= @current_user.present? %>"
+  data-current-user-id="<%= @current_user&.id %>"
+  data-current-user-name="<%= @current_user&.name %>"
+  data-groups="<%= (@current_user&.groups || []).to_json %>"
+  data-initial-tasks="<%= @tasks&.to_json || '[]' %>"
+  data-initial-completed-tasks="<%= @completed_tasks&.to_json || '[]' %>"
+></div>

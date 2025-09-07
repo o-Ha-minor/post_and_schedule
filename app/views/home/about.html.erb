@@ -1,59 +1,29 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <title><%= content_for(:title) || "Sample App" %></title>
-    <meta name="viewport" content="width=device-width,initial-scale=1">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="mobile-web-app-capable" content="yes">
-    <%= csrf_meta_tags %>
-    <%= csp_meta_tag %>
-
-    <%= yield :head %>
- <div class="option-wrapper">
+<div class="option-wrapper">
   <div class="option-container">
-    <h1 class="title">Let's start "post-them" はじめまして
-    </h1>
-    <h2>このアプリでは『スケジュール』、『掲示板』、『To do』の管理ができます。
-    </h2>
+    <h1 class="title">post-themにようこそ</h1>
+    <h2>このアプリでは『スケジュール』、『掲示板』、『To do』の管理ができます。</h2>
     <div class="menus">
       <div class="option-menu">
         <img src="/schedule.png" alt="">
-          <p>スケジュール</p>
-            <h3>カレンダーを使って</h3>
-            <h3>他のユーザと予定を共有できます。</h3>
+        <p>スケジュール</p>
+        <h3>カレンダーを使って</h3>
+        <h3>他のユーザと予定を共有できます。</h3>
       </div>
-        <div class="option-menu">
+      <div class="option-menu">
         <img src="/chat.png" alt="">
-          <p>掲示板</p>
-            <h3>話題を作り、それに対して、</h3>
-            <h3>コメントを加えることができます。</h3>
-        </div>
-        <div class="option-menu">
-          <img src="/do.png" alt="">
-            <p>To do</p>
-              <h3>タスクを作り、カレンダーに共有、</h3>
-              <h3>および完了できます。</h3>
-        </div>
+        <p>掲示板</p>
+        <h3>話題を作り、それに対して、</h3>
+        <h3>コメントを加えることができます。</h3>
+      </div>
+      <div class="option-menu">
+        <img src="/do.png" alt="">
+        <p>To do</p>
+        <h3>タスクを作り、カレンダーに共有、</h3>
+        <h3>および完了できます。</h3>
+      </div>
     </div>
-    <h2>ユーザ登録をしてPost-themを使いましょう！
-    <h2>
+    <h2>ユーザ登録をしてPost-themを使いましょう！</h2>
   </div>
 </div>
-
-    <%# Enable PWA manifest for installable apps (make sure to enable in config/routes.rb too!) %>
-    <%#= tag.link rel: "manifest", href: pwa_manifest_path(format: :json) %>
-
-    <link rel="icon" href="/icon.png" type="image/png">
-    <link rel="icon" href="/icon.svg" type="image/svg+xml">
-    <link rel="apple-touch-icon" href="/icon.png">
-
-    <%# Includes all stylesheet files in app/assets/stylesheets %>
-    <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
-  </head>
-
-  <body>
-    <%= yield %>
-  </body>
-</html>
 
 

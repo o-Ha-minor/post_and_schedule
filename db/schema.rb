@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_08_05_164441) do
+ActiveRecord::Schema[8.0].define(version: 2025_09_06_031759) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -120,6 +120,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_08_05_164441) do
     t.integer "user_id"
     t.datetime "due_date"
     t.bigint "group_id"
+    t.text "description"
     t.index ["group_id"], name: "index_tasks_on_group_id"
   end
 

@@ -1,15 +1,4 @@
-
-<body>
-    <div class="users_container">
-      <% @users.each do |user| %>
-       <% if user.image.attached? %>
-          <%= image_tag user.image.variant(resize_to_limit: [100, 100]) %>
-       <% else %>
-          <img class="icon_image" src="<%= "/user_images/default_image.png" %>" alt="default image"> 
-       <% end %>
-        <div class="user_card">
-          <%= link_to(user.name,"/users/#{user.id}") %>  
-        </div>
-      <% end %>
-    </div>
-  </body>
+<div id="vue-userindex"
+     data-users="<%= @users.to_json(include: [:posts, :groups]) %>"
+     data-current-user-id="<%= @current_user&.id %>">
+</div>

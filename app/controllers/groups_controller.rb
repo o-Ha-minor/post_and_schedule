@@ -23,6 +23,11 @@ class GroupsController < ApplicationController
 
   def index
     @group = Group.new
+    @groups = @current_user.groups
+    respond_to do |format|
+      format.html
+      format.json { render json: @groups.select(:id, :name) }
+    end
   end
 
   def new

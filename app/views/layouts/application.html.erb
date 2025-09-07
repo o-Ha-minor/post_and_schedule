@@ -19,42 +19,41 @@
     <link rel="apple-touch-icon" href="/icon.png">
 
     <%# Includes all stylesheet files in app/assets/stylesheets %>
-    <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
-    <%= javascript_importmap_tags %>
+    <%= vite_client_tag %>
+    <%= vite_javascript_tag 'application' %>
+    <!--
+      If using a TypeScript entrypoint file:
+        vite_typescript_tag 'application'
+
+      If using a .jsx or .tsx entrypoint, add the extension:
+        vite_javascript_tag 'application.jsx'
+
+      Visit the guide for more information: https://vite-ruby.netlify.app/guide/rails
+    -->
+
   </head>
 
   <body>
-    <header>
-      <div class="header-left">
-        <%= link_to image_tag("/logo_Post-them.png", class:"logo"), "/" %>
-      </div>
-      <div class="header-right">
-        <% if session[:user_id] && @current_user %>
-          <li>
-            <%= link_to "#{@current_user.name}", user_path(@current_user.id) %>
-          </li>
-          <li>
-            <%= link_to 'ユーザ一覧', users_path %>
-          </li>
-          <li>
-            <%= button_to 'ログアウト', logout_path, method: :post %>
-          </li>
-        <% else %>
-          <li>
-            <%= link_to 'アプリについて', about_path %>
-          </li>
-          <li>
-            <%= link_to '登録', new_user_path %>
-          </li>
-          <li>
-            <%= link_to 'ログイン', login_path %>
-          </li>
-        <% end %>
-      </div>
-    </header>
-  <% flash.each do |key, message| %>
-    <p class="alert <%= key %>"><%= message %></p>
-  <% end %>
+  <header id="vue-header"
+    data-logged-in="<%= @current_user.present? %>"
+    data-user-id="<%= @current_user&.id %>"
+    data-user-name="<%= @current_user&.name %>">
+  </header>
   <%= yield %>
+  <%= vite_javascript_tag 'entrypoints/application' %>
+
+  <script>
+    // モバイルメニューの切り替え
+    document.addEventListener('DOMContentLoaded', function() {
+      const mobileMenuButton = document.getElementById('mobile-menu-button');
+      const mobileMenu = document.getElementById('mobile-menu');
+      
+      if (mobileMenuButton && mobileMenu) {
+        mobileMenuButton.addEventListener('click', function() {
+          mobileMenu.classList.toggle('hidden');
+        });
+      }
+    });
+  </script>
   </body>
 </html>

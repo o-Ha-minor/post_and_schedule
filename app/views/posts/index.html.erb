@@ -1,62 +1,14 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <title><%= content_for(:title) || "Sample App" %></title>
-    <meta name="viewport" content="width=device-width,initial-scale=1">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="mobile-web-app-capable" content="yes">
-    <%= csrf_meta_tags %>
-    <%= csp_meta_tag %>
-
-    <%= yield :head %>
-    <%# Enable PWA manifest for installable apps (make sure to enable in config/routes.rb too!) %>
-    <%#= tag.link rel: "manifest", href: pwa_manifest_path(format: :json) %>
-
-    <link rel="icon" href="/icon.png" type="image/png">
-    <link rel="icon" href="/icon.svg" type="image/svg+xml">
-    <link rel="apple-touch-icon" href="/icon.png">
-
-    <%# Includes all stylesheet files in app/assets/stylesheets %>
-    <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
-  </head>
-
-  <body>
-    <%= yield %>
-    
-    <% if @current_user %>
-      <div class="posts_wrapper">
-        <div class="New_post">
-          <%= link_to '話題の投稿', "/posts/new" %>
-        </div>
-      </div>
-        <div class="posts_container">
-          <% @posts.each do |post| %>
-            <div class="post_card post">
-              <%= link_to(post.user.name,"/users/#{post.user.id}") %> 
-              <br>
-              <%= link_to(post.content,"/posts/#{post.id}") %> 
-              <br>
-              <%="#{post.likes_count} "+ "いいね！"%>
-              <br>
-              <a class="post_time"><%= post.created_at%></a>
-            </div>
-          <% end %>
-        </div>
-    <% else %>
-      <div class="posts_wrapper">
-        <div class="New_post">
-          <%= link_to '話題の投稿', "/posts/new" %>
-        </div>
-      </div>
-        <div class="posts_container">
-          <% @posts.each do |post| %>
-            <div class="post_card">
-            <%= post.content%>  
-              <a class="post_time"><%= post.created_at%></a>
-            </div>
-          <% end %>
-        </div>
-    <% end %>
-
-  </body>
-</html>
+<div id="vue-postindex"
+  data-is-logged-in="<%= @current_user.present? %>"
+  data-current-user-id="<%= @current_user&.id %>"
+  data-current-user-name="<%= @current_user&.name %>"
+  data-groups="<%= json_escape(@current_user&.groups.to_json(only: [:id, :name])) %>"
+  data-initial-posts="<%= json_escape(@posts.to_json(
+    include: { 
+      user: { only: [:id, :name], methods: [:image_url] },
+      group: { only: [:id, :name] }
+    },
+    methods: [:likes_count],
+    # ここで relative URL を渡す
+  )) %>"
+></div>

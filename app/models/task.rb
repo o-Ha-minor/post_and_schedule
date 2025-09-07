@@ -3,5 +3,5 @@ class Task < ApplicationRecord
     belongs_to :user
     belongs_to :group
     validates :user_id, presence: true
-    has_one :event
+    has_one :event, dependent: :destroy
 end
