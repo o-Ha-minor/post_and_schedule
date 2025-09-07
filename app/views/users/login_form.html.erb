@@ -1,14 +1,1 @@
-<div class="new_account_container">
-    <h2>ログインしましょう</h2>
-    <%= form_with(url:"/login", local: true) do |l| %>
-    <div class="fill_information">
-        <h3>ユーザー名</h3>  
-        <p> <%= l.text_field :name %> </p> 
-        <h3>パスワード</h3>  
-        <p> <%= l.password_field :password %> </p>
-    </div>
-    <div class="account_button">
-        <p> <%= l.submit "ログイン" %></p>  
-    </div>
-    <% end %>
-</div>
+<div id="vue-login-form"></div>

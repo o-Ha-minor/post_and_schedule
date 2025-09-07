@@ -1,4 +1,5 @@
-<div id="vue-userindex"
-     data-users="<%= @users.to_json(include: [:posts, :groups]) %>"
-     data-current-user-id="<%= @current_user&.id %>">
-</div>
+<div 
+  id="vue-userindex"
+  data-users="<%= @users.map(&:profile_data_for_json).to_json.html_safe %>"
+  data-current-user-id="<%= @current_user&.id %>"
+></div>

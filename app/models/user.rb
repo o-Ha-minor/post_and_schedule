@@ -75,6 +75,8 @@ class User < ApplicationRecord
       created_at: created_at,
       updated_at: updated_at,
       image_url: image_url,
+      posts_count: posts_count,
+      groups_count: groups_count,
       posts: user_posts.map do |post|
         {
           id: post.id,

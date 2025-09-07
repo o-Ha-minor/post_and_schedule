@@ -7,186 +7,147 @@ import Calendar from './components/Calendar.vue'
 import TaskList from './components/TaskList.vue'
 import UserIndex from './components/UserIndex.vue'
 import UserDetail from './components/UserDetail.vue'
+import LoginForm from './components/LoginForm.vue'
+import UserRegistration from './components/UserRegistration.vue'
+import GroupDetail from './components/GroupDetail.vue'
 import axios from 'axios'
 import "../styles/application.css"
-
 
 const token = document.querySelector('[name="csrf-token"]').getAttribute('content')
 axios.defaults.headers.common['X-CSRF-Token'] = token
 axios.defaults.headers.common['Accept'] = 'application/json'
 axios.defaults.headers.common['Content-Type'] = 'application/json'
 
-// Turbo に対応してヘッダーを再マウント
-const mountHeader = () => {
-  const headerElement = document.getElementById('vue-header')
-  if (headerElement && !headerElement.__vue_app__) {
-    const isLoggedIn = headerElement.dataset.loggedIn === "true"
-    const currentUserId = headerElement.dataset.userId
-    const currentUserName = headerElement.dataset.userName
-    headerElement.__vue_app__ = createApp(Header, {
-      isLoggedIn,
-      currentUserId,
-      currentUserName
-    }).mount(headerElement)
+// HTMLエスケープをデコードしてからJSONパース（共通関数）
+const decodeAndParseJSON = (data, fallback = []) => {
+  try {
+    const decoded = data
+      .replace(/&quot;/g, '"')
+      .replace(/&#x27;/g, "'")
+      .replace(/&amp;/g, '&')
+      .replace(/&lt;/g, '<')
+      .replace(/&gt;/g, '>')
+      .trim();
+    return decoded ? JSON.parse(decoded) : fallback
+  } catch (error) {
+    console.error('JSON parse error:', error)
+    return fallback
   }
 }
 
-const mountTop = () => {
-  const topElement = document.getElementById('vue-top')
-  if (topElement && !topElement.__vue_app__) {
-    topElement.__vue_app__ = createApp(Top).mount(topElement)
-  }
-}
-
-const mountPostIndex = () => {
-  const postindexElement = document.getElementById('vue-postindex')
-  if (postindexElement && !postindexElement.__vue_app__) {
-    const isLoggedIn = postindexElement.dataset.isLoggedIn === "true"
-    const currentUserId = postindexElement.dataset.currentUserId
-    const currentUserName = postindexElement.dataset.currentUserName
-    const groups = JSON.parse(postindexElement.dataset.groups || "[]")
-    const initialPosts = JSON.parse(postindexElement.dataset.initialPosts || "[]")
-
-    postindexElement.__vue_app__ = createApp(PostIndex, {
-      isLoggedIn,
-      currentUserId,
-      currentUserName,
-      groups,
-      initialPosts
-    }).mount(postindexElement)
-  }
-}
-
-const mountPostDetail = () => {
-  const postdetailElement = document.getElementById('vue-postdetail')
-  if (postdetailElement && !postdetailElement.__vue_app__) {
-    const currentUserId = Number(postdetailElement.dataset.currentUserId)
-    const postId = Number(postdetailElement.dataset.postId)
-    const initialPostData = JSON.parse(postdetailElement.dataset.postData || '{}')
-
-    postdetailElement.__vue_app__ = createApp(PostDetail, {
-      currentUserId,
-      postId,
-      initialPostData
-    }).mount(postdetailElement)
-  }
-}
-
-const mountCalendar = () => {
-  const calendarElement = document.getElementById('vue-calendar')
-  if (calendarElement && !calendarElement.__vue_app__) {
-    const isLoggedIn = calendarElement.dataset.isLoggedIn === "true"
-    const currentUserId = calendarElement.dataset.currentUserId
-    const currentUserName = calendarElement.dataset.currentUserName
-    const groups = JSON.parse(calendarElement.dataset.groups || "[]")
-    const initialEvents = JSON.parse(calendarElement.dataset.initialEvents || "[]")
-
-    calendarElement.__vue_app__ = createApp(Calendar, {
-      isLoggedIn,
-      currentUserId,
-      currentUserName,
-      groups,
-      initialEvents
-    }).mount(calendarElement)
-  }
-}
-
-const mountTaskList = () => {
-  const tasklistElement = document.getElementById('vue-tasklist')
-  if (tasklistElement && !tasklistElement.__vue_app__) {
-    const isLoggedIn = tasklistElement.dataset.isLoggedIn === "true"
-    const currentUserId = tasklistElement.dataset.currentUserId
-    const currentUserName = tasklistElement.dataset.currentUserName
-    const groups = JSON.parse(tasklistElement.dataset.groups || "[]")
-    const initialTasks = JSON.parse(tasklistElement.dataset.initialTasks || "[]")
-    const initialCompletedTasks = JSON.parse(tasklistElement.dataset.initialCompletedTasks || "[]")
-
-    tasklistElement.__vue_app__ = createApp(TaskList, {
-      isLoggedIn,
-      currentUserId,
-      currentUserName,
-      groups,
-      initialTasks,
-      initialCompletedTasks
-    }).mount(tasklistElement)
-  }
-}
-
-const mountUserIndex = () => {
-  const userIndexElement = document.getElementById('vue-userindex')
-  if (userIndexElement && !userIndexElement.__vue_app__) {
-    try {
-      const users = JSON.parse(userIndexElement.dataset.users || '[]')
-      const currentUserId = userIndexElement.dataset.currentUserId
-      
-      console.log('Mounting UserIndex with:', { users, currentUserId }) // デバッグ用
-
-      userIndexElement.__vue_app__ = createApp(UserIndex, {
-        initialUsers: users,
-        currentUserId
-      }).mount(userIndexElement)
-      
-      console.log('UserIndex mounted successfully') // デバッグ用
-    } catch (error) {
-      console.error('Error mounting UserIndex:', error)
-    }
-  }
-}
-const mountUserDetail = () => {
-  const element = document.getElementById('vue-userdetail')
-  console.log('UserDetail element:', element)
-  
+// 共通のマウント関数
+const mountComponent = (elementId, component, propsFactory = null) => {
+  const element = document.getElementById(elementId)
   if (element && !element.__vue_app__) {
     try {
-      const userId = element.dataset.userId
-      const currentUserId = element.dataset.currentUserId
-      const rawUserData = element.dataset.initialUserData || '{}'
-
-      // まず文字列をそのままログ出力
-      console.log('Raw initialUserData string:', rawUserData)
-
-      // JSON.parse を安全に試す
-      let userData = {}
-      try {
-        userData = JSON.parse(rawUserData)
-      } catch (parseError) {
-        console.error('JSON parse error for initialUserData:', parseError)
-        console.warn('Parsing failed string:', rawUserData)
-      }
-
-      console.log('Parsed UserDetail data:', { userId, currentUserId, userData })
-      
-      element.__vue_app__ = createApp(UserDetail, {
-        userId,
-        currentUserId,
-        initialUserData: userData
-      }).mount(element)
-      
-      console.log('UserDetail mounted!')
+      const props = propsFactory ? propsFactory(element) : {}
+      element.__vue_app__ = createApp(component, props).mount(element)
+      console.log(`${component.name || elementId} mounted successfully`)
     } catch (error) {
-      console.error('UserDetail mount error:', error)
+      console.error(`Error mounting ${component.name || elementId}:`, error)
     }
   }
 }
-// 初回ロード
-mountHeader()
-mountTop()
-mountPostIndex()
-mountPostDetail()
-mountCalendar()
-mountTaskList()
-mountUserIndex()
-mountUserDetail()
 
-// Turbo ページ遷移時
-document.addEventListener('turbo:load', () => {
-  mountHeader()
-  mountTop()
-  mountPostIndex()
-  mountPostDetail()
-  mountCalendar()
-  mountTaskList()
-  mountUserIndex()
-  mountUserDetail()
-})
+// 各コンポーネントのprops生成関数
+const componentConfigs = {
+  'vue-header': {
+    component: Header,
+    propsFactory: (el) => ({
+      isLoggedIn: el.dataset.loggedIn === "true",
+      currentUserId: el.dataset.userId,
+      currentUserName: el.dataset.userName
+    })
+  },
+  
+  'vue-top': {
+    component: Top
+  },
+  
+  'vue-postindex': {
+    component: PostIndex,
+    propsFactory: (el) => ({
+      isLoggedIn: el.dataset.isLoggedIn === "true",
+      currentUserId: el.dataset.currentUserId,
+      currentUserName: el.dataset.currentUserName,
+      groups: JSON.parse(el.dataset.groups || "[]"),
+      initialPosts: JSON.parse(el.dataset.initialPosts || "[]")
+    })
+  },
+  
+  'vue-postdetail': {
+    component: PostDetail,
+    propsFactory: (el) => ({
+      currentUserId: Number(el.dataset.currentUserId),
+      postId: Number(el.dataset.postId),
+      initialPostData: JSON.parse(el.dataset.postData || '{}')
+    })
+  },
+  
+  'vue-calendar': {
+    component: Calendar,
+    propsFactory: (el) => ({
+      isLoggedIn: el.dataset.isLoggedIn === "true",
+      currentUserId: el.dataset.currentUserId,
+      currentUserName: el.dataset.currentUserName,
+      groups: JSON.parse(el.dataset.groups || "[]"),
+      initialEvents: JSON.parse(el.dataset.initialEvents || "[]")
+    })
+  },
+  
+  'vue-tasklist': {
+    component: TaskList,
+    propsFactory: (el) => ({
+      isLoggedIn: el.dataset.isLoggedIn === "true",
+      currentUserId: el.dataset.currentUserId,
+      currentUserName: el.dataset.currentUserName,
+      groups: decodeAndParseJSON(el.dataset.groups || "[]"),
+      initialTasks: decodeAndParseJSON(el.dataset.initialTasks || "[]"),
+      initialCompletedTasks: decodeAndParseJSON(el.dataset.initialCompletedTasks || "[]")
+    })
+  },
+  
+  'vue-userindex': {
+    component: UserIndex,
+    propsFactory: (el) => ({
+      initialUsers: decodeAndParseJSON(el.dataset.users || '[]'),
+      currentUserId: el.dataset.currentUserId
+    })
+  },
+  
+  'vue-userdetail': {
+    component: UserDetail,
+    propsFactory: (el) => ({
+      userId: el.dataset.userId,
+      currentUserId: el.dataset.currentUserId,
+      initialUserData: decodeAndParseJSON(el.dataset.initialUserData, {})
+    })
+  },
+  
+  'vue-login-form': {
+    component: LoginForm
+  },
+  
+  'vue-user-registration': {
+    component: UserRegistration
+  },
 
+  'vue-groupdetail': {
+    component: GroupDetail,
+    propsFactory: (el) => ({
+      groupId: Number(el.dataset.groupId),
+      currentUserId: Number(el.dataset.currentUserId)
+    })
+  }
+}
+
+// 全コンポーネントをマウントする関数
+const mountAllComponents = () => {
+  Object.entries(componentConfigs).forEach(([elementId, config]) => {
+    mountComponent(elementId, config.component, config.propsFactory)
+  })
+}
+
+// 初回ロード時とTurboページ遷移時に実行
+mountAllComponents()
+document.addEventListener('turbo:load', mountAllComponents)

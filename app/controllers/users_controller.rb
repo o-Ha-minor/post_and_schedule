@@ -9,7 +9,7 @@ class UsersController < ApplicationController
             render json: @users.map(&:profile_data_for_json)
           end
         end
-      end
+    end
 
       def show
         # 効率的にデータをロード

@@ -3,22 +3,52 @@ class GroupsController < ApplicationController
     group = Group.find(params[:id])
     unless @current_user.groups.include?(group)
       @current_user.groups << group
-      flash[:notice] = "グループに参加しました"
+      message = "グループに参加しました"
+      status = :ok
     else
-      flash[:alert] = "すでに参加しています"
+      message = "すでに参加しています"
+      status = :unprocessable_entity
     end
-    redirect_to root_path
+
+    respond_to do |format|
+      format.html {
+        flash[:notice] = message
+        redirect_to root_path
+      }
+      format.json {
+        if status == :ok
+          render json: { message: message }, status: status
+        else
+          render json: { error: message }, status: status
+        end
+      }
+    end
   end
 
   def leave
     group = Group.find(params[:id])
-  if @current_user.groups.include?(group)
-    @current_user.groups.delete(group)
-    flash[:notice] = "グループから退会しました"
-  else
-    flash[:alert] = "参加していません"
-  end
-  redirect_to root_path
+    if @current_user.groups.include?(group)
+      @current_user.groups.delete(group)
+      message = "グループから退会しました"
+      status = :ok
+    else
+      message = "参加していません"
+      status = :unprocessable_entity
+    end
+
+    respond_to do |format|
+      format.html {
+        flash[:notice] = message
+        redirect_to root_path
+      }
+      format.json {
+        if status == :ok
+          render json: { message: message }, status: status
+        else
+          render json: { error: message }, status: status
+        end
+      }
+    end
   end
 
   def index
@@ -38,9 +68,23 @@ class GroupsController < ApplicationController
     @group = Group.new(group_params)
     if @group.save
       @group.users << @current_user
-      redirect_to root_path, notice: "グループを作成しました"
+
+      respond_to do |format|
+        format.html { redirect_to root_path, notice: "グループを作成しました" }
+        format.json do
+          render json: {
+            id: @group.id,
+            name: @group.name,
+            description: @group.description,
+            members_count: 1
+          }, status: :created
+        end
+      end
     else
-      render :new, alert: "作成に失敗しました"
+      respond_to do |format|
+        format.html { render :new, alert: "作成に失敗しました" }
+        format.json { render json: { errors: @group.errors.full_messages }, status: :unprocessable_entity }
+      end
     end
   end
   def show
@@ -49,6 +93,27 @@ class GroupsController < ApplicationController
       redirect_to root_path, alert: "グループが見つかりません" and return
     end
     @users = @group.users.order(created_at: :desc)
+
+    # JSON形式での応答を追加
+    respond_to do |format|
+      format.html
+      format.json do
+        render json: {
+          id: @group.id,
+          name: @group.name,
+          description: @group.description,
+          users: @users.map do |user|
+            {
+              id: user.id,
+              name: user.name,
+              image_url: user.image_url,
+              created_at: user.created_at
+            }
+          end,
+          members_count: @users.count
+        }
+      end
+    end
   end
 
     private
