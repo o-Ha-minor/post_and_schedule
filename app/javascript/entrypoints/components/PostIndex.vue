@@ -9,18 +9,19 @@
                     placeholder="今日の話題を書こう..." 
                     class="w-full border-gray-300 rounded-md p-3 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"></textarea>
   
-          <div class="flex items-center space-x-4">
-            <select v-model="newPost.groupId" class="border-gray-300 rounded-md p-2">
+          <div class="flex flex-col space-y-4 sm:flex-row sm:items-center sm: space-y-0 sm:space-x-4">
+            <select v-model="newPost.groupId" class="border-gray-300 rounded-md p-2 flex-1">
               <option disabled value="">グループを選択</option>
               <option v-for="group in groups" :key="group.id" :value="group.id">
                 {{ group.name }}
               </option>
             </select>
 
-            <input type="file" @change="onFileChange" class="text-sm text-gray-500" />
+            <input type="file" @change="onFileChange" class="text-sm text-gray-500 flex-1" />
 
             <button type="submit" 
-                    class="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-2 px-4 rounded-lg transition">
+                    class="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-2 px-4 
+                           rounded-lg transition w-full sm:w-auto">
               投稿する
             </button>
           </div>
@@ -34,6 +35,8 @@
           :key="post.id"
           :post="post"
           :current-user-id="currentUserId"
+          @click-post="goToPostDetail"
+          @click-user="goToUserDetail"
         />
       </div>
     </div>
@@ -90,10 +93,7 @@
       } else {
         const data = await response.json()
         if (data) {
-          posts.value.unshift(data) // Vueの配列を更新
-          newPost.value.content = ""
-          newPost.value.image = null
-          newPost.value.groupId = ""
+          window.location.href = `/posts/${data.id}`
         }
       }
     } catch (err) {
@@ -103,6 +103,16 @@
 
   const onFileChange = (event) => {
     newPost.value.image = event.target.files[0]
+  }
+
+  // 投稿詳細ページに遷移
+  const goToPostDetail = (postId) => {
+    window.location.href = `/posts/${postId}`
+  }
+
+  // ユーザー詳細ページに遷移
+  const goToUserDetail = (userId) => {
+    window.location.href = `/users/${userId}`
   }
   
   </script>
