@@ -19,7 +19,7 @@ Rails.application.routes.draw do
   resources :likes, only: [ :create, :destroy ]
   resources :groups, only: [ :index, :new, :create, :show ] do
     post "join", on: :member
-    post "leave", on: :member
+    delete "leave", on: :member
   end
 
   get "up" => "rails/health#show", as: :rails_health_check

@@ -1,78 +1,112 @@
 class EventsController < ApplicationController
-    def index
-      if @current_user
-        @event = Event.new
-        @events = Event.where(group: @current_user.groups).order(created_at: :desc)
-      else
-        redirect_to root_path, alert: "ログインしてください"
-      end
-    end
-    def create
-      if @current_user
-        start_datetime = to_datetime(params[:event][:start_date], params[:event][:start_time])
-        end_datetime = to_datetime(params[:event][:end_date], params[:event][:end_time])
+  before_action :set_event, only: [ :show, :update, :destroy ]
+  before_action :authorize_event, only: [ :update, :destroy ]
 
-        @event = @current_user.events.build(event_params)
-        @event.start = start_datetime
-        @event.end = end_datetime
-        @event.group ||= @current_user.groups.first
-        if @event.save
-          redirect_to events_path, notice: "イベントを作成しました"
-        else
-          render :index, alert: "イベントを作成できませんでした"
-        end
-      else
-        redirect_to login_path
-      end
-    end
-    def update
-      @event = @current_user.events.find(params[:id])
-      start_datetime = to_datetime(params[:event][:start_date], params[:event][:start_time])
-      end_datetime = to_datetime(params[:event][:end_date], params[:event][:end_time])
+  def index
+    if @current_user
+      @events = Event.where(group: @current_user.groups).order(created_at: :desc)
 
-      if @event.update(event_params.merge(start: start_datetime, end: end_datetime))
-        redirect_to events_path, notice: "イベントを更新しました"
-      else
-        render :edit, alert: "更新に失敗しました"
+      respond_to do |format|
+        format.html
+        format.json {
+          render json: @events.map { |event|
+            {
+              id: event.id,
+              title: event.title,
+              start: event.start_time&.iso8601,
+              end: event.end_time&.iso8601,
+              description: event.description,
+              group_id: event.group_id,
+              group: event.group ? { id: event.group.id, name: event.group.name } : nil
+            }
+          }
+        }
+      end
+    else
+      respond_to do |format|
+        format.html { redirect_to login_path }
+        format.json { render json: { error: "ログインしてください" }, status: :unauthorized }
       end
     end
-    def destroy
-      @event = @current_user.events.find_by(id: params[:id])
-      if @event.destroy
-        redirect_to events_path, notice: "イベントを削除しました。"
-      else
-        redirect_to events_path, alert: "削除に失敗しました。"
-      end
-    end
-    def edit
-      @event = Event.find_by(id: params[:id], user_id: @current_user.id)
-      if @event.nil?
-        redirect_to events_path, alert: "イベントが見つかりませんでした。"
-      elsif @event.user_id != @current_user.id
-        render "show"
-      end
-    end
-    before_action :authorize_event, only: [ :edit, :update, :destroy ]
+  end
+  def create
+    if @current_user
+      @event = @current_user.events.build(event_params)
+      @event.group ||= @current_user.groups.first
 
-    def authorize_event
-      @event = Event.find_by(id: params[:id])
-      if @event.user != @current_user
-        render "show", alert: "権限が不足しています"
+      if @event.save
+        render json: {
+          id: @event.id,
+          title: @event.title,
+          start: @event.start_time&.iso8601,
+          end: @event.end_time&.iso8601,
+          description: @event.description,
+          group_id: @event.group_id,
+          group: @event.group ? { id: @event.group.id, name: @event.group.name } : nil
+        }, status: :created
+      else
+        render json: { errors: @event.errors.full_messages }, status: :unprocessable_entity
       end
+    else
+      render json: { error: "ログインしてください" }, status: :unauthorized
     end
-    def event_params
-      params.require(:event).permit(:title, :start, :end, :description, :group_id)
+  end
+  def update
+    if @event.update(event_params)
+      render json: {
+        id: @event.id,
+        title: @event.title,
+        start: @event.start_time&.iso8601,
+        end: @event.end_time&.iso8601,
+        description: @event.description,
+        group_id: @event.group_id,
+        group: @event.group ? { id: @event.group.id, name: @event.group.name } : nil
+      }
+    else
+      render json: { errors: @event.errors.full_messages }, status: :unprocessable_entity
     end
-    def show
-      @event = Event.find_by(id: params[:id])
-      if @event.nil?
-        redirect_to events_path, alert: "イベントが見つかりませんでした。" and return
-      end
+  end
+
+  def destroy
+    if @event.destroy
+      head :no_content
+    else
+      render json: { error: "削除に失敗しました" }, status: :unprocessable_entity
     end
-    private
-    def to_datetime(date_str, time_str)
-      Time.zone.parse("#{date_str} #{time_str}")
-    rescue ArgumentError
-      nil
+  end
+
+  def show
+    if @event
+      render json: {
+        id: @event.id,
+        title: @event.title,
+        start: @event.start_time&.iso8601,
+        end: @event.end_time&.iso8601,
+        description: @event.description,
+        group_id: @event.group_id,
+        group: @event.group ? { id: @event.group.id, name: @event.group.name } : nil
+      }
+    else
+      render json: { error: "イベントが見つかりませんでした。" }, status: :not_found
     end
+  end
+  private
+
+  def authorize_event
+    @event = Event.find_by(id: params[:id])
+    unless @event && @event.user == @current_user
+      render json: { error: "権限が不足しています" }, status: :forbidden
+    end
+  end
+
+  def set_event
+    @event = @current_user.events.find_by(id: params[:id])
+    unless @event
+      render json: { error: "イベントが見つかりませんでした" }, status: :not_found
+    end
+  end
+
+  def event_params
+    params.require(:event).permit(:title, :start, :end, :description, :group_id)
+  end
 end

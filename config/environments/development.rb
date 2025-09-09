@@ -5,6 +5,11 @@ Rails.application.configure do
 
   # Make code changes take effect immediately without server restart.
   config.enable_reloading = true
+  config.reload_classes_only_on_change = false
+  config.cache_classes = true
+  config.reload_lib = false
+  config.action_mailer.default_url_options = { host: "localhost", port: 3000 }
+  Rails.application.routes.default_url_options[:host] = "localhost:3000"
 
   # Do not eager load code on boot.
   config.eager_load = false
@@ -14,6 +19,12 @@ Rails.application.configure do
 
   # Enable server timing.
   config.server_timing = true
+
+  # TurboとViteの共存を考慮した設定
+  config.file_watcher = ActiveSupport::EventedFileUpdateChecker
+
+  # Viteとの競合を避けるため、一部の自動リロード機能を調整
+  config.action_view.cache_template_loading = false
 
   # Enable/disable Action Controller caching. By default Action Controller caching is disabled.
   # Run rails dev:cache to toggle Action Controller caching.

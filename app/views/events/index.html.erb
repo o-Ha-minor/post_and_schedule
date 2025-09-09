@@ -1,14 +1,17 @@
-<div class="create_wrapper">
-  <h1>イベントを管理</h1>
-  <a class="form_button"><%= render 'form' %></a>
-</div>
-<div class="clender_parts">
-  <%= month_calendar(events: @events) do |date, events| %>
-    <div class="day-box">
-      <strong><%= date.day %></strong>
-      <% events.each do |event| %>
-        <%= link_to event.title, edit_event_path(event), class: "event-link" %>
-      <% end %>
-    </div>
-  <% end %>
+<div id="vue-calendar"
+     data-is-logged-in="<%= @current_user.present? %>"
+     data-current-user-id="<%= @current_user&.id %>"
+     data-current-user-name="<%= @current_user&.name %>"
+     data-groups="<%= json_escape((@current_user&.groups || []).to_json(only: [:id, :name])) %>"
+     data-initial-events="<%= json_escape(@events.map do |event|
+       {
+         id: event.id,
+         title: event.title,
+         start: event.start_time&.iso8601,
+         end: event.end_time&.iso8601,
+         description: event.description,
+         group_id: event.group_id,
+         group: event.group ? { id: event.group.id, name: event.group.name } : nil
+       }
+     end.to_json) %>">
 </div>
