@@ -41,7 +41,6 @@
     <div v-else>
       <FormComponent
         :fields="[
-          { key: 'title', label: 'タイトル', type: 'text' },
           { key: 'content', label: '本文', type: 'textarea' },
           { key: 'image', label: '画像', type: 'image' }
         ]"
@@ -170,14 +169,6 @@ const toggleLike = async () => {
   }
 }
 
-
-
-/** 編集へ遷移 */
-const editPost = () => {
-  if (!post.value) return
-  window.location.href = `/posts/${post.value.id}/edit`
-}
-
 /** 削除 */
 const deletePost = async () => {
   if (!post.value) return
@@ -237,5 +228,32 @@ const deleteComment = async (commentId) => {
   }
 }
 
+const savePost = async (updated) => {
+  try {
+    const formData = new FormData()
+    formData.append("post[content]", updated.content)
+    if (updated.image) {
+      formData.append("post[image]", updated.image)
+    }
+
+    const res = await fetch(`/posts/${post.value.id}`, {
+      method: "PATCH",
+      headers: { "X-CSRF-Token": csrfToken,
+                 "Accept": "application/json"
+       },
+      body: formData
+    })
+
+    if (res.ok) {
+      const data = await res.json()
+      post.value = data
+      isEditing.value = false
+    } else {
+      console.error("update failed", await res.text())
+    }
+  } catch (err) {
+    console.error("network error", err)
+  }
+}
 
 </script>
