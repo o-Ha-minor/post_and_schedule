@@ -32,18 +32,20 @@
     -->
 
   </head>
+<body>
+  <!-- Vue のマウント先 -->
+  <div id="app"
+       data-logged-in="<%= @current_user.present? %>"
+       data-user-id="<%= @current_user&.id %>"
+       data-user-name="<%= @current_user&.name %>">
+  </div>
 
-  <body>
-  <header id="vue-header"
-    data-logged-in="<%= @current_user.present? %>"
-    data-user-id="<%= @current_user&.id %>"
-    data-user-name="<%= @current_user&.name %>">
-  </header>
-  <%= yield %>
+  <!-- Vite JS 読み込み -->
+  <%= vite_client_tag %>
   <%= vite_javascript_tag 'entrypoints/application' %>
 
   <script>
-    // モバイルメニューの切り替え
+    // モバイルメニュー切り替え
     document.addEventListener('DOMContentLoaded', function() {
       const mobileMenuButton = document.getElementById('mobile-menu-button');
       const mobileMenu = document.getElementById('mobile-menu');
@@ -55,5 +57,4 @@
       }
     });
   </script>
-  </body>
-</html>
+</body>

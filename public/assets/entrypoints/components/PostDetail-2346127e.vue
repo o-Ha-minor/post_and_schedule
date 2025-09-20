@@ -175,7 +175,7 @@ const toggleLike = async () => {
 /** 編集へ遷移 */
 const editPost = () => {
   if (!post.value) return
-  window.location.href = `/posts/${post.value.id}/edit`
+  window.location.href = `/api/posts/${post.value.id}/edit`
 }
 
 /** 削除 */
@@ -183,7 +183,7 @@ const deletePost = async () => {
   if (!post.value) return
   if (!confirm("この投稿を削除します。よろしいですか？")) return
   try {
-    const res = await fetch(`/posts/${post.value.id}`, {
+    const res = await fetch(`/api/posts/${post.value.id}`, {
       method: "DELETE",
       headers: { "X-CSRF-Token": csrfToken, Accept: "application/json" }
     })
@@ -203,7 +203,7 @@ const deletePost = async () => {
 const submitComment = async () => {
   if (!post.value || !newComment.value.trim()) return
   try {
-    const res = await fetch(`/posts/${post.value.id}/comments`, {
+    const res = await fetch(`/api/posts/${post.value.id}/comments`, {
       method: 'POST',
       headers: { 'X-CSRF-Token': csrfToken, 'Content-Type': 'application/json', Accept: 'application/json' },
       body: JSON.stringify({ comment: { content: newComment.value } })
@@ -225,7 +225,7 @@ const deleteComment = async (commentId) => {
   if (!post.value) return
   if (!confirm("コメントを削除します。よろしいですか？")) return
   try {
-    const res = await fetch(`/posts/${post.value.id}/comments/${commentId}`, {
+    const res = await fetch(`/api/posts/${post.value.id}/comments/${commentId}`, {
       method: "DELETE",
       headers: { "X-CSRF-Token": csrfToken, Accept: "application/json" }
     })

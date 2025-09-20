@@ -2,15 +2,17 @@ class PostsController < ApplicationController
   before_action :authorize_post, only: [ :edit, :update, :destroy ]
 
   def index
-    return redirect_to root_path, alert: "ログインしてください" unless @current_user
+    unless @current_user
+      return  render_api_response(message: "ログインしてください", status: :unauthorized,  success: false)
+    end
+      @posts = Post.includes(:user, :group, comments: :user)
+                  .where(group: @current_user.groups)
+                  .order(created_at: :desc)
 
-    @posts = Post.includes(:user, :group, comments: :user)
-                 .where(group: @current_user.groups)
-                 .order(created_at: :desc)
-    @like = Like.where(user_id: @current_user.id).pluck(:post_id)
+      @like = Like.where(user_id: @current_user.id).pluck(:post_id)
 
-    # 共通メソッドを使用してJSON用データを整形
-    @posts_data = @posts.map { |post| post_json_data(post) }
+      # 共通メソッドを使用してJSON用データを整形
+      @posts_data = @posts.map { |post| post_json_data(post) }
   end
 
   def new
@@ -19,7 +21,9 @@ class PostsController < ApplicationController
   end
 
   def create
-    return redirect_to login_path unless @current_user
+    unless @current_user
+      return render_api_response(message: "ログインしてください", status: :unauthorized, success: false)
+    end
 
     @post = @current_user.posts.build(post_params)
     @post.group ||= @current_user.groups.first
@@ -28,39 +32,44 @@ class PostsController < ApplicationController
       ai_comment = AiCommentGenerator.generate_comment(@post.content)
       @post.update(sentiment: ai_comment[:label], sentiment_score: ai_comment[:score], ai_comment: ai_comment[:comment])
 
-      respond_to do |format|
-        format.html { redirect_to post_path(@post), notice: "投稿しました" }
-        format.json { render json: post_json_data(@post), status: :created }
-      end
+      render_api_response(
+        message: "投稿しました",
+        status: :created,
+        data: post_json_data(@post)
+      )
     else
-      respond_to do |format|
-        format.html { render :new, status: :unprocessable_entity }
-        format.json { render json: { errors: @post.errors.full_messages }, status: :unprocessable_entity }
-      end
+      render_api_response(
+        message: "投稿に失敗しました",
+        status: :unprocessable_entity,
+        success: false,
+        errors: @post.errors.full_messages
+      )
     end
   end
 
-  def show
-    @post = Post.includes(:user, :group, comments: :user).find(params[:id])
+  # def show
+  #   @post = Post.includes(:user, :group, comments: :user).find(params[:id])
+  #   return render_api_response(message: "投稿が見つかりません", status: :not_found, success: false) unless post
 
-    respond_to do |format|
-      format.html
-      format.json { render json: post_json_data(@post) }
-    end
-  end
+  #   render_api_response(message: "取得しました", data: post_json_data(post))
+  # end
 
   def destroy
     @post = Post.find_by(id: params[:id])
+    return render_api_response(message: "投稿が見つかりません", status: :not_found, success: false) unless post
     if @post
       @post.destroy
-      respond_to do |format|
-        format.json { render json: { message: "削除しました", id: @post.id }, status: :ok }
-      end
+      render_api_response(
+        message: "削除しました",
+        data: { id: @post.id }
+      )
     else
-      respond_to do |format|
-        format.html { redirect_to root_path, alert: "対象が見つかりません" }
-        format.json { render json: { error: "対象が見つかりません" }, status: :not_found }
-      end
+      render_api_response(
+        message: "削除に失敗しました",
+        status: :unprocessable_entity,
+        success: false,
+        errors: @post.errors.full_messages
+      )
     end
   end
 
@@ -70,16 +79,19 @@ class PostsController < ApplicationController
 
   def update
     @post = Post.find_by(id: params[:id])
+    return render_api_response(message: "投稿が見つかりません", status: :not_found, success: false) unless post
+
     if @post.update(post_params)
-      respond_to do |format|
-        format.html { redirect_to @post, notice: "更新しました" }
-        format.json { render json: post_json_data(@post) }
-      end
+      render_api_response(
+        message: "更新しました",
+        data: post_json_data(@post)
+        )
     else
-      respond_to do |format|
-        format.html { render :edit, status: :unprocessable_entity }
-        format.json { render json: { errors: @post.errors.full_messages }, status: :unprocessable_entity }
-      end
+      render_api_response(
+        message: "投稿しました",
+        status: unprocessable_entity,
+        data: post.errors.full_messages
+      )
     end
   end
 
@@ -90,8 +102,14 @@ class PostsController < ApplicationController
   end
 
   def authorize_post
-    @post = Post.find(params[:id])
-    redirect_to posts_path, alert: "権限が不足しています" if @post.user != @current_user
+    @post = Post.find_by(id: params[:id])
+    unless @post
+      return render_api_response(message: "投稿が見つかりません", status: :not_found, success: false)
+    end
+
+    if @post.user != @current_user
+      render_api_response(message: "権限が不足しています", status: :forbidden, success: false)
+    end
   end
 
   # 投稿のJSON形式データを生成する共通メソッド

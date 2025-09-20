@@ -3,24 +3,27 @@
         <h1 class="text-indigo-800 text-3xl text-center font-extrabold mb-2">Post-Them </h1>
         <h2 class="text-lg text-gray-600 mb-8 text-center">こんにちは</h2>
         <div class="grid grid-cols-1 sm:grid-cols-3 gap-6 w-full max-w-3xl px-4">
-            <a href="/events" class="group bg-white shadow-lg rounded-2xl p-6 flex flex-col 
-                items-center shadow-2xl transition transform hover:-translate-y-1 hover:scale-105">
+            <router-link to="/events" class="group bg-white shadow-lg rounded-2xl p-6 flex flex-col 
+                items-center shadow-2xl transition transform hover:-translate-y-1 hover:scale-105"
+                active-class="bg-indigo-100 text-indigo-600">
                 <img :src="eventsUrl" class="h-16 w-16 mb-3" />
                 <span class="text-gray-800 font-midium group-hover:text-indigo-600">
                 スケジュール</span>
-            </a>
-            <a href="/posts" class="group bg-white shadow-lg rounded-2xl p-6 flex flex-col 
-                items-center shadow-2xl transition transform hover:-translate-y-1 hover:scale-105">
+            </router-link to>
+            <router-link to="/posts" class="group bg-white shadow-lg rounded-2xl p-6 flex flex-col 
+                items-center shadow-2xl transition transform hover:-translate-y-1 hover:scale-105"
+                active-class="bg-indigo-100 text-indigo-600">
                 <img :src="postsUrl" class="h-16 w-16 mb-3" />
                 <span class="text-gray-800 font-midium group-hover:text-indigo-600">
                     投稿</span>
-            </a>
-            <a href="/tasks" class="group bg-white shadow-lg rounded-2xl p-6 flex flex-col 
-                items-center shadow-2xl transition transform hover:-translate-y-1 hover:scale-105">
+            </router-link to>
+            <router-link to="/tasks" class="group bg-white shadow-lg rounded-2xl p-6 flex flex-col 
+                items-center shadow-2xl transition transform hover:-translate-y-1 hover:scale-105"
+                active-class="bg-indigo-100 text-indigo-600">
                 <img :src="tasksUrl" class="h-16 w-16 mb-3" />
                 <span class="text-gray-800 font-midium group-hover:text-indigo-600">
                     タスク</span>
-            </a>
+            </router-link to>
         </div>
     </div>
 </template>
@@ -43,4 +46,5 @@
             }
         }
     }
+    
 </script>

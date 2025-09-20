@@ -1,26 +1,3 @@
 <!-- app/views/posts/show.html.erb -->
-<div id="vue-postdetail"
-  data-current-user-id="<%= @current_user&.id %>"
-  data-post-id="<%= @post.id %>"
-  data-post-data="<%= json_escape({
-    id: @post.id,
-    content: @post.content,
-    updated_at: @post.updated_at,
-    likes_count: @post.likes.count,
-    liked: (like = @post.likes.find_by(user_id: @current_user&.id)).present?,
-    like_id: like&.id,
-    image_url: (@post.image.attached? ? rails_blob_path(@post.image, only_path: true) : nil),
-    user: { id: @post.user.id, name: @post.user.name },
-    group: (@post.group ? { id: @post.group.id, name: @post.group.name } : nil),
-    comments: @post.comments.order(created_at: :desc).map { |c|
-      {
-        id: c.id, content: c.content, created_at: c.created_at,
-        likes_count: c.likes.count,
-        user: { id: c.user.id, name: c.user.name }
-      }
-    },
-    ai_comment: @post.ai_comment,
-    sentiment: @post.sentiment,
-    sentiment_score: @post.sentiment_score 
-  }.to_json) %>">
-</div>
+<!-- VueがAPIから取ってくるので空にする -->
+<div id="vue-postdetail"></div>

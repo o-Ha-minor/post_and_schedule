@@ -11,7 +11,7 @@ class AiCommentGenerator
       "#{text}"
       この投稿に対して、感情分析を行い、（positive, negative, neutral）のうちどれかを"label"、
       感情の度合いを0〜1で通知化し"score"としてください。
-      さらに、50文字以内で共感あるコメントを生成し、"comment"としてください。
+      さらに、75文字程度で共感あるコメントを生成し、"comment"としてください。
       結果はJSON形式で返してください。
     PROMPT
 

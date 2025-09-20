@@ -103,79 +103,77 @@
   </template>
   
   <script>
-  export default {
-    name: 'UserRegistration',
-    data() {
-      return {
-        registrationForm: {
-          name: '',
-          email: '',
-          password: '',
-          password_confirmation: ''
-        },
-        isLoading: false,
-        errors: [],
-        successMessage: '',
-        fieldErrors: {}
+export default {
+  name: 'UserRegistration',
+  data() {
+    return {
+      registrationForm: {
+        name: '',
+        email: '',
+        password: '',
+        password_confirmation: ''
+      },
+      isLoading: false,
+      errors: [],
+      successMessage: '',
+      fieldErrors: {}
+    }
+  },
+  computed: {
+    passwordMismatch() {
+      return (
+        this.registrationForm.password !== this.registrationForm.password_confirmation &&
+        this.registrationForm.password_confirmation !== ''
+      )
+    }
+  },
+  methods: {
+    async handleRegistration() {
+      this.isLoading = true
+      this.errors = []
+      this.successMessage = ''
+      this.fieldErrors = {}
+
+      // クライアントサイドバリデーション
+      if (this.passwordMismatch) {
+        this.errors.push('パスワードが一致しません')
+        this.isLoading = false
+        return
       }
-    },
-    computed: {
-      passwordMismatch() {
-        return this.registrationForm.password !== this.registrationForm.password_confirmation && 
-               this.registrationForm.password_confirmation !== ''
-      }
-    },
-    methods: {
-      async handleRegistration() {
-        this.isLoading = true
-        this.errors = []
-        this.successMessage = ''
-        this.fieldErrors = {}
-        
-        // クライアントサイドバリデーション
-        if (this.passwordMismatch) {
-          this.errors.push('パスワードが一致しません')
-          this.isLoading = false
-          return
-        }
-        
-        try {
-          const response = await fetch('/users', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/x-www-form-urlencoded',
-              'X-CSRF-Token': document.querySelector('[name="csrf-token"]').getAttribute('content')
-            },
-            body: new URLSearchParams({
-              'user[name]': this.registrationForm.name,
-              'user[email]': this.registrationForm.email,
-              'user[password]': this.registrationForm.password
-            })
-          })
-          
-          if (response.redirected) {
-            // 登録成功時はリダイレクト
-            window.location.href = response.url
-          } else {
-            // レスポンスのHTMLを解析してエラーメッセージを取得
-            const responseText = await response.text()
-            const parser = new DOMParser()
-            const doc = parser.parseFromString(responseText, 'text/html')
-            const errorElements = doc.querySelectorAll('.form_errors li')
-            
-            if (errorElements.length > 0) {
-              this.errors = Array.from(errorElements).map(el => el.textContent)
-            } else {
-              this.errors = ['登録に失敗しました。入力内容を確認してください。']
+
+      try {
+        const response = await fetch('/api/users', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            user: {
+              name: this.registrationForm.name,
+              email: this.registrationForm.email,
+              password: this.registrationForm.password,
+              password_confirmation: this.registrationForm.password_confirmation
             }
-          }
-        } catch (error) {
-          console.error('登録エラー:', error)
-          this.errors = ['登録中にエラーが発生しました。']
-        } finally {
-          this.isLoading = false
+          })
+        })
+
+        const data = await response.json()
+
+        if (response.ok) {
+          this.successMessage = '登録が完了しました！'
+          console.log("ユーザー登録成功", data)
+          this.$router.push({ path: '/', query: { success: '登録が完了しました！' } })
+        } else {
+          this.errors = data.errors || ['登録に失敗しました']
+          console.error("ユーザー登録失敗", data.errors)
         }
+      } catch (err) {
+        console.error("通信エラー", err)
+        this.errors = ['通信に失敗しました']
+      } finally {
+        this.isLoading = false
       }
     }
   }
-  </script>
+}
+</script>

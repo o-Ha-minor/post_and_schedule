@@ -6,13 +6,17 @@
       <!-- 投稿者情報 -->
       <div class="flex items-center space-x-4 border-b pb-4">
         <img
-          v-if="post.user && post.user.image_url"
-          :src="post.user.image_url"
+          v-if="post.user.image_url"
+          :src="post.user?.image_url"
           alt="User Avatar"
           class="h-16 w-16 rounded-full object-cover"
         />
         <div>
-          <a :href="`/users/${post.user.id}`" class="text-lg font-semibold text-indigo-600 hover:underline">
+          <a
+            v-if="post.user.id"
+            :href="`/users/${post.user.id}`"
+            class="text-lg font-semibold text-indigo-600 hover:underline"
+          >
             {{ post.user.name }}
           </a>
           <p class="text-sm text-gray-500">{{ formattedDate(post.updated_at) }}</p>
@@ -20,16 +24,15 @@
       </div>
       <!-- 表示モード -->
     <div v-if="!isEditing">
-      <h2 class="text-xl font-bold">{{ post.title }}</h2>
       <p class="text-gray-700">{{ post.content }}</p>
       <img v-if="post.image_url" :src="post.image_url" class="w-64 rounded my-2" />
-        <div class="flex items-center">
+        <div v-if="isOwner" class="flex items-center">
           <button @click="isEditing = true"
                   class="px-4 py-2 bg-indigo-500 hover:bg-indigo-600 rounded-md text-white mx-2">
             編集する
           </button>
           <!-- 投稿者本人のみ 削除 -->
-          <div v-if="isOwner" class="flex space-x-3">
+          <div class="flex space-x-3">
             <button @click="deletePost" class="px-4 py-2 bg-indigo-500 hover:bg-indigo-600 rounded-md text-white">
               削除
             </button>
@@ -121,7 +124,7 @@ const newComment = ref("")
 const csrfToken = document.querySelector('meta[name="csrf-token"]')?.content
 
 const isOwner = computed(() =>
-  post.value && props.currentUserId === post.value.user.id
+  post.value?.user && props.currentUserId === post.value.user.id
 )
 
 const formattedDate = (d) => new Date(d).toLocaleString("ja-JP")
@@ -130,8 +133,24 @@ const isEditing = ref(false)
 
 onMounted(async () => {
   if (!post.value && props.postId) {
-    const res = await fetch(`/posts/${props.postId}.json`, { headers: { Accept: "application/json" }})
-    post.value = await res.json()
+    try {
+      const res = await fetch(`/api/posts/${props.postId}`, {
+        headers: { Accept: "application/json" }
+      })
+      if (res.ok) {
+        const responseData = await res.json()
+        // APIレスポンスの構造に合わせて修正
+        if (responseData.success && responseData.data) {
+          post.value = responseData.data
+        } else {
+          console.error("投稿データの取得に失敗しました:", responseData)
+        }
+      } else {
+        console.error("HTTP エラー:", res.status, await res.text())
+      }
+    } catch (error) {
+      console.error("ネットワークエラー:", error)
+    }
   }
 })
 
@@ -140,7 +159,7 @@ const toggleLike = async () => {
   try {
     if (post.value.liked && post.value.like_id) {
       // unlike
-      const res = await fetch(`/likes/${post.value.like_id}`, {
+      const res = await fetch(`/api/likes/${post.value.like_id}`, {
         method: 'DELETE',
         headers: { 'X-CSRF-Token': csrfToken, Accept: 'application/json' }
       })
@@ -152,7 +171,7 @@ const toggleLike = async () => {
       }
     } else {
       // like
-      const res = await fetch(`/likes`, {
+      const res = await fetch(`/api/likes`, {
         method: 'POST',
         headers: { 'X-CSRF-Token': csrfToken, 'Content-Type': 'application/json', Accept: 'application/json' },
         body: JSON.stringify({ post_id: post.value.id })
@@ -174,14 +193,14 @@ const deletePost = async () => {
   if (!post.value) return
   if (!confirm("この投稿を削除します。よろしいですか？")) return
   try {
-    const res = await fetch(`/posts/${post.value.id}`, {
+    const res = await fetch(`/api/posts/${post.value.id}`, {
       method: "DELETE",
       headers: { "X-CSRF-Token": csrfToken, Accept: "application/json" }
     })
     if (res.ok) {
       const data = await res.json()
       alert(data.message || "削除しました")
-      window.location.href = "/posts"
+      window.location.href = "/api/posts"
     } else {
       console.error("削除失敗:", await res.text())
     }
@@ -194,7 +213,7 @@ const deletePost = async () => {
 const submitComment = async () => {
   if (!post.value || !newComment.value.trim()) return
   try {
-    const res = await fetch(`/posts/${post.value.id}/comments`, {
+    const res = await fetch(`/api/posts/${post.value.id}/comments`, {
       method: 'POST',
       headers: { 'X-CSRF-Token': csrfToken, 'Content-Type': 'application/json', Accept: 'application/json' },
       body: JSON.stringify({ comment: { content: newComment.value } })
@@ -216,7 +235,7 @@ const deleteComment = async (commentId) => {
   if (!post.value) return
   if (!confirm("コメントを削除します。よろしいですか？")) return
   try {
-    const res = await fetch(`/posts/${post.value.id}/comments/${commentId}`, {
+    const res = await fetch(`/api/posts/${post.value.id}/comments/${commentId}`, {
       method: "DELETE",
       headers: { "X-CSRF-Token": csrfToken, Accept: "application/json" }
     })
@@ -236,7 +255,7 @@ const savePost = async (updated) => {
       formData.append("post[image]", updated.image)
     }
 
-    const res = await fetch(`/posts/${post.value.id}`, {
+    const res = await fetch(`/api/posts/${post.value.id}`, {
       method: "PATCH",
       headers: { "X-CSRF-Token": csrfToken,
                  "Accept": "application/json"
@@ -255,5 +274,6 @@ const savePost = async (updated) => {
     console.error("network error", err)
   }
 }
+
 
 </script>

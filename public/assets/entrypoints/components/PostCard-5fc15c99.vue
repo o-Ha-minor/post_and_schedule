@@ -20,7 +20,7 @@ const formattedDate = (dateStr) => {
     </div>
 
     <p class="text-gray-700 mb-2">
-      <a :href="`/posts/${post.id}`" class="hover:underline">
+      <a :href="`/api/posts/${post.id}`" class="hover:underline">
         {{ post.content }}
       </a>
     </p>

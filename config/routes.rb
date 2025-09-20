@@ -1,36 +1,39 @@
 Rails.application.routes.draw do
-  root to: "home#top"
-  get "about" => "home#about"
+  namespace :api do
+    namespace :auth do
+      get :check
+      post :login
+      post :register
+      delete :logout
+    end
 
-  get "login" => "users#login_form"
-  post "login" => "users#login"
-  post "logout" => "users#logout"
+    resources :posts do
+      resources :comments, only: [ :create, :destroy ]
+    end
 
-  resources :users
-  resources :posts do
-    resources :comments, only: [ :create, :destroy ] do
-      resources :likes, only: [ :create, :destroy ]
+    resources :users, only: [ :index, :show, :create, :update, :destroy ]
+    resources :tasks do
+      post :completed, on: :member
+    end
+    resources :events
+    resources :likes, only: [ :create, :destroy ]
+    resources :groups, only: [ :index, :show, :create ] do
+      post "join", on: :member
+      delete "leave", on: :member
     end
   end
-  resources :tasks do
-    post :completed, on: :member
-  end
-  resources :events
-  resources :likes, only: [ :create, :destroy ]
-  resources :groups, only: [ :index, :new, :create, :show ] do
-    post "join", on: :member
-    delete "leave", on: :member
-  end
 
-  get "up" => "rails/health#show", as: :rails_health_check
+  # SPA entry (Vue が全ての表示を担当)
+  root to: "home#spa"
 
-  # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
-  # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
-  # Can be used by load balancers and uptime monitors to verify that the app is live.
-  # Render dynamic PWA files from app/views/pwa/* (remember to link manifest in application.html.erb)
-  # get "manifest" => "rails/pwa#manifest", as: :pwa_manifest
-  # get "service-worker" => "rails/pwa#service_worker", as: :pwa_service_worker
+  # 開発中の便利ルート
+  get "about" => "home#about"
 
-  # Defines the root path route ("/")
-  # root "posts#index"
+  # 古い HTML ログイン/ユーザー管理は API に切り替えるなら削除してOK。
+  # 今すぐ消すのが怖ければ残しておいても良いですが、重複に注意。
+
+  # SPA 用キャッチオール（HTML を要求するリクエストだけ）
+  get "*path", to: "home#spa", constraints: ->(request) {
+    !request.xhr? && request.format.html?
+  }
 end

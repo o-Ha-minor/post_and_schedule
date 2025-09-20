@@ -86,13 +86,19 @@
             </div>
           </div>
           
-          <!-- 編集ボタン（自分のプロフィールの場合） -->
+          <!-- 編集・削除ボタン（自分のプロフィールの場合） -->
           <div v-if="isOwnProfile && !editMode" class="flex-shrink-0">
             <button
               @click="startEdit"
               class="bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-2 px-6 rounded-lg transition-colors duration-200"
             >
               プロフィール編集
+            </button>
+          </div>
+
+          <div v-if="isOwnProfile && !editMode" class="flex space-x-3">
+            <button @click="deleteUser" class="px-4 py-2 bg-indigo-500 hover:bg-indigo-600 rounded-md text-white">
+              削除
             </button>
           </div>
         </div>
@@ -163,7 +169,7 @@
                     {{ post.likes_count || 0 }} いいね
                   </span>
                   <a
-                    :href="`/posts/${post.id}`"
+                    :href="`/api/posts/${post.id}`"
                     class="text-indigo-600 hover:text-indigo-800 text-sm font-medium"
                   >
                     詳細を見る
@@ -339,7 +345,6 @@ export default {
         email: this.user.email || ''
       }
     },
-    
     async saveProfile() {
       this.saving = true
       try {
@@ -501,6 +506,29 @@ export default {
         console.error('グループ脱退エラー:', error)
       }
     },
+    async deleteUser () {
+      if (!confirm("このアカウントを削除します。よろしいですか？")) return;
+      try {
+        const response = await fetch(`/users/${this.user.id}`, {
+          method: "DELETE",
+          headers: { "X-CSRF-Token": document.querySelector(`[name="csrf-token"]`).getAttribute("content"),
+          "Accept": "application/json"
+          }
+        });
+        if (response.ok) {
+          alert("アカウントを削除しました");
+          window.location.href = "/"; // トップへリダイレクト
+        } else {
+          const error = await response.json();
+          alert("削除に失敗しました: " + (error.error || "不明なエラー"));
+        }
+      } catch (err) {
+        console.error("削除エラー:", err);
+        alert("削除中にエラーが発生しました");
+      }
+    }
   }
 }
+
+
 </script>

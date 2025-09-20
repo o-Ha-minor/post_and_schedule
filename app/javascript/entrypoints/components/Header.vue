@@ -20,10 +20,10 @@
                             </a>
                         </li>
                         <li v-if="isLoggedIn">
-                            <a href="/users" 
+                            <router-link to="/users" 
                                 class="text-green-100 hover:text-primary-600 px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200">
                                 ユーザ一覧
-                            </a>
+                            </router-link>
                         </li>
                         <li v-if="isLoggedIn">
                             <button @click="logout" 
@@ -38,10 +38,10 @@
                             </a>
                         </li>
                         <li v-if="!isLoggedIn">
-                            <a href="/users/new" 
+                            <router-link :to="{ name: 'UserRegistration' }"
                                 class="text-green-100 hover:text-primary-600 px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200">
                                 登録
-                            </a>
+                            </router-link>
                         </li>
                         <li v-if="!isLoggedIn">
                             <a href="/login" 
@@ -83,9 +83,10 @@
                     class="block text-indigo-800 hover:text-primary-600 px-3 py-2 rounded-md text-base font-medium">
                     アプリについて
                 </a>
-                <a v-if="!isLoggedIn" href="/users/new" 
-                    class="block text-indigo-800 hover:text-primary-600 px-3 py-2 rounded-md text-base font-medium">
-                    登録
+                <a v-if="!isLoggedIn"
+                    @click="closeMobileMenu"
+                    class="block text-indigo-800 hover:text-primary-600 px-3 py-2 rounded-md text-base font-medium cursor-pointer">
+                    <router-link :to="{ name: 'UserRegistration' }">登録</router-link>
                 </a>
                 <a v-if="!isLoggedIn" href="/login" 
                     class="block text-indigo-800 hover:text-primary-600 px-3 py-2 rounded-md text-base font-medium">
@@ -96,40 +97,31 @@
     </header>
 </template>
 
-<script>
-    // Viteが管理する画像をインポート
+<script setup>
+    import { ref } from 'vue'
     import logoImage from '../../images/logo_Post-them.png'
 
-    export default {
-        name: 'Header',
-        props: ['isLoggedIn', 'currentUserId', 'currentUserName'],
-        data() {
-            return {
-                showMobileMenu: false,
-                logoUrl: logoImage
-            }
-        },
-        methods: {
-            toggleMobileMenu() {
-                this.showMobileMenu = !this.showMobileMenu
-            },
-            logout() {
-                const form = document.createElement('form')
-                form.method = 'POST'
-                form.action = '/logout'
+    const props = defineProps({
+        isLoggedIn: Boolean,
+        currentUserId: [Number, String],
+        currentUserName: String
+    })
 
-                // CSRFトークン
-                const csrfToken = document.querySelector('meta[name="csrf-token"]').content
-                const csrfInput = document.createElement('input')
-                csrfInput.type = 'hidden'
-                csrfInput.name = 'authenticity_token'
-                csrfInput.value = csrfToken
-                form.appendChild(csrfInput)
+    const emit = defineEmits(['logout'])
 
-                document.body.appendChild(form)
-                form.submit()
-                console.log('Logout clicked')
-            }
-        }
+    const showMobileMenu = ref(false)
+    const logoUrl = logoImage
+
+    const toggleMobileMenu = () => {
+        showMobileMenu.value = !showMobileMenu.value
+    }
+
+    const closeMobileMenu = () => {
+        showMobileMenu.value = false
+    }
+
+    const logout = () => {
+    closeMobileMenu()
+    emit('logout')
     }
 </script>

@@ -12,15 +12,18 @@ export default defineConfig({
     postcss: './postcss.config.js', // PostCSS設定を指定
   },
   server: {
+    proxy: {
+      '/api': 'http://localhost:3000'
+    },
     hmr: {
       port: 3036
     }
   },
-  build: {
-    rollupOptions: {
-      external: ['@hotwired/turbo-rails']
-    }
-  },
+  // build: {
+  //   rollupOptions: {
+  //     external: ['@hotwired/turbo-rails']
+  //   }
+  // },
   resolve: {
     alias: {
       '@': path.resolve(__dirname, 'app/javascript')
