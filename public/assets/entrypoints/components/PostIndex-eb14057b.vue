@@ -42,6 +42,7 @@
   <script setup>
   import { ref, onMounted } from 'vue'
   import PostCard from './PostCard.vue'
+  import { useRouter } from 'vue-router'
   
   const props = defineProps({
     isLoggedIn: Boolean,
@@ -86,7 +87,8 @@
       })
       
       if (response.redirected) {
-        window.location.href = response.url
+        const router = useRouter();
+        router.push(response.url);
       } else {
         const data = await response.json()
         if (data) {

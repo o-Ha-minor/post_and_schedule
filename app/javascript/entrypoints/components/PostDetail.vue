@@ -12,13 +12,13 @@
           class="h-16 w-16 rounded-full object-cover"
         />
         <div>
-          <a
+          <router-link
             v-if="post.user.id"
-            :href="`/users/${post.user.id}`"
+            :to="`/users/${post.user.id}`"
             class="text-lg font-semibold text-indigo-600 hover:underline"
           >
             {{ post.user.name }}
-          </a>
+          </router-link>
           <p class="text-sm text-gray-500">{{ formattedDate(post.updated_at) }}</p>
         </div>
       </div>
@@ -112,6 +112,8 @@
 import { ref, computed, onMounted } from "vue"
 import CommentCard from "./CommentCard.vue"
 import FormComponent from "./FormComponent.vue"
+import { useRouter } from 'vue-router';
+import axios from "axios";
 
 const props = defineProps({
   postId: Number,
@@ -134,7 +136,7 @@ const isEditing = ref(false)
 onMounted(async () => {
   if (!post.value && props.postId) {
     try {
-      const res = await fetch(`/api/posts/${props.postId}`, {
+      const res = await axios.get(`/api/posts/${props.postId}`, {
         headers: { Accept: "application/json" }
       })
       if (res.ok) {
@@ -159,8 +161,7 @@ const toggleLike = async () => {
   try {
     if (post.value.liked && post.value.like_id) {
       // unlike
-      const res = await fetch(`/api/likes/${post.value.like_id}`, {
-        method: 'DELETE',
+      const res = await axios.delete(`/api/likes/${post.value.like_id}`, {
         headers: { 'X-CSRF-Token': csrfToken, Accept: 'application/json' }
       })
       if (res.ok) {
@@ -171,8 +172,7 @@ const toggleLike = async () => {
       }
     } else {
       // like
-      const res = await fetch(`/api/likes`, {
-        method: 'POST',
+      const res = await axios.post('/api/likes', {
         headers: { 'X-CSRF-Token': csrfToken, 'Content-Type': 'application/json', Accept: 'application/json' },
         body: JSON.stringify({ post_id: post.value.id })
       })
@@ -193,14 +193,15 @@ const deletePost = async () => {
   if (!post.value) return
   if (!confirm("この投稿を削除します。よろしいですか？")) return
   try {
-    const res = await fetch(`/api/posts/${post.value.id}`, {
+    const res = await axios.delete(`/api/posts/${post.value.id}`, {
       method: "DELETE",
       headers: { "X-CSRF-Token": csrfToken, Accept: "application/json" }
     })
     if (res.ok) {
       const data = await res.json()
       alert(data.message || "削除しました")
-      window.location.href = "/api/posts"
+      const router = useRouter();
+      router.push('/posts');
     } else {
       console.error("削除失敗:", await res.text())
     }
@@ -213,7 +214,7 @@ const deletePost = async () => {
 const submitComment = async () => {
   if (!post.value || !newComment.value.trim()) return
   try {
-    const res = await fetch(`/api/posts/${post.value.id}/comments`, {
+    const res = await axios.post(`/api/posts/${post.value.id}/comments`, {
       method: 'POST',
       headers: { 'X-CSRF-Token': csrfToken, 'Content-Type': 'application/json', Accept: 'application/json' },
       body: JSON.stringify({ comment: { content: newComment.value } })
@@ -235,7 +236,7 @@ const deleteComment = async (commentId) => {
   if (!post.value) return
   if (!confirm("コメントを削除します。よろしいですか？")) return
   try {
-    const res = await fetch(`/api/posts/${post.value.id}/comments/${commentId}`, {
+    const res = await axios.delete(`/api/comments/${commentId}`, {
       method: "DELETE",
       headers: { "X-CSRF-Token": csrfToken, Accept: "application/json" }
     })
@@ -255,7 +256,7 @@ const savePost = async (updated) => {
       formData.append("post[image]", updated.image)
     }
 
-    const res = await fetch(`/api/posts/${post.value.id}`, {
+    const res = await axios.patch(`/api/posts/${post.value.id}`, {
       method: "PATCH",
       headers: { "X-CSRF-Token": csrfToken,
                  "Accept": "application/json"

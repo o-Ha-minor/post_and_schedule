@@ -168,12 +168,12 @@
                   <span class="text-sm text-gray-500">
                     {{ post.likes_count || 0 }} いいね
                   </span>
-                  <a
-                    :href="`/api/posts/${post.id}`"
+                  <router-link
+                    :to="`/api/posts/${post.id}`"
                     class="text-indigo-600 hover:text-indigo-800 text-sm font-medium"
                   >
                     詳細を見る
-                  </a>
+                  </router-link>
                 </div>
               </div>
             </div>
@@ -288,6 +288,8 @@
 </template>
 
 <script>
+import axios from 'axios'
+
 export default {
   name: 'UserDetail',
   props: {
@@ -329,7 +331,8 @@ export default {
     async fetchUser() {
       try {
         const userId = window.location.pathname.split('/').pop()
-        const response = await fetch(`/users/${userId}.json`)
+        const response = await axios.get(`/api/users/${userId}`)
+        this.user = response.data
         if (response.ok) {
           this.user = await response.json()
         }
@@ -356,13 +359,11 @@ export default {
           formData.append('user[image]', this.$refs.imageInput.files[0])
         }
         
-        const response = await fetch(`/users/${this.user.id}`, {
-          method: 'PATCH',
+        const response = await axios.patch(`/users/${this.user.id}`, formData, {
           headers: {
             'X-CSRF-Token': document.querySelector('[name="csrf-token"]').getAttribute('content'),
             'Accept': 'application/json'
-          },
-          body: formData
+          }
         })
         
         if (response.ok) {
@@ -406,7 +407,7 @@ export default {
     async createGroup() {
       this.creatingGroup = true
       try {
-        const response = await fetch('/groups', {
+        const response = await axios.post('/groups', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -445,7 +446,7 @@ export default {
     async viewGroupDetail(group) {
       this.selectedGroup = group
       try {
-        const response = await fetch(`/groups/${group.id}.json`)
+        const response = await axios.get(`/groups/${group.id}`)
         if (response.ok) {
           const groupData = await response.json()
           this.groupMembers = groupData.users || []
@@ -470,7 +471,7 @@ export default {
     },
     async joinGroup() {
       try {
-        const response = await fetch(`/groups/${this.selectedGroup.id}/join`, {
+        const response = await axios.post(`/groups/${this.selectedGroup.id}/join`, {
           method: 'POST',
           headers: {
             'X-CSRF-Token': document.querySelector('[name="csrf-token"]').getAttribute('content'),
@@ -490,7 +491,7 @@ export default {
 
     async leaveGroup() {
       try {
-        const response = await fetch(`/groups/${this.selectedGroup.id}/leave`, {
+        const response = await axios.delete(`/groups/${this.selectedGroup.id}/leave`, {
           method: 'DELETE',
           headers: {
             'X-CSRF-Token': document.querySelector('[name="csrf-token"]').getAttribute('content'),
@@ -509,7 +510,7 @@ export default {
     async deleteUser () {
       if (!confirm("このアカウントを削除します。よろしいですか？")) return;
       try {
-        const response = await fetch(`/users/${this.user.id}`, {
+        const response = await axios.delete(`/users/${this.user.id}`, {
           method: "DELETE",
           headers: { "X-CSRF-Token": document.querySelector(`[name="csrf-token"]`).getAttribute("content"),
           "Accept": "application/json"
@@ -517,7 +518,8 @@ export default {
         });
         if (response.ok) {
           alert("アカウントを削除しました");
-          window.location.href = "/"; // トップへリダイレクト
+          const router = useRouter();
+          router.push('/');
         } else {
           const error = await response.json();
           alert("削除に失敗しました: " + (error.error || "不明なエラー"));

@@ -1,9 +1,9 @@
 <template>
   <div class="bg-gray-50 rounded-lg p-4 shadow-sm">
     <div class="flex justify-between items-center mb-2">
-      <a :href="`/users/${comment.user.id}`" class="font-semibold text-indigo-600 hover:underline">
+      <router-link to="`/users/${comment.user.id}`" class="font-semibold text-indigo-600 hover:underline">
         {{ comment.user.name }}
-      </a>
+      </router-link>
       <span class="text-xs text-gray-400">{{ formattedDate(comment.created_at) }}</span>
     </div>
     <p class="text-gray-700 mb-2">{{ comment.content }}</p>
@@ -25,6 +25,8 @@
 </template>
 
 <script setup>
+import router from '../../router';
+
 const props = defineProps({
   comment: Object,
   currentUserId: Number

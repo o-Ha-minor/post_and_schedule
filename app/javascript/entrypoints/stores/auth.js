@@ -1,4 +1,5 @@
 // app/javascript/entrypoints/stores/auth.js
+import axios from 'axios';
 import { defineStore } from 'pinia'
 import { useToast } from 'vue-toastification'
 
@@ -18,47 +19,37 @@ export const useAuthStore = defineStore('auth', {
 
   actions: {
     async checkAuth() {
+      console.log('Checking auth...');
       try {
-        const response = await fetch('/api/auth/check', {
-          headers: {
-            'Accept': 'application/json',
-            'X-CSRF-Token': document.querySelector('[name="csrf-token"]')?.content
-          }
-        })
-
-        if (response.ok) {
-          const data = await response.json()
-          this.setUser(data.user, data.groups)
-        } else {
-          this.clearAuth()
-        }
-      } catch (error) {
-        console.error('認証チェックエラー:', error)
-        this.clearAuth()
+        const response = await axios.get('/api/auth/check', { withCredentials: true });
+        if (response.data.success) {
+          this.setUser(response.data.message, response.data.groups);
+        } 
+      }catch (error) {
+        console.error('Check auth error:', error);
       } finally {
-        this.initialized = true
+        this.initialized = true;
       }
     },
-
+    setUser(user, groups) {
+      this.user = user;
+      this.groups = groups;
+      this.isLoggedIn = true;
+    },
+  
     async login(credentials) {
       const toast = useToast()
       
       try {
-        const response = await fetch('/api/auth/login', {
-          method: 'POST',
+        const response = await axios.post('/api/auth/login', credentials, {
           headers: {
             'Content-Type': 'application/json',
             'Accept': 'application/json',
-            'X-CSRF-Token': document.querySelector('[name="csrf-token"]')?.content
-          },
-          body: JSON.stringify(credentials)
+          },withCredentials: true,
         })
-
-        const data = await response.json()
-
-        if (response.ok && data.success) {
-          this.setUser(data.user, data.groups)
-          toast.success(data.message)
+        if (response.data.success) {
+          this.setUser(response.data.user, response.data.groups)
+          toast.success(response.data.message)
           return { success: true }
         } else {
           toast.error(data.message || 'ログインに失敗しました')
@@ -75,30 +66,18 @@ export const useAuthStore = defineStore('auth', {
       const toast = useToast()
       
       try {
-        const formData = new FormData()
-        Object.keys(userData).forEach(key => {
-          if (userData[key] !== null) {
-            formData.append(`user[${key}]`, userData[key])
-          }
-        })
-
-        const response = await fetch('/api/auth/register', {
-          method: 'POST',
+        const response = await axios.post('/api/auth/register', { user: userData }, {
           headers: {
             'Accept': 'application/json',
             'X-CSRF-Token': document.querySelector('[name="csrf-token"]')?.content
-          },
-          body: formData
+          },withCredentials: true,
         })
-
-        const data = await response.json()
-
-        if (response.ok && data.success) {
-          this.setUser(data.user, data.groups)
-          toast.success(data.message)
+        if (response.data.success) {
+          this.setUser(response.data.user, response.data.groups)
+          toast.success(response.data.message)
           return { success: true }
         } else {
-          toast.error(data.message || '登録に失敗しました')
+          toast.error(response.data.message || '登録に失敗しました')
           return { success: false, errors: data.errors }
         }
       } catch (error) {
@@ -112,15 +91,15 @@ export const useAuthStore = defineStore('auth', {
       const toast = useToast()
       
       try {
-        const response = await fetch('/api/auth/logout', {
-          method: 'DELETE',
+        const response = await axios.delete('/api/auth/logout',{
           headers: {
             'Accept': 'application/json',
-            'X-CSRF-Token': document.querySelector('[name="csrf-token"]')?.content
+            'X-CSRF-Token': document.querySelector('[name="csrf-token"]')?.content,
+            withCredentials: true
           }
         })
 
-        if (response.ok) {
+        if (response.data.success) {
           const data = await response.json()
           this.clearAuth()
           toast.success(data.message)

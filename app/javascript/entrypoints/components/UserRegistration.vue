@@ -93,87 +93,69 @@
           </div>
   
           <div class="text-center">
-            <a href="/users/login_form" class="text-indigo-600 hover:text-indigo-800 text-sm font-medium">
+            <router-link to="/users/login_form" class="text-indigo-600 hover:text-indigo-800 text-sm font-medium">
               既にアカウントをお持ちの方はこちら
-            </a>
+            </router-link>
           </div>
         </form>
       </div>
     </div>
   </template>
   
-  <script>
-export default {
-  name: 'UserRegistration',
-  data() {
-    return {
-      registrationForm: {
-        name: '',
-        email: '',
-        password: '',
-        password_confirmation: ''
-      },
-      isLoading: false,
-      errors: [],
-      successMessage: '',
-      fieldErrors: {}
+  <script setup>
+  import { ref, computed, teactive} from 'vue'
+  import { useRouter } from 'vue-router'
+  import axios from 'axios'
+
+  const router = useRouter()
+  const registrationForm = reactive({
+    name: '',
+    email: '',
+    password: '',
+    password_confirmation: ''
+  })
+  const isLoading = ref(false)
+  const errors = ref([])
+  const successMessage = ref('')  
+  const fieldErrors = ref({})
+  const passwordMismatch = computed(() => {
+    return registrationForm.password !== registrationForm.password_confirmation && registrationForm.password_confirmation !== ''
+  })
+
+  const handleRegistration = async () => {
+    isLoading.value = true
+    errors.value = []
+    successMessage.value = ''
+    fieldErrors.value = {}
+
+    // クライアントサイドバリデーション
+    if (passwordMismatch.value) {
+      errors.value.push('パスワードが一致しません')
+      isLoading.value = false
+      return
     }
-  },
-  computed: {
-    passwordMismatch() {
-      return (
-        this.registrationForm.password !== this.registrationForm.password_confirmation &&
-        this.registrationForm.password_confirmation !== ''
-      )
-    }
-  },
-  methods: {
-    async handleRegistration() {
-      this.isLoading = true
-      this.errors = []
-      this.successMessage = ''
-      this.fieldErrors = {}
 
-      // クライアントサイドバリデーション
-      if (this.passwordMismatch) {
-        this.errors.push('パスワードが一致しません')
-        this.isLoading = false
-        return
-      }
-
-      try {
-        const response = await fetch('/api/users', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            user: {
-              name: this.registrationForm.name,
-              email: this.registrationForm.email,
-              password: this.registrationForm.password,
-              password_confirmation: this.registrationForm.password_confirmation
-            }
-          })
-        })
-
-        const data = await response.json()
-
-        if (response.ok) {
-          this.successMessage = '登録が完了しました！'
-          console.log("ユーザー登録成功", data)
-          this.$router.push({ path: '/', query: { success: '登録が完了しました！' } })
-        } else {
-          this.errors = data.errors || ['登録に失敗しました']
-          console.error("ユーザー登録失敗", data.errors)
+    try {
+      const response = await axios.post('/api/users', {
+        user: {
+          name: registrationForm.name,
+          email: registrationForm.email,
+          password: registrationForm.password,
+          password_confirmation: registrationForm.password_confirmation
         }
-      } catch (err) {
-        console.error("通信エラー", err)
-        this.errors = ['通信に失敗しました']
-      } finally {
-        this.isLoading = false
+      })
+
+      if (response.data.success) { 
+        successMessage.value = '登録が完了しました！'
+        router.push({ path: '/', query: { success: '登録が完了しました！' } })
+      } else {
+        errors.value = response.data.errors || ['登録に失敗しました']
       }
+    } catch (err) {
+      errors.value = ['通信に失敗しました']
+    } finally {
+      isLoading.value = false
     }
   }
-}
+    
 </script>

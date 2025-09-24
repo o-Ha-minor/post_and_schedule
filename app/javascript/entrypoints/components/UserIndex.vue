@@ -64,12 +64,12 @@
   
               <!-- アクションボタン -->
               <div class="mt-4 w-full">
-                <a
-                  :href="`/users/${user.id}`"
+                <router-link
+                  :to="`/users/${user.id}`"
                   class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-2 px-4 rounded-lg transition-colors duration-200 text-center block"
                 >
                   プロフィール表示
-                </a>
+                </router-link>
               </div>
             </div>
           </div>
@@ -88,6 +88,8 @@
   </template>
   
   <script>
+import axios from 'axios'
+
   export default {
     name: 'UserIndex',
     props: {
@@ -120,8 +122,8 @@
     methods: {
       async fetchUsers() {
         try {
-          const response = await fetch('/users.json')
-          this.users = await response.json()
+          const response = await axios.get('/api/users')
+          this.users = response.data
         } catch (error) {
           console.error('ユーザー取得エラー:', error)
         }

@@ -99,7 +99,7 @@ router.beforeEach(async (to, from, next) => {
     const authStore = useAuthStore()
     
     // 認証状態をチェック
-    if (!authStore.initialized) {
+    if (!authStore.initialized && !to.name !== 'Login') {
       await authStore.checkAuth()
     }
   

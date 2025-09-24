@@ -59,9 +59,9 @@
         </div>
 
         <div class="text-center">
-          <a href="/users/new" class="text-indigo-600 hover:text-indigo-800 text-sm font-medium">
+          <router-link to="/users/new" class="text-indigo-600 hover:text-indigo-800 text-sm font-medium">
             アカウントをお持ちでない方はこちら
-          </a>
+          </router-link>
         </div>
       </form>
     </div>
@@ -70,51 +70,39 @@
 
 <script setup>
 import { reactive, ref } from 'vue'
+import { useRouter } from 'vue-router'
+import { useAuthStore } from '../stores/auth'
 
 const loginForm = reactive({
   name: '',
   password: ''
 })
-
 const isLoading = ref(false)
 const errorMessage = ref('')
 const successMessage = ref('')
+const router = useRouter()
+const authStore = useAuthStore()
 
 const handleLogin = async () => {
+  console.log('Sending login request:', loginForm);
   if (isLoading.value) return
-
   isLoading.value = true
   errorMessage.value = ''
   successMessage.value = ''
 
   try {
-    const response = await fetch('/api/auth/login', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json',
-        'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').content
-      },
-      body: JSON.stringify({
-        name: loginForm.name,
-        password: loginForm.password
-      }),
-      credentials: 'same-origin'
-    })
-
-    const data = await response.json()
-    
-    if (data.success) {
-      // Vue Routerで遷移
-      window.location.href = '/'
+    const result = await authStore.login(loginForm.name, loginForm);
+    if (result.success) {
+      successMessage.value = 'ログインに成功しました！'
+      router.push('/');
     } else {
-      errorMessage.value = data.message || 'ログインに失敗しました'
+      errorMessage.value = result.message || 'ログインに失敗しました';
     }
   } catch (error) {
-    console.error('ログインエラー:', error)
-    errorMessage.value = 'ログイン中にエラーが発生しました。'
+    console.error('ログインエラー:', error);
+    errorMessage.value = 'ログイン中にエラーが発生しました。';
   } finally {
-    isLoading.value = false
+    isLoading.value = false;
   }
 }
 </script>

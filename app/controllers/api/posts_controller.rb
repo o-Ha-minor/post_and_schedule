@@ -14,7 +14,7 @@ module Api
         end
         posts = posts.order(created_at: :desc)
       else
-        Post.none
+        posts = Post.none
       end
 
       posts_data = posts.map { |post| format_post(post) }

@@ -1,0 +1,157 @@
+class Api::TasksController < ApplicationController
+  def index
+    if @current_user
+      @tasks = Task.where(group: @current_user.groups, status: "pending").order(created_at: :desc)
+      @completed_tasks = Task.where(group: @current_user.groups, status: "completed").order(completed_at: :desc)
+
+      render json: { tasks: @tasks, completed_tasks: @completed_tasks }
+    else
+      render json: { errors: user.errors.full_messages }, status: :unprocessable_entity
+    end
+  end
+
+  def new
+    @task = Task.new
+  end
+
+  def create
+    if @current_user
+      @group = @current_user.groups.first
+      @task = @current_user.tasks.build(task_params.merge(group: @group))
+      @task.status = "pending"
+
+      if @task.save
+          if params[:task][:create_event] == true && @task.due_date.present?
+              create_event_from_task(@task)
+          end
+      render json: @task, status: :created
+      else
+        render json: { errors: @task.errors }, status: :unprocessable_entity
+      end
+    else
+      format.json { render json: { error: "ログインが必要です" }, status: :unauthorized }
+    end
+  end
+
+  def completed
+    @task = Task.find_by(id: params[:id])
+
+    if @task
+      @task.update(status: "completed", completed_at: Time.current)
+      render json: @task, status: :ok
+    else
+      render json: { error: "タスクが見つかりません" }, status: :not_found
+    end
+  end
+
+  def show
+      @task = Task.find_by(id: params[:id])
+      unless @task
+        render json: { error: "タスクが見つかりません" }, status: :not_found
+        return
+      end
+
+      # @taskが存在する場合の処理
+      render json: @task   # JSONでタスク情報を返す
+  end
+
+  def edit
+    @task = Task.find(params[:id])
+  end
+
+  def update
+      @task = Task.find_by(id: params[:id])
+      event = @task&.event
+      if @task&.update(task_params)
+        # カレンダー連携チェックが入っていて期限がある場合
+        if params[:task][:create_event].present? && @task.due_date.present?
+          # すでにイベントが存在する場合は更新、なければ新規作成
+          event = Event.find_by(task_id: @task.id)
+          if event
+            event.update(
+              title: @task.title,
+              start: @task.due_date.change(hour: 9, min: 0),
+              end: @task.due_date.change(hour: 10, min: 0),
+              description: build_event_description(@task),
+              group_id: @task.group_id
+            )
+          else
+            create_event_from_task(@task)
+          end
+        else
+          event&.destroy
+        end
+
+        render json: @task, status: :ok
+      else
+        render json: {
+          errors: @task ? @task.errors : { base: [ "タスクが見つかりません" ] }
+        }, status: :unprocessable_entity
+      end
+  end
+
+  def destroy
+    @task = Task.find_by(id: params[:id])
+
+    if @task
+      @task.destroy
+     json { head :no_content }
+    else
+      render json: { error: "タスクが見つかりません" }, status: :not_found
+    end
+  end
+
+  private
+
+  def create_event_from_task(task)
+      return unless task.due_date.present?
+
+      begin
+        # due_dateから開始時刻を設定（時刻情報がない場合は9:00に設定）
+        start_time = if task.due_date.hour == 0 && task.due_date.min == 0
+                        task.due_date.change(hour: 9, min: 0)
+        else
+                        task.due_date
+        end
+
+        # 終了時刻を設定（開始時刻の1時間後）
+        end_time = start_time + 1.hour
+
+        Event.create!(
+          user_id: @current_user.id,
+          task_id: task.id,
+          title: task.title,
+          start: start_time,
+          end: end_time,
+          description: build_event_description(task),
+          group_id: task.group_id
+        )
+
+        Rails.logger.info "Event created for task #{task.id}"
+      rescue => e
+        Rails.logger.error "Failed to create event for task #{task.id}: #{e.message}"
+        # エラーがあってもタスク作成は成功させる
+      end
+  end
+
+    def build_event_description(task)
+      description_parts = [ "タスクから作成" ]
+      description_parts << "カテゴリ: #{task.category}" if task.category.present?
+      description_parts << "優先度: #{priority_label(task.priority)}" if task.priority.present?
+      description_parts << task.description if task.description.present?
+      description_parts.join("\n")
+    end
+
+    def priority_label(priority)
+      case priority
+      when "high" then "\u9AD8"
+      when "medium" then "\u4E2D"
+      when "low" then "\u4F4E"
+      else priority
+      end
+    end
+
+  def task_params
+    params.require(:task).permit(:title, :description, :category, :priority, :status, :completed_at, :due_date, :group_id)
+  end
+end

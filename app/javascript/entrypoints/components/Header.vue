@@ -14,10 +14,10 @@
                 <nav class="hidden md:flex space-x-8">
                     <ul class="flex items-center space-x-6">
                         <li v-if="isLoggedIn">
-                            <a :href="`/users/${currentUserId}`" 
+                            <router-link :to="`/users/${currentUserId}`" 
                                 class="text-green-100 hover:text-primary-600 px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200">
                                 {{ currentUserName }}
-                            </a>
+                            </router-link>
                         </li>
                         <li v-if="isLoggedIn">
                             <router-link to="/users" 
@@ -44,10 +44,10 @@
                             </router-link>
                         </li>
                         <li v-if="!isLoggedIn">
-                            <a href="/login" 
+                            <router-link to="/login" 
                                 class="text-green-100 hover:text-primary-600 px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200">
                                 ログイン
-                            </a>
+                            </router-link to=>
                         </li>
                     </ul>
                 </nav>
@@ -71,10 +71,10 @@
                     class="block text-indigo-800 hover:text-primary-600 px-3 py-2 rounded-md text-base font-medium">
                     {{ currentUserName }}
                 </a>
-                <a v-if="isLoggedIn" href="/users" 
+                <router-link v-if="isLoggedIn" to="/users" 
                     class="block text-indigo-800 hover:text-primary-600 px-3 py-2 rounded-md text-base font-medium">
                     ユーザ一覧
-                </a>
+                </router-link>
                 <button v-if="isLoggedIn" @click="logout" 
                         class="block text-indigo-800 hover:text-primary-600 px-3 py-2 rounded-md text-base font-medium bg-transparent border-0 cursor-pointer w-full text-left">
                     ログアウト
@@ -88,10 +88,10 @@
                     class="block text-indigo-800 hover:text-primary-600 px-3 py-2 rounded-md text-base font-medium cursor-pointer">
                     <router-link :to="{ name: 'UserRegistration' }">登録</router-link>
                 </a>
-                <a v-if="!isLoggedIn" href="/login" 
+                <router-link v-if="!isLoggedIn" to="/login" 
                     class="block text-indigo-800 hover:text-primary-600 px-3 py-2 rounded-md text-base font-medium">
                     ログイン
-                </a>
+                </router-link>
             </div>
         </div>
     </header>

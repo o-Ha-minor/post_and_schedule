@@ -28,6 +28,7 @@ module SampleApp
     #
     config.time_zone = "Asia/Tokyo"
     config.active_record.default_timezone = :local
+    config.api_only = true
     # config.eager_load_paths << Rails.root.join("extras")
   end
 

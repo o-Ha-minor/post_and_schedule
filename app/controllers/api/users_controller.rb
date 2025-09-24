@@ -4,7 +4,7 @@ class Api::UsersController < ApplicationController
 
   def index
     users = User.with_profile_data.order(created_at: :desc)
-    render json: users.map(&:profile_data_for_json)
+    render json: { success: true, data: users.map(&:profile_data_for_json) }
   end
 
   def show

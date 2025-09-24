@@ -110,6 +110,8 @@
 import { ref, computed, onMounted } from "vue"
 import CommentCard from "./CommentCard.vue"
 import FormComponent from "./FormComponent.vue"
+import { useRouter } from 'vue-router';
+import axios from 'axios';
 
 const props = defineProps({
   postId: Number,
@@ -175,7 +177,8 @@ const toggleLike = async () => {
 /** 編集へ遷移 */
 const editPost = () => {
   if (!post.value) return
-  window.location.href = `/api/posts/${post.value.id}/edit`
+  const router = useRouter();
+  router.push({ name: 'PostEdit', params: { id: post.value.id } });
 }
 
 /** 削除 */
@@ -190,7 +193,8 @@ const deletePost = async () => {
     if (res.ok) {
       const data = await res.json()
       alert(data.message || "削除しました")
-      window.location.href = "/posts"
+      const router = useRouter();
+      router.push('/posts');
     } else {
       console.error("削除失敗:", await res.text())
     }

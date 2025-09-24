@@ -174,7 +174,7 @@
   
       async completeTask(task) {
         try {
-          await axios.post(`/tasks/${task.id}/completed`)
+          await axios.patch(`/tasks/${task.id}`, { completed: true })
           await this.fetchTasks() // タスク一覧を再取得
         } catch (error) {
           console.error('タスクの完了に失敗しました:', error)

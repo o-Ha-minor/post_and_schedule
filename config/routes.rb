@@ -1,10 +1,10 @@
 Rails.application.routes.draw do
   namespace :api do
     namespace :auth do
-      get :check
-      post :login
-      post :register
-      delete :logout
+      get "check", to: "sessions#check"
+      post "login", to: "sessions#login"
+      post "register", to: "sessions#register"
+      delete "logout", to: "sessions#logout"
     end
 
     resources :posts do
@@ -29,8 +29,8 @@ Rails.application.routes.draw do
   # 開発中の便利ルート
   get "about" => "home#about"
 
-  # 古い HTML ログイン/ユーザー管理は API に切り替えるなら削除してOK。
-  # 今すぐ消すのが怖ければ残しておいても良いですが、重複に注意。
+# config/routes.rb
+get "/favicon.ico", to: redirect("/assets/favicon.ico")
 
   # SPA 用キャッチオール（HTML を要求するリクエストだけ）
   get "*path", to: "home#spa", constraints: ->(request) {

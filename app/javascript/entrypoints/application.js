@@ -27,10 +27,6 @@ app.use(Toast, {
   icon: true,
   rtl: false})
 
-axios.defaults.headers.common['X-CSRF-Token'] = document.querySelector('[name="csrf-token"]').getAttribute('content')
-axios.defaults.headers.common['Accept'] = 'application/json'
-axios.defaults.headers.common['Content-Type'] = 'application/json'
-
 const setupAxios = () => {
   const token = document.querySelector('[name="csrf-token"]')?.getAttribute('content')
   if (token) {
@@ -51,11 +47,9 @@ const setupAxios = () => {
     },
     error => {
       const toast = useToast()
-      
       if (error.response?.status === 401) {
         // 認証エラー
-        toast.error("ログインが必要です")
-        router.push('/login')
+        useToast.error("ログインが必要です")
       } else if (error.response?.status === 403) {
         // 権限エラー
         toast.error("アクセス権限がありません")
@@ -77,6 +71,22 @@ const setupAxios = () => {
     }
   )
 }
+
+const initSPA = () => {
+  const spaElement = document.getElementById('spa-app')
+  
+  if (spaElement) {
+    const pinia = createPinia()
+    const app = createApp(App)
+    
+    app.use(router)
+    app.use(pinia)
+    
+    app.mount(spaElement)
+    console.log('SPA application mounted successfully')
+  }
+}
+
 setupAxios()
 
 app.mount("#app")
@@ -92,4 +102,12 @@ const updateCSRFToken = () => {
 // ページ変更時にCSRFトークンを更新
 router.afterEach(() => {
   updateCSRFToken()
+})
+
+document.addEventListener('DOMContentLoaded', () => {
+  if (document.getElementById('spa-app')) {
+    initSPA()
+  } else {
+    console.log('SPA application not initialized: #spa-app element not found')
+  }
 })

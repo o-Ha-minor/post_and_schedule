@@ -21,7 +21,8 @@
   </template>
   
   <script setup>
-  import { ref, onMounted } from "vue";
+  import axios from "axios";
+import { ref, onMounted } from "vue";
   
   const props = defineProps({
     groupId: Number,
@@ -33,17 +34,15 @@
   
   // グループ詳細取得
   const fetchGroup = async () => {
-    const res = await fetch(`/groups/${props.groupId}.json`);
-    const data = await res.json();
+    const res = await axios.get(`/groups/${props.groupId}.json`);
     group.value = data;
-  
     // 自分が含まれているか確認
-    isMember.value = data.users.some(u => u.id === props.currentUserId);
+    isMember.value = res.users.some(u => u.id === props.currentUserId);
   };
   
   // 参加処理
   const joinGroup = async () => {
-    const res = await fetch(`/groups/${props.groupId}/join.json`, { method: "POST" });
+    await axios.post(`/groups/${props.groupId}/join.json`);
     if (res.ok) {
       await fetchGroup(); // 再取得して反映
     }
@@ -51,7 +50,7 @@
   
   // 脱退処理
   const leaveGroup = async () => {
-    const res = await fetch(`/groups/${props.groupId}/leave.json`, { method: "DELETE" });
+    await axios.delete(`/groups/${props.groupId}/leave.json`);
     if (res.ok) {
       await fetchGroup();
     }

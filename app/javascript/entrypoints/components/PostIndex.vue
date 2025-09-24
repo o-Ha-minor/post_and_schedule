@@ -70,6 +70,7 @@
   import PostCard from './PostCard.vue'
   import { useToast } from 'vue-toastification'
   import { useRouter } from 'vue-router'
+import axios from 'axios'
   const router = useRouter()
 
 
@@ -107,7 +108,7 @@
   // 投稿一覧を取得
 const fetchPosts = async () => {
   try {
-    const response = await fetch('/api/posts', {
+    const response = await axios.get('/api/posts', {
       headers: {
         'Accept': 'application/json',
         'X-CSRF-Token': getCsrfToken()
@@ -156,7 +157,7 @@ const fetchPosts = async () => {
     }
 
     try {
-      const response = await fetch('/api/posts', {
+      const response = await axios.post('/api/posts', {
         method: 'POST',
         headers: { 
           'X-CSRF-Token': getCsrfToken(),

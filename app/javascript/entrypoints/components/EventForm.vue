@@ -280,7 +280,7 @@ export default {
           title: this.form.title.trim(),
           start: this.form.start,
           end: this.form.end,
-          discription: this.form.discription,
+          description: this.form.description,
           group_id: this.form.group_id,
         };
 
