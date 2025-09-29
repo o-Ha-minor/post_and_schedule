@@ -112,7 +112,7 @@
 import { ref, computed, onMounted } from "vue"
 import CommentCard from "./CommentCard.vue"
 import FormComponent from "./FormComponent.vue"
-import { useRouter } from 'vue-router';
+import { useRouter, useRoute } from 'vue-router';
 import axios from "axios";
 
 const props = defineProps({
@@ -123,35 +123,29 @@ const props = defineProps({
 
 const post = ref(props.initialPostData || null)
 const newComment = ref("")
-const csrfToken = document.querySelector('meta[name="csrf-token"]')?.content
-
 const isOwner = computed(() =>
   post.value?.user && props.currentUserId === post.value.user.id
 )
-
 const formattedDate = (d) => new Date(d).toLocaleString("ja-JP")
-
 const isEditing = ref(false)
+const router = useRouter();
+const route = useRoute();
 
 onMounted(async () => {
   if (!post.value && props.postId) {
     try {
-      const res = await axios.get(`/api/posts/${props.postId}`, {
-        headers: { Accept: "application/json" }
-      })
-      if (res.ok) {
-        const responseData = await res.json()
-        // APIレスポンスの構造に合わせて修正
+      const response = await axios.get(`/api/posts/${props.postId}`)
+      if (response.data) {
+        const responseData = response.data
         if (responseData.success && responseData.data) {
           post.value = responseData.data
-        } else {
-          console.error("投稿データの取得に失敗しました:", responseData)
         }
-      } else {
-        console.error("HTTP エラー:", res.status, await res.text())
+      }
+      if (route.query.from === 'new_post') {
+      toast.success('投稿が完了しました！')
       }
     } catch (error) {
-      console.error("ネットワークエラー:", error)
+      toast.error("ネットワークエラー:", error)
     }
   }
 })
@@ -161,26 +155,21 @@ const toggleLike = async () => {
   try {
     if (post.value.liked && post.value.like_id) {
       // unlike
-      const res = await axios.delete(`/api/likes/${post.value.like_id}`, {
-        headers: { 'X-CSRF-Token': csrfToken, Accept: 'application/json' }
-      })
-      if (res.ok) {
-        const data = await res.json()
+      const response = await axios.delete(`/api/likes/${post.value.like_id}`)
+      if (response.data) {
         post.value.liked = false
         post.value.like_id = null
-        post.value.likes_count = data.likes_count
+        post.value.likes_count = response.data.likes_count
       }
     } else {
       // like
-      const res = await axios.post('/api/likes', {
-        headers: { 'X-CSRF-Token': csrfToken, 'Content-Type': 'application/json', Accept: 'application/json' },
-        body: JSON.stringify({ post_id: post.value.id })
+      const response = await axios.post('/api/likes', {
+        post_id: post.value.id
       })
-      if (res.ok) {
-        const data = await res.json()
+      if (response.data) {
         post.value.liked = true
-        post.value.like_id = data.id
-        post.value.likes_count = data.likes_count
+        post.value.like_id = response.data.id
+        post.value.likes_count = response.data.likes_count
       }
     }
   } catch (e) {
@@ -188,24 +177,14 @@ const toggleLike = async () => {
   }
 }
 
-/** 削除 */
+/** 投稿削除 */
 const deletePost = async () => {
   if (!post.value) return
   if (!confirm("この投稿を削除します。よろしいですか？")) return
   try {
-    const res = await axios.delete(`/api/posts/${post.value.id}`, {
-      method: "DELETE",
-      headers: { "X-CSRF-Token": csrfToken, Accept: "application/json" }
-    })
-    if (res.ok) {
-      const data = await res.json()
-      alert(data.message || "削除しました")
-      const router = useRouter();
-      router.push('/posts');
-    } else {
-      console.error("削除失敗:", await res.text())
-    }
-  } catch (e) {
+    await axios.delete(`/api/posts/${post.value.id}`);
+    router.push({ name: 'PostIndex' });
+    } catch (e) {
     console.error("deletePost error:", e)
   }
 }
@@ -214,17 +193,13 @@ const deletePost = async () => {
 const submitComment = async () => {
   if (!post.value || !newComment.value.trim()) return
   try {
-    const res = await axios.post(`/api/posts/${post.value.id}/comments`, {
-      method: 'POST',
-      headers: { 'X-CSRF-Token': csrfToken, 'Content-Type': 'application/json', Accept: 'application/json' },
-      body: JSON.stringify({ comment: { content: newComment.value } })
+    const response = await axios.post(`/api/posts/${post.value.id}/comments`, {
+      comment: { content: newComment.value }
     })
-    if (res.ok) {
-      const comment = await res.json()
+    if (response.data) {
+      const comment = response.data
       post.value.comments = [comment, ...(post.value.comments || [])]
       newComment.value = ""
-    } else {
-      console.error('comment error', await res.json())
     }
   } catch (e) {
     console.error(e)
@@ -236,11 +211,8 @@ const deleteComment = async (commentId) => {
   if (!post.value) return
   if (!confirm("コメントを削除します。よろしいですか？")) return
   try {
-    const res = await axios.delete(`/api/comments/${commentId}`, {
-      method: "DELETE",
-      headers: { "X-CSRF-Token": csrfToken, Accept: "application/json" }
-    })
-    if (res.ok) {
+    const response = await axios.delete(`/api/posts/${post.value.id}/comments/${commentId}`)
+    if (response.data) {
       post.value.comments = (post.value.comments || []).filter(c => c.id !== commentId)
     }
   } catch (e) {
@@ -248,33 +220,21 @@ const deleteComment = async (commentId) => {
   }
 }
 
+/** 投稿編集保存 */
 const savePost = async (updated) => {
   try {
     const formData = new FormData()
     formData.append("post[content]", updated.content)
-    if (updated.image) {
-      formData.append("post[image]", updated.image)
-    }
+    if (updated.image) formData.append("post[image]", updated.image)
 
-    const res = await axios.patch(`/api/posts/${post.value.id}`, {
-      method: "PATCH",
-      headers: { "X-CSRF-Token": csrfToken,
-                 "Accept": "application/json"
-       },
-      body: formData
-    })
-
-    if (res.ok) {
-      const data = await res.json()
-      post.value = data
+    const response = await axios.patch(`/api/posts/${post.value.id}`, formData)
+    if (response.data) {
+      post.value = response.data.data
       isEditing.value = false
-    } else {
-      console.error("update failed", await res.text())
     }
+    router.push({ name: 'PostIndex' });
   } catch (err) {
     console.error("network error", err)
   }
 }
-
-
 </script>

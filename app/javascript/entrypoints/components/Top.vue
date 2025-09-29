@@ -9,21 +9,21 @@
                 <img :src="eventsUrl" class="h-16 w-16 mb-3" />
                 <span class="text-gray-800 font-midium group-hover:text-indigo-600">
                 スケジュール</span>
-            </router-link to>
+            </router-link>
             <router-link to="/posts" class="group bg-white shadow-lg rounded-2xl p-6 flex flex-col 
                 items-center shadow-2xl transition transform hover:-translate-y-1 hover:scale-105"
                 active-class="bg-indigo-100 text-indigo-600">
                 <img :src="postsUrl" class="h-16 w-16 mb-3" />
                 <span class="text-gray-800 font-midium group-hover:text-indigo-600">
                     投稿</span>
-            </router-link to>
+            </router-link>
             <router-link to="/tasks" class="group bg-white shadow-lg rounded-2xl p-6 flex flex-col 
                 items-center shadow-2xl transition transform hover:-translate-y-1 hover:scale-105"
                 active-class="bg-indigo-100 text-indigo-600">
                 <img :src="tasksUrl" class="h-16 w-16 mb-3" />
                 <span class="text-gray-800 font-midium group-hover:text-indigo-600">
                     タスク</span>
-            </router-link to>
+            </router-link>
         </div>
     </div>
 </template>

@@ -6,19 +6,19 @@ module Api
 
     def index
       if @current_user
-        posts = Post.includes(:user, :group, :comments, :likes)
-        if params[:group_id].present?
-          posts = posts.where(group_id: params[:group_id])
-        else
-          posts = posts.where(group_id: @current_user.group_ids)
-        end
-        posts = posts.order(created_at: :desc)
+        @posts = Post.includes(:user, :group, :comments, :likes)
+          .where(group_id: params[:group_id])
+          .order(created_at: :desc)
+        liked_post_ids = Like.where(user_id: @current_user.id, post_id: @posts.ids).pluck(:post_id).to_set
       else
-        posts = Post.none
+        @posts = Post.includes(:user, :group, :comments, :likes)
+        .where("group_id IN (?) OR user_id = ?", @current_user.group_ids, @current_user.id)
+        .order(created_at: :desc)
+        liked_post_ids = Set.new
       end
 
-      posts_data = posts.map { |post| format_post(post) }
-      render json: { success: true, data: posts_data }
+      @posts_data = @posts.map { |post| format_post(post, liked_post_ids) }
+      render json: { success: true, data: @posts_data }
     end
 
     def show
@@ -146,21 +146,7 @@ module Api
 
     private
 
-    def set_post
-      @post = Post.find_by(id: params[:id])
-      unless @post
-        render json: {
-          success: false,
-          message: "\u6295\u7A3F\u304C\u898B\u3064\u304B\u308A\u307E\u305B\u3093"
-        }, status: :not_found
-      end
-    end
-
-    def post_params
-      params.require(:post).permit(:content, :group_id, :image)
-    end
-
-    def format_post(post)
+    def format_post(post, liked_post_ids = Set.new)
       {
         id: post.id,
         content: post.content,
@@ -176,10 +162,24 @@ module Api
           id: post.group.id,
           name: post.group.name
         } : nil,
-        comments_count: post.comments.count,
-        likes_count: post.likes.count,
-        liked_by_current_user: @current_user ? post.likes.exists?(user: @current_user) : false
+        comments_count: post.comments.size, # includes 済みならメモリ参照
+        likes_count: post.likes.size,
+        liked_by_current_user: liked_post_ids.include?(post.id)
       }
+    end
+
+    def set_post
+      @post = Post.find_by(id: params[:id])
+      unless @post
+        render json: {
+          success: false,
+          message: "\u6295\u7A3F\u304C\u898B\u3064\u304B\u308A\u307E\u305B\u3093"
+        }, status: :not_found
+      end
+    end
+
+    def post_params
+      params.require(:post).permit(:content, :group_id, :image)
     end
 
     def require_login

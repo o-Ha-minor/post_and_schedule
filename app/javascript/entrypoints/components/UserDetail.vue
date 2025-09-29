@@ -1,3 +1,4 @@
+<!-- app/javascript/entrypoints/components/UserDetail.vue -->
 <template>
   <div class="min-h-screen bg-gray-50 py-8">
     <div class="max-w-4xl mx-auto px-4">
@@ -169,11 +170,11 @@
                     {{ post.likes_count || 0 }} いいね
                   </span>
                   <router-link
-                    :to="`/api/posts/${post.id}`"
+                    :to="{ name: 'PostDetail', params: { id: post.id } }"
                     class="text-indigo-600 hover:text-indigo-800 text-sm font-medium"
-                  >
-                    詳細を見る
-                  </router-link>
+                    >
+                     詳細を見る
+                   </router-link>
                 </div>
               </div>
             </div>
@@ -330,11 +331,14 @@ export default {
   methods: {
     async fetchUser() {
       try {
-        const userId = window.location.pathname.split('/').pop()
+        const userId = this.$route.params.id
         const response = await axios.get(`/api/users/${userId}`)
-        this.user = response.data
-        if (response.ok) {
-          this.user = await response.json()
+        this.user = response.data.data
+        if (response.data && response.data.success !== false) {
+          this.user = response.data.data || {}
+        } else {
+          this.user = {}
+          console.error('ユーザー取得: server returned error', response.data)
         }
       } catch (error) {
         console.error('ユーザー情報取得エラー:', error)
@@ -359,20 +363,14 @@ export default {
           formData.append('user[image]', this.$refs.imageInput.files[0])
         }
         
-        const response = await axios.patch(`/users/${this.user.id}`, formData, {
-          headers: {
-            'X-CSRF-Token': document.querySelector('[name="csrf-token"]').getAttribute('content'),
-            'Accept': 'application/json'
-          }
-        })
-        
-        if (response.ok) {
-          const updatedUser = await response.json()
-          this.user = updatedUser
+        const response = await axios.patch(`/api/users/${this.user.id}`, formData)
+        if (response.data && response.data.success !== false) {
+          const updatedUser = response.data.data
+          this.user = response.data.data || this.user
           this.editMode = false
           alert('プロフィールが更新されました')
         } else {
-          const errorData = await response.json()
+          const errorData = response.data || {}
           alert('更新に失敗しました: ' + (errorData.errors || ['エラーが発生しました']).join(', '))
         }
       } catch (error) {
@@ -407,23 +405,15 @@ export default {
     async createGroup() {
       this.creatingGroup = true
       try {
-        const response = await axios.post('/groups', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'X-CSRF-Token': document.querySelector('[name="csrf-token"]').getAttribute('content'),
-            'Accept': 'application/json'
-          },
-          body: JSON.stringify({
-            group: {
+        const response = await axios.post('/api/groups', {
+          group: {
               name: this.newGroup.name,
               description: this.newGroup.description
             }
           })
-        })
         
-        if (response.ok) {
-          const newGroup = await response.json()
+        if (response.status === 200 && response.data) {
+          const newGroup = response.data.data
           this.user.groups = this.user.groups || []
           this.user.groups.push({
             ...newGroup,
@@ -446,14 +436,24 @@ export default {
     async viewGroupDetail(group) {
       this.selectedGroup = group
       try {
-        const response = await axios.get(`/groups/${group.id}`)
-        if (response.ok) {
-          const groupData = await response.json()
+        const response = await axios.get(`/api/groups/${group.id}`)
+        if (response.data && response.data.success !== false) {
+          const groupData = response.data.data || {}
+          this.selectedGroup = groupData
           this.groupMembers = groupData.users || []
+          this.selectedGroup.members_count = this.groupMembers.length
           this.isMember = this.groupMembers.some(u => Number(u.id) === Number(this.currentUserId))
+        } else {
+          console.error('グループ取得エラー:', response)
+          this.selectedGroup = group
+          this.groupMembers = []
+          this.isMember = false
         }
       } catch (error) {
         console.error('グループメンバー取得エラー:', error)
+        this.selectedGroup = group
+        this.groupMembers = []
+        this.isMember = false
       }
     },
     
@@ -471,18 +471,11 @@ export default {
     },
     async joinGroup() {
       try {
-        const response = await axios.post(`/groups/${this.selectedGroup.id}/join`, {
-          method: 'POST',
-          headers: {
-            'X-CSRF-Token': document.querySelector('[name="csrf-token"]').getAttribute('content'),
-            'Accept': 'application/json'
-          }
-        })
-        if (response.ok) {
-          this.isMember = true
-          const user = await response.json()
-          this.groupMembers.push(user)
-          this.selectedGroup.members_count++
+        const response = await axios.post(`/api/groups/${this.selectedGroup.id}/join`)
+        if (response.data && response.data.success !== false) {
+          await this.viewGroupDetail({ id: this.selectedGroup.id })
+        } else {
+          console.error('join failed', response.data)
         }
       } catch (error) {
         console.error('グループ参加エラー:', error)
@@ -491,17 +484,11 @@ export default {
 
     async leaveGroup() {
       try {
-        const response = await axios.delete(`/groups/${this.selectedGroup.id}/leave`, {
-          method: 'DELETE',
-          headers: {
-            'X-CSRF-Token': document.querySelector('[name="csrf-token"]').getAttribute('content'),
-            'Accept': 'application/json'
-          }
-        })
-        if (response.ok) {
-          this.isMember = false
-          this.groupMembers = this.groupMembers.filter(u => Number(u.id) !== Number(this.currentUserId))
-          this.selectedGroup.members_count--
+        const response = await axios.delete(`/api/groups/${this.selectedGroup.id}/leave`)
+        if (response.data && response.data.success !== false) {
+          await this.viewGroupDetail({ id: this.selectedGroup.id })
+        } else {
+          console.error('leave failed', response.data)
         }
       } catch (error) {
         console.error('グループ脱退エラー:', error)
@@ -510,18 +497,12 @@ export default {
     async deleteUser () {
       if (!confirm("このアカウントを削除します。よろしいですか？")) return;
       try {
-        const response = await axios.delete(`/users/${this.user.id}`, {
-          method: "DELETE",
-          headers: { "X-CSRF-Token": document.querySelector(`[name="csrf-token"]`).getAttribute("content"),
-          "Accept": "application/json"
-          }
-        });
-        if (response.ok) {
+        const response = await axios.delete(`/api/users/${this.user.id}`);
+        if (response.data && response.data.success !== false) {
           alert("アカウントを削除しました");
-          const router = useRouter();
-          router.push('/');
+          this.$router.push('/');
         } else {
-          const error = await response.json();
+          const error = response.data || {}
           alert("削除に失敗しました: " + (error.error || "不明なエラー"));
         }
       } catch (err) {

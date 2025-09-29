@@ -8,10 +8,10 @@
     
     <%= csp_meta_tag %>
     <%= csrf_meta_tags %>
-    
     <%= vite_client_tag %>
     <%= vite_javascript_tag 'entrypoints/application.js' %>
     <%= vite_stylesheet_tag 'styles/application.css', 'data-turbo-track': 'reload'  %>
+    <link rel="preload" href="<%= asset_path('application.css') %>" as="style">
   </head>
 
   <body class="bg-gray-50">

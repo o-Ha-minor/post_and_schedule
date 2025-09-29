@@ -25,7 +25,7 @@ module Api
         end
 
         comment.destroy
-        render json: { message: "deleted", comment_id: params[:id] }, status: :ok
+        render json: { message: "コメントが削除されました", comment_id: params[:id] }, status: :ok
       end
 
       private

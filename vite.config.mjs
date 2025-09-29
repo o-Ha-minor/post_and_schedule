@@ -1,32 +1,28 @@
 import { defineConfig } from 'vite'
-import RubyPlugin from 'vite-plugin-ruby'
 import vue from '@vitejs/plugin-vue'
+import ViteRubyPlugin from 'vite-plugin-ruby'
 import path from 'path'
 
 export default defineConfig({
   plugins: [
-    RubyPlugin(),
+    ViteRubyPlugin(),
     vue()
   ],
   css: {
     postcss: './postcss.config.js', // PostCSS設定を指定
   },
   server: {
-    proxy: {
-      '/api': 'http://localhost:3000'
-    },
+    host: '127.0.0.1',
+    port: 3036,
     hmr: {
-      port: 3036
+      port: 3036,
+      host: '127.0.0.1'
     }
   },
-  // build: {
-  //   rollupOptions: {
-  //     external: ['@hotwired/turbo-rails']
-  //   }
-  // },
+  base: `/`,
   resolve: {
     alias: {
       '@': path.resolve(__dirname, 'app/javascript')
     }
   }
-})
+});

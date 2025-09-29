@@ -47,7 +47,7 @@
                             <router-link to="/login" 
                                 class="text-green-100 hover:text-primary-600 px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200">
                                 ログイン
-                            </router-link to=>
+                            </router-link>
                         </li>
                     </ul>
                 </nav>

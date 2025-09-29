@@ -134,7 +134,7 @@ const isEditing = ref(false)
 onMounted(async () => {
   if (!post.value && props.postId) {
     const res = await fetch(`/posts/${props.postId}.json`, { headers: { Accept: "application/json" }})
-    post.value = await res.json()
+    post.value = res.data
   }
 })
 
@@ -156,9 +156,8 @@ const toggleLike = async () => {
     } else {
       // like
       const res = await fetch(`/likes`, {
-        method: 'POST',
         headers: { 'X-CSRF-Token': csrfToken, 'Content-Type': 'application/json', Accept: 'application/json' },
-        body: JSON.stringify({ post_id: post.value.id })
+        post_id: post.value.id
       })
       if (res.ok) {
         const data = await res.json()
@@ -208,9 +207,8 @@ const submitComment = async () => {
   if (!post.value || !newComment.value.trim()) return
   try {
     const res = await fetch(`/api/posts/${post.value.id}/comments`, {
-      method: 'POST',
       headers: { 'X-CSRF-Token': csrfToken, 'Content-Type': 'application/json', Accept: 'application/json' },
-      body: JSON.stringify({ comment: { content: newComment.value } })
+      comment: { content: newComment.value  }
     })
     if (res.ok) {
       const comment = await res.json()

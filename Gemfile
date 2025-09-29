@@ -76,7 +76,7 @@ gem "solargraph"
 # GPTコメント機能に利用
 gem "ruby-openai", "~> 3.2"
 
-gem 'rack-cors'
+gem "rack-cors"
 
 # gem "dotenv-rails"
 gem "dotenv-rails", groups: [ :development, :test, :production ]

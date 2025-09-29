@@ -1,5 +1,16 @@
 <template>
     <div class="min-h-screen bg-gray-50">
+
+      <!-- グループ選択 -->
+    <div class="max-w-3xl mx-auto mt-6 p-4 bg-white rounded-xl shadow-md">
+      <label class="block mb-2 font-semibold text-gray-700">グループを選択</label>
+      <select v-model="selectedGroupId" class="border-gray-300 rounded-md p-2 w-full">
+        <option value="">表示するグループを選択してください</option>
+        <option v-for="group in groups" :key="group.id" :value="group.id">
+          {{ group.name }}
+        </option>
+      </select>
+    </div>
   
       <!-- 新規投稿フォーム（ログイン時のみ） -->
       <div v-if="isLoggedIn" class="max-w-3xl mx-auto mt-8 p-6 bg-white rounded-xl shadow-md">
@@ -66,15 +77,13 @@
   </template>
   
   <script setup>
-  import { ref, onMounted } from 'vue'
+  import { ref, watch, onMounted } from 'vue'
   import PostCard from './PostCard.vue'
   import { useToast } from 'vue-toastification'
   import { useRouter } from 'vue-router'
-import axios from 'axios'
+  import axios from 'axios'
+
   const router = useRouter()
-
-
-  
   const props = defineProps({
     isLoggedIn: Boolean,
     currentUserId: [Number, String],
@@ -88,50 +97,35 @@ import axios from 'axios'
       default: () => []
     }
   })
-
   const toast = useToast()
   const posts = ref([...props.initialPosts])
   const newPost = ref({ content: '', image: null, groupId: '' })
   const errorMessage = ref('')
+  const selectedGroupId = ref('')
 
   // 初期データが設定されていない場合の処理
   onMounted(async() => {
     console.log('Groups from props:', props.groups)
-    if (props.initialPosts && props.initialPosts.length > 0) {
-      posts.value = [...props.initialPosts]
-    } else {
-    // 投稿一覧を取得
-    await fetchPosts()
-    }
+    if (!posts.value.length) await fetchPostsByGroup(selectedGroupId.value)
   })
 
-  // 投稿一覧を取得
-const fetchPosts = async () => {
-  try {
-    const response = await axios.get('/api/posts', {
-      headers: {
-        'Accept': 'application/json',
-        'X-CSRF-Token': getCsrfToken()
-      }
-    })
-    
-    if (response.ok) {
-      const data = await response.json()
-      posts.value = data.data || data.posts || []
-    }
-  } catch (error) {
-    console.error('投稿の取得に失敗しました:', error)
-    toast.error('投稿の取得に失敗しました')
-  }
-}
+  // グループ変更時に投稿取得
+  watch(selectedGroupId, async (newId) => {
+    await fetchPostsByGroup(newId)
+  })
 
-  // CSRFトークン取得関数
-  const getCsrfToken = () => {
-    const token = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content')
-    if (!token) {
-      console.error('CSRFトークンが見つかりません')
+
+  // 投稿一覧を取得
+  const fetchPostsByGroup = async (groupId) => {
+    try {
+      let url = '/api/posts'
+      if (groupId) url += `?group_id=${groupId}`
+      const response = await axios.get(url)
+      
+      posts.value = response.data.data || response.data.posts || []
+    } catch (err) {
+      console.error(err)
     }
-    return token || ''
   }
 
   const submitPost = async () => {
@@ -157,45 +151,27 @@ const fetchPosts = async () => {
     }
 
     try {
-      const response = await axios.post('/api/posts', {
-        method: 'POST',
-        headers: { 
-          'X-CSRF-Token': getCsrfToken(),
-          'Accept': 'application/json'
-        },
-        body: formData
-      })
-    
-      const data = await response.json()
-      console.log('Response:', { status: response.status, data })
-    
-    
-    if (response.ok && data.success) {
-        const newPostData = data.data || data.post
-        if (newPostData) {
-          posts.value.unshift(newPostData)
+      const response = await axios.post('/api/posts', formData)
+      if (response.data) {
+          const newPostData = response.data.data || response.data.post
+          if (newPostData) {
+            posts.value.unshift(newPostData)
 
-          toast.success(data.message || '投稿しました！')
+            // フォームをリセット
+            newPost.value = { content: '', image: null, groupId: '' }
+            const fileInput = document.querySelector('input[type="file"]')
+            if (fileInput) fileInput.value = ''
 
-           // フォームをリセット
-          newPost.value = { content: '', image: null, groupId: '' }
-          const fileInput = document.querySelector('input[type="file"]')
-          if (fileInput) fileInput.value = ''
-
-          router.push({ name: 'PostDetail', params: { id: newPostData.id } })
-      }
-      
-      errorMessage.value = ''
-    } else {
-      // エラー処理
-      errorMessage.value = data.message || data.errors?.join(', ') || '投稿に失敗しました'
-      toast.error(errorMessage.value)
+            router.push({
+              name: 'PostDetail',
+              params: { id: newPostData.id },
+              query: { from: 'new_post' }
+            })
+          }
+        }
+    } catch (err) {
+      toast.error('投稿に失敗しました')
     }
-  } catch (err) {
-    console.error('投稿エラー:', err)
-    errorMessage.value = 'ネットワークエラーが発生しました'
-    toast.error('投稿に失敗しました')
-  }
 }
 
   const onFileChange = (event) => {

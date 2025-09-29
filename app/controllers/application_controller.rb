@@ -4,19 +4,17 @@ class ApplicationController < ActionController::Base
 
   protected
   def render_api_response(message: nil, data: {}, success: true, errors: [], status: :ok)
-   response_data = {
-     success: success,
-     message: message
-   }
-
-  response_data[:data] = data unless data.empty?
-  response_data[:errors] = errors unless errors.empty?
-
-  render json: response_data, status: status
+    response_data = {
+      success: success,
+      message: message,
+      data: data,
+      errors: errors
+    }
+    render json: response_data, status: status
   end
 
   def logged_in?
-    current_user.present?
+    !@current_user.nil?
   end
 
   def current_user
@@ -42,8 +40,6 @@ class ApplicationController < ActionController::Base
             success: false,
             status: :unauthorized
            )
-        else
-          redirect_to login_path, alert: "ログインが必要です"
         end
       end
   end

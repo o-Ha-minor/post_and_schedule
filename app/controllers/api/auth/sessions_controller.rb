@@ -3,43 +3,44 @@ module Api
   module Auth
     # 共通の認証ロジックをここに追加できます
     class SessionsController < ApplicationController
-      before_action :set_current_user, except: [ :login, :register ]
       skip_before_action :set_current_user
+      before_action :set_current_user, except: [ :login, :register ]
       before_action :require_login, only: [ :check ]
 
       # 認証状態確認
       def check
         if logged_in?
-          render json: {
-            success: true,
-            user: {
-              id: current_user.id,
-              name: current_user.name,
-              email: current_user.email,
-              image_url: current_user.image.attached? ? url_for(current_user.image) : nil
-            },
-            groups: current_user.groups.map { |g| { id: g.id, name: g.name } }
-          }
+          render_api_response(
+            data: {
+              user: user_data(current_user),
+              groups: current_user.groups.includes(:users).map { |g| group_data(g) }
+            }
+          )
         else
-          render json: { success: false }, status: :unauthorized
+          render_api_response(message: "未ログイン", success: false, status: :unauthorized)
         end
       end
 
       # ログイン
       def login
         user = User.find_by(name: params[:name])
-
-        unless user&.authenticate(params[:password])
+        if user&.authenticate(params[:password])
+          session[:user_id] = user.id
+          ensure_default_group(user)
           render_api_response(
-            message: "ユーザが見つかりません", success: false, status: :unauthorized)
-            return
-        end
-        unless user.authenticate(params[:password])
+            message: "ログイン成功",
+            data: {
+              user: user_data(user),
+              groups: user.groups.map { |g| group_data(g) }
+            }
+          )
+        else
           render_api_response(
-            message: "passwordが違います", success: false, status: :unauthorized)
-            return
+            message: "ユーザー名またはパスワードが正しくありません",
+            success: false,
+            status: :unauthorized
+          )
         end
-        session[:user_id] = user.id
       end
 
       # ユーザー登録
@@ -49,13 +50,13 @@ module Api
         if user.save
           session[:user_id] = user.id
           ensure_default_group(user)
-
           render_api_response(
             message: "アカウントを作成しました",
             data: {
               user: user_data(user),
               groups: user.groups.map { |g| group_data(g) }
-            }
+            },
+            status: :created
           )
         else
           render_api_response(

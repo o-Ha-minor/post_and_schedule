@@ -9,7 +9,7 @@ class Api::UsersController < ApplicationController
 
   def show
     user = User.with_profile_data.find(params[:id])
-    render json: user.profile_data_for_json
+    render json: { success: true, data: user.profile_data_for_json }
   end
 
   def create

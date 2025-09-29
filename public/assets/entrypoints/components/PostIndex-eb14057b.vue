@@ -43,6 +43,7 @@
   import { ref, onMounted } from 'vue'
   import PostCard from './PostCard.vue'
   import { useRouter } from 'vue-router'
+import { data } from 'autoprefixer'
   
   const props = defineProps({
     isLoggedIn: Boolean,
@@ -80,17 +81,15 @@
     const csrfToken = document.querySelector('meta[name="csrf-token"]').content
 
     try {
-      const response = await fetch("/posts", {
-        method: "POST",
+      const res = await fetch("/posts", formData, {
         headers: { "X-CSRF-Token": csrfToken, "Accept": "application/json" },
-        body: formData
       })
       
-      if (response.redirected) {
+      if (res.status === 422 && data) {
         const router = useRouter();
-        router.push(response.url);
+        router.push(res.url);
       } else {
-        const data = await response.json()
+        const data = res.data
         if (data) {
           posts.value.unshift(data) // Vueの配列を更新
           newPost.value.content = ""

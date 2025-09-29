@@ -1,3 +1,4 @@
+<!-- app/javascript/entrypoints/components/UserIndex.vue -->
 <template>
     <div class="min-h-screen bg-gray-50 py-8">
       <div class="max-w-6xl mx-auto px-4">
@@ -123,7 +124,11 @@ import axios from 'axios'
       async fetchUsers() {
         try {
           const response = await axios.get('/api/users')
-          this.users = response.data
+          if (response.data && response.data.success !== false) {
+            this.users = response.data.data || []
+          } else {
+            this.users = []
+          }
         } catch (error) {
           console.error('ユーザー取得エラー:', error)
         }

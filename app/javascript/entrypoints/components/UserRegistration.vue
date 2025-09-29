@@ -103,7 +103,7 @@
   </template>
   
   <script setup>
-  import { ref, computed, teactive} from 'vue'
+  import { ref, computed, reactive} from 'vue'
   import { useRouter } from 'vue-router'
   import axios from 'axios'
 

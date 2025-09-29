@@ -91,16 +91,14 @@ const handleLogin = async () => {
   successMessage.value = ''
 
   try {
-    const result = await authStore.login(loginForm.name, loginForm);
+    const result = await authStore.login(loginForm);
     if (result.success) {
-      successMessage.value = 'ログインに成功しました！'
       router.push('/');
     } else {
       errorMessage.value = result.message || 'ログインに失敗しました';
     }
   } catch (error) {
     console.error('ログインエラー:', error);
-    errorMessage.value = 'ログイン中にエラーが発生しました。';
   } finally {
     isLoading.value = false;
   }

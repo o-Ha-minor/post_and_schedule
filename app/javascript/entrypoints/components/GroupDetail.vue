@@ -1,3 +1,4 @@
+<!-- /app/javascript/entrypoints/components/GroupDetail.vue -->
 <template>
     <div>
       <h2>{{ group.name }}</h2>
@@ -34,24 +35,24 @@ import { ref, onMounted } from "vue";
   
   // グループ詳細取得
   const fetchGroup = async () => {
-    const res = await axios.get(`/groups/${props.groupId}.json`);
+    const response = await axios.get(`/groups/${props.groupId}.json`);
     group.value = data;
     // 自分が含まれているか確認
-    isMember.value = res.users.some(u => u.id === props.currentUserId);
+    isMember.value = response.users.some(u => u.id === props.currentUserId);
   };
   
   // 参加処理
   const joinGroup = async () => {
     await axios.post(`/groups/${props.groupId}/join.json`);
-    if (res.ok) {
+    if (response.data) {
       await fetchGroup(); // 再取得して反映
     }
   };
   
   // 脱退処理
   const leaveGroup = async () => {
-    await axios.delete(`/groups/${props.groupId}/leave.json`);
-    if (res.ok) {
+    await axios.delete(`/api/groups/${props.groupId}/leave.json`);
+    if (response.data) {
       await fetchGroup();
     }
   };
