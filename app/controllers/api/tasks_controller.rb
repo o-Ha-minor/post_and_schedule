@@ -34,7 +34,7 @@ class Api::TasksController < ApplicationController
   end
 
   def completed
-    @task = Task.find_by(id: params[:id])
+    @task = Task.where(group: @current_user.groups).find_by(id: params[:id])
 
     if @task
       @task.update(status: "completed", completed_at: Time.current)
@@ -91,11 +91,11 @@ class Api::TasksController < ApplicationController
   end
 
   def destroy
-    @task = Task.find_by(id: params[:id])
+    @task = Task.where(group: @current_user.groups).find_by(id: params[:id])
 
     if @task
       @task.destroy
-     json { head :no_content }
+     render json: { message: "削除しました" }, status: :ok
     else
       render json: { error: "タスクが見つかりません" }, status: :not_found
     end

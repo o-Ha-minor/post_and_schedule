@@ -227,10 +227,10 @@
           let response;
           if (this.taskData?.id) {
             // 編集の場合
-            response = await axios.put(`/tasks/${this.taskData.id}`, { task: taskPayload });
+            response = await axios.put(`/api/tasks/${this.taskData.id}`, { task: taskPayload });
           } else {
             // 新規作成の場合
-            response = await axios.post("/tasks", { task: taskPayload });
+            response = await axios.post("/api/tasks", { task: taskPayload });
           }
           
           console.log('Save response:', response.data);

@@ -43,7 +43,8 @@
   import { ref, onMounted } from 'vue'
   import PostCard from './PostCard.vue'
   import { useRouter } from 'vue-router'
-import { data } from 'autoprefixer'
+  import { data } from 'autoprefixer'
+  import axios from 'axios'
   
   const props = defineProps({
     isLoggedIn: Boolean,
@@ -78,18 +79,14 @@ import { data } from 'autoprefixer'
     if (newPost.value.image) {
       formData.append("post[image]", newPost.value.image)
     }
-    const csrfToken = document.querySelector('meta[name="csrf-token"]').content
 
     try {
-      const res = await fetch("/posts", formData, {
-        headers: { "X-CSRF-Token": csrfToken, "Accept": "application/json" },
-      })
-      
-      if (res.status === 422 && data) {
+      const response = await axios.post("/api/posts", formData)
+      if (response.status === 422 && data) {
         const router = useRouter();
         router.push(res.url);
       } else {
-        const data = res.data
+        const data = response.data.data
         if (data) {
           posts.value.unshift(data) // Vueの配列を更新
           newPost.value.content = ""

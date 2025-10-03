@@ -41,7 +41,7 @@ const router = useRouter()
 
 onMounted(async () => {
   // アプリ起動時に認証状態をチェック
-  await authStore.checkAuth()
+  // await authStore.checkAuth()
 })
 
 const handleLogout = async () => {

@@ -88,8 +88,8 @@ export default {
   methods: {
     async fetchEvents() {
       try {
-        const res = await axios.get("/events.json");
-        this.events = res.data.map(event => ({
+        const responce = await axios.get("/api/events.json");
+        this.events = responce.data.map(event => ({
           id: event.id,
           title: event.title,
           start: event.start_time || event.start,
@@ -155,16 +155,16 @@ export default {
       const eventId = info.event.id;
       this.showForm = true; 
       
-      axios.get(`/events/${eventId}.json`)
-      .then(res => {
+      axios.get(`/api/events/${eventId}.json`)
+      .then(responce => {
         this.selectedEvent = {
-          id: res.data.id,
-          title: res.data.title,
-          start: res.data.start_time || res.data.start,
-          end: res.data.end_time || res.data.end,
-          description: res.data.description,
-          group_id: res.data.group_id,
-          group: res.data.group
+          id: responce.data.id,
+          title: responce.data.title,
+          start: responce.data.start_time || res.data.start,
+          end: responce.data.end_time || res.data.end,
+          description: responce.data.description,
+          group_id: responce.data.group_id,
+          group: responce.data.group
         };
         console.log('Selected event:', this.selectedEvent);
       })

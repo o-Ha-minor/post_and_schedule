@@ -11,7 +11,6 @@ import "../styles/application.css"
 
 const app = createApp(App);
 const pinia = createPinia();
-const toast = useToast();
 
 app.use(pinia);
 app.use(router);
@@ -30,6 +29,8 @@ app.use(Toast, {
   rtl: false
 });
 
+const toast = useToast();
+
 const setupAxios = () => {
   const token = document.querySelector('[name="csrf-token"]')?.getAttribute('content')
   if (token) {
@@ -47,8 +48,13 @@ const setupAxios = () => {
       return response
     },
     error => {
-      const toast = useToast()
+      const toast = useToast();
+      const originalRequest = error.config || {};
+
       if (error.response?.status === 401) {
+        if (originalRequest.skipAuthRedirect || (originalRequest.url && originalRequest.url.include('/api/auth/check'))){
+          return Promise.reject(error)
+        }
         // 認証エラー
         toast.error("ログインが必要です")
         router.push({ name: 'Login', query: { redirect: router.currentRoute.value.fullPath } })

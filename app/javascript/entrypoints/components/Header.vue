@@ -1,5 +1,5 @@
 <template>
-    <header class="bg-indigo-800 shadow-sm border-gray-200 sticky top-8 z-50">
+    <header class="bg-indigo-800 shadow-sm border-gray-200 sticky top-0.5 z-50">
         <div class="max-w-9xl mx-auto px-3 sm:px-5 lg:px-8">
             <div class="flex justify-between h-14">
                 <!-- ロゴ部分 -->
@@ -31,12 +31,12 @@
                                 ログアウト
                             </button>
                         </li>
-                        <li v-if="!isLoggedIn">
+                        <!-- <li v-if="!isLoggedIn">
                             <a href="/about" 
                                 class="text-green-100 hover:text-primary-600 px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200">
                                 アプリについて
                             </a>
-                        </li>
+                        </li> -->
                         <li v-if="!isLoggedIn">
                             <router-link :to="{ name: 'UserRegistration' }"
                                 class="text-green-100 hover:text-primary-600 px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200">
@@ -79,10 +79,10 @@
                         class="block text-indigo-800 hover:text-primary-600 px-3 py-2 rounded-md text-base font-medium bg-transparent border-0 cursor-pointer w-full text-left">
                     ログアウト
                 </button>
-                <a v-if="!isLoggedIn" href="/about" 
+                <!-- <a v-if="!isLoggedIn" href="/about" 
                     class="block text-indigo-800 hover:text-primary-600 px-3 py-2 rounded-md text-base font-medium">
                     アプリについて
-                </a>
+                </a> -->
                 <a v-if="!isLoggedIn"
                     @click="closeMobileMenu"
                     class="block text-indigo-800 hover:text-primary-600 px-3 py-2 rounded-md text-base font-medium cursor-pointer">

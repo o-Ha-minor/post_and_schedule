@@ -1,5 +1,5 @@
 <template>
-   <div class="bg-sky-50 min-h-screen flex flex-col items-center py-10">
+   <div class="bg-sky-50 min-h-screen flex flex-col items-center py-5">
         <h1 class="text-indigo-800 text-3xl text-center font-extrabold mb-2">Post-Them </h1>
         <h2 class="text-lg text-gray-600 mb-8 text-center">こんにちは</h2>
         <div class="grid grid-cols-1 sm:grid-cols-3 gap-6 w-full max-w-3xl px-4">

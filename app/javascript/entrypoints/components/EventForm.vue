@@ -166,14 +166,14 @@ export default {
   methods: {
     async deleteEvent() {
         if (confirm("削除してもよろしいですか？")) {
-          await axios.delete(`/events/${this.eventData.id}.json`);
+          await axios.delete(`/api/events/${this.eventData.id}.json`);
           this.$emit("deleted");
         }
       },
     // グループを取得するメソッドを追加
     async fetchGroups() {
       try {
-        const response = await axios.get("/groups.json");
+        const response = await axios.get("/api/groups.json");
         this.localGroups = response.data;
         console.log("Fetched groups:", this.localGroups);
       } catch (error) {
@@ -286,9 +286,9 @@ export default {
 
         let response;
         if (this.eventData?.id) {
-          response = await axios.put(`/events/${this.eventData.id}.json`, { event: eventPayload });
+          response = await axios.put(`/api/events/${this.eventData.id}.json`, { event: eventPayload });
         } else {
-          response = await axios.post("/events.json", { event: eventPayload });
+          response = await axios.post("/api/events.json", { event: eventPayload });
         }
         
         console.log('Save response:', response.data);

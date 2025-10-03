@@ -157,7 +157,7 @@
     methods: {
       async fetchTasks() {
         try {
-          const response = await axios.get('/tasks.json')
+          const response = await axios.get('/api/tasks.json')
           this.tasks = response.data.tasks || []
           this.completedTasks = response.data.completed_tasks || []
         } catch (error) {
@@ -174,7 +174,7 @@
   
       async completeTask(task) {
         try {
-          await axios.patch(`/tasks/${task.id}`, { completed: true })
+          await axios.patch(`/api/tasks/${task.id}`, {task: { status: "completed" }})
           await this.fetchTasks() // タスク一覧を再取得
         } catch (error) {
           console.error('タスクの完了に失敗しました:', error)
@@ -188,7 +188,7 @@
         }
   
         try {
-          await axios.delete(`/tasks/${task.id}`)
+          await axios.delete(`/api/tasks/${task.id}`)
           await this.fetchTasks() // タスク一覧を再取得
         } catch (error) {
           console.error('タスクの削除に失敗しました:', error)

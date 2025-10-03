@@ -32,7 +32,7 @@
       },
       async deleteEvent() {
         if (confirm("削除してもよろしいですか？")) {
-          await axios.delete(`/events/${this.eventData.id}.json`);
+          await axios.delete(`/api/events/${this.eventData.id}.json`);
           this.$emit("deleted");
         }
       },

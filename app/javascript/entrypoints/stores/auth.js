@@ -23,15 +23,18 @@ export const useAuthStore = defineStore('auth', {
     async checkAuth() {
       console.log('Checking auth...');
       try {
-        const response = await axios.get('/api/auth/check', { withCredentials: true });
+        const response = await axios.get('/api/auth/check', { withCredentials: true, skipAuthRedirect: true });
         if (response.data.success) {
           this.setUser(response.data.data.user, response.data.data.groups);
         } else {
           this.clearAuth();
         }
       }catch (error) {
-        console.error('Check auth error:', error);
-        this.clearAuth();
+        if  (error.response?.status === 401){
+          this.clearAuth();
+        } else {
+          console.error('Check auth error:', error);
+        } 
       } finally {
         this.initialized = true;
       }
