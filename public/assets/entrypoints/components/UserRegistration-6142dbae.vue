@@ -7,6 +7,13 @@
           </h2>
         </div>
         
+        <!-- エラーメッセージ -->
+        <div v-if="errors.length > 0" class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative">
+          <ul class="list-disc list-inside space-y-1">
+            <li v-for="error in errors" :key="error">{{ error }}</li>
+          </ul>
+        </div>
+        
         <!-- 成功メッセージ -->
         <div v-if="successMessage" class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative">
           {{ successMessage }}
@@ -129,24 +136,26 @@
     }
 
     try {
-      const result = await authStore.register({
-        name: registrationForm.name,
-        email: registrationForm.email,
-        password: registrationForm.password,
-        password_confirmation: registrationForm.password_confirmation
+      const response = await axios.post('/api/users', {
+        user: {
+          name: registrationForm.name,
+          email: registrationForm.email,
+          password: registrationForm.password,
+          password_confirmation: registrationForm.password_confirmation
+        }
       })
 
-      if (result.success) {
+      if (response.data.success) { 
         successMessage.value = '登録が完了しました！'
         router.push({ path: '/', query: { success: '登録が完了しました！' } })
       } else {
-        errors.value = result.errors || [result.message || '登録に失敗しました']
+        errors.value = response.data.errors || ['登録に失敗しました']
       }
     } catch (err) {
       errors.value = ['通信に失敗しました']
     } finally {
       isLoading.value = false
+    }
   }
-}
     
 </script>

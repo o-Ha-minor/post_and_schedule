@@ -73,7 +73,7 @@ export const useAuthStore = defineStore('auth', {
       }
     },
 
-    async logout() {  
+    async logout() {
       try {
         const response = await axios.delete('/api/auth/logout',{
             withCredentials: true
@@ -87,7 +87,6 @@ export const useAuthStore = defineStore('auth', {
       } catch (error) {
         console.error('ログアウトエラー:', error)
       }
-      
       // エラーが発生してもログアウト状態にする
       this.clearAuth()
       return { success: true }

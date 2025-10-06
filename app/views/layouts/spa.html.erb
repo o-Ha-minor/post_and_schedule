@@ -3,16 +3,13 @@
 <html>
   <head>
     <title>Post-Them</title>
-    <meta name="viewport" content="width=device-width,initial-scale=1">
-    <meta name="csrf-token" content="<%= form_authenticity_token %>">
-    
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+       
     <%= csp_meta_tag %>
     <%= csrf_meta_tags %>
     <%= vite_client_tag %>
     <%= vite_javascript_tag 'entrypoints/application.js' %>
-    <%= vite_stylesheet_tag 'styles/application.css', 'data-turbo-track': 'reload'  %>
-    <link rel="preload" href="<%= asset_path('application.css') %>" as="style">
-  </head>
+   </head>
 
   <body class="bg-gray-50">
     <div id="app">

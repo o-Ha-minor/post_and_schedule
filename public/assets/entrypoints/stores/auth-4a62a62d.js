@@ -34,13 +34,13 @@ export const useAuthStore = defineStore('auth', {
           this.clearAuth();
         } else {
           console.error('Check auth error:', error);
-        }
+        } 
       } finally {
         this.initialized = true;
       }
     },
-
-    async login(credentials) {
+  
+    async login(credentials) {      
       try {
         const response = await axios.post('/api/auth/login', credentials, { withCredentials: true });
         if (response.data.success) {
@@ -55,7 +55,7 @@ export const useAuthStore = defineStore('auth', {
       }
     },
 
-    async register(userData) {
+    async register(userData) {      
       try {
         const response = await axios.post('/api/auth/register', { user: userData }, {
           withCredentials: true,
