@@ -17,9 +17,18 @@ class Api::UsersController < ApplicationController
     if user.save
       # JWT などのトークンを返すならここ
       session[:user_id] = user.id
-      render json: { message: "登録完了", user: user.profile_data_for_json }, status: :created
+      render_api_response(
+        message: "登録完了",
+        data: { user: user.profile_data_for_json },
+        status: :created
+      )
     else
-      render json: { errors: user.errors.full_messages }, status: :unprocessable_entity
+      render_api_response(
+      message: "登録に失敗しました",
+      success: false,
+      errors: user.errors.full_messages,
+      status: :unprocessable_entity
+    )
     end
   end
 
