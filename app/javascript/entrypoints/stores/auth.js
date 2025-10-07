@@ -60,12 +60,17 @@ export const useAuthStore = defineStore('auth', {
         const response = await axios.post('/api/auth/register', { user: userData }, {
           withCredentials: true,
         })
-        if (response.data.success) {
-          this.setUser(response.data.data.user, response.data.data.groups)
+
+        const isSuccess = (typeof response.data?.success !== 'undefined')
+         ? response.data.success
+         : (response.status >= 200 && response.status < 300 && !!response.data?.data?.user);
+
+        if (isSuccess) {
+          this.setUser(response.data.data.user, response.data.data.groups || [])
           return { success: true }
         } else {
 
-          return { success: false, errors: data.errors }
+          return { success: false, errors: response.data?.errors || [response.data?.message || '登録に失敗しました'] }
         }
       } catch (error) {
         console.error('登録エラー:', error)

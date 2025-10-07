@@ -52,7 +52,7 @@ const setupAxios = () => {
       const originalRequest = error.config || {};
 
       if (error.response?.status === 401) {
-        if (originalRequest.skipAuthRedirect || (originalRequest.url && originalRequest.url.include('/api/auth/check'))){
+        if (originalRequest.skipAuthRedirect || (originalRequest.url && originalRequest.url.includes('/api/auth/check'))){
           return Promise.reject(error)
         }
         // 認証エラー
