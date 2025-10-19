@@ -11,15 +11,27 @@ Rails.application.routes.draw do
       resources :comments, only: [ :create, :destroy ]
     end
 
-    resources :users, only: [ :index, :show, :create, :update, :destroy ]
+    resources :users, only: [ :index, :show, :create, :update, :destroy ] do
+      member do
+        patch :update_avatar
+      end
+    end
     resources :tasks do
       post :completed, on: :member
     end
+
     resources :events
     resources :likes, only: [ :create, :destroy ]
+
     resources :groups, only: [ :index, :show, :create ] do
       post "join", on: :member
       delete "leave", on: :member
+    end
+
+    resources :ai_images, only: [ :index ] do
+      collection do
+        post :update_ai_images
+      end
     end
   end
 
@@ -29,8 +41,8 @@ Rails.application.routes.draw do
   # 開発中の便利ルート
   get "about" => "home#about"
 
-# config/routes.rb
-get "/favicon.ico", to: redirect("/assets/favicon.ico")
+  # config/routes.rb
+  get "/favicon.ico", to: redirect("/assets/favicon.ico")
 
   # SPA 用キャッチオール（HTML を要求するリクエストだけ）
   get "*path", to: "home#spa", constraints: ->(request) {

@@ -56,7 +56,7 @@ group :development do
   gem "web-console"
 
   # File watching for development
-  gem "listen", "~> 3.3"
+  gem "listen", "~> 3.9.0"
 end
 
 group :test do
