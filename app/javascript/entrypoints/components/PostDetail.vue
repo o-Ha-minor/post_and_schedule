@@ -23,9 +23,9 @@
         </div>
       </div>
       <!-- 表示モード -->
-    <div v-if="!isEditing">
-      <p class="text-gray-700">{{ post.content }}</p>
-      <img v-if="post.image_url" :src="post.image_url" class="w-64 rounded my-2" />
+      <div v-if="!isEditing">
+        <p class="text-gray-700">{{ post.content }}</p>
+        <img v-if="post.image_url" :src="post.image_url" class="w-64 rounded my-2" />
         <div v-if="isOwner" class="flex items-center">
           <button @click="isEditing = true"
                   class="px-4 py-2 bg-indigo-500 hover:bg-indigo-600 rounded-md text-white mx-2">
@@ -37,45 +37,55 @@
               削除
             </button>
           </div>
+        </div>
       </div>
-    </div>
 
-    <!-- 編集モード -->
-    <div v-else>
-      <FormComponent
-        :fields="[
-          { key: 'content', label: '本文', type: 'textarea' },
-          { key: 'image', label: '画像', type: 'image' }
-        ]"
-        :record="post"
-        @submit="savePost"
-      />
+      <!-- 編集モード -->
+      <div v-else>
+        <FormComponent
+          :fields="[
+            { key: 'content', label: '本文', type: 'textarea' },
+            { key: 'image', label: '画像', type: 'image' }
+          ]"
+          :record="post"
+          @submit="savePost"
+        />
 
-      <button @click="isEditing = false"
-              class="bg-gray-400 text-white px-3 py-1 rounded mt-2">
-        キャンセル
-      </button>
-    </div>
-    <div>
-      <!-- いいね -->
-      <div class="flex items-center space-x-4">
-        <span class="text-sm text-gray-600">{{ post.likes_count || 0 }} いいね！</span>
-        <button
-          @click="toggleLike"
-          class="px-4 py-2 rounded-md text-white"
-          :class="post.liked ? 'bg-indigo-500 hover:bg-indigo-600' : 'bg-pink-500 hover:bg-pink-600'"
-        >
-          {{ post.liked ? 'いいね解除' : 'いいね' }}
+        <button @click="isEditing = false"
+                class="bg-gray-400 text-white px-3 py-1 rounded mt-2">
+          キャンセル
         </button>
       </div>
-  </div>
+      <div>
+        <!-- いいね -->
+        <div class="flex items-center space-x-4">
+          <span class="text-sm text-gray-600">{{ post.likes_count || 0 }} いいね！</span>
+          <button
+            @click="toggleLike"
+            class="px-4 py-2 rounded-md text-white"
+            :class="post.liked ? 'bg-indigo-500 hover:bg-indigo-600' : 'bg-pink-500 hover:bg-pink-600'"
+          >
+            {{ post.liked ? 'いいね解除' : 'いいね' }}
+          </button>
+        </div>
+      </div>
+
+
 
       <!-- AIコメント -->
-      <div class="bg-indigo-50 p-4 rounded-lg">
-        <h3 class="font-semibold text-indigo-700 mb-2">コンシェルジュのひとこと</h3>
-        <p class="text-gray-700 mb-2">{{ post.ai_comment || "解析中..." }}</p>
-        <p class="text-sm text-gray-500">感情判定: {{ post.sentiment || "解析中..." }}</p>
-        <p class="text-sm text-gray-500">信頼度スコア: {{ post.sentiment_score ? post.sentiment_score.toFixed(3) : "-" }}</p>
+      <div class="bg-indigo-50 p-4 rounded-lg flex items-start space-x-4">
+        <img
+          v-if="aiImageUrl"
+          :src="aiImageUrl"
+          alt="AIキャラ"
+          class="w-40 h-40 rounded-full object-cover border-2 border-indigo-200"
+        />
+        <div>
+          <h3 class="font-semibold text-indigo-700 mb-2">今日のひとこと</h3>
+          <p class="text-gray-700 mb-2">{{ post.ai_comment || "解析中..." }}</p>
+          <p class="text-sm text-gray-500">感情判定: {{ post.sentiment || "解析中..." }}</p>
+          <p class="text-sm text-gray-500">信頼度スコア: {{ post.sentiment_score ? post.sentiment_score.toFixed(3) : "-" }}</p>
+        </div>
       </div>
 
       <!-- コメントフォーム -->
@@ -237,4 +247,23 @@ const savePost = async (updated) => {
     console.error("network error", err)
   }
 }
+
+const aiImageUrl = ref(null)
+const currentUser = ref(null) // もしログインユーザーを表示するなら
+
+onMounted(async () => {
+  try {
+    // ユーザーのAIキャラ取得
+    const userRes = await axios.get(`/api/users/${currentUser.value?.id || 3}`)
+    const aiCharacter = userRes.data.data.ai_character || 'tanuki'
+
+    // AI画像URL生成API呼び出し
+    const res = await axios.get('/api/ai_images/generate_image_url')
+    aiImageUrl.value = res.data.data.image_url || `/ai_images/${aiCharacter}_neutral.png`
+
+  } catch (err) {
+    console.error('AI画像URL取得エラー:', err)
+  }
+  
+})
 </script>

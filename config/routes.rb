@@ -12,8 +12,10 @@ Rails.application.routes.draw do
     end
 
     resources :users, only: [ :index, :show, :create, :update, :destroy ] do
-      member do
+      collection do
         patch :update_avatar
+        patch :update_ai_images
+        patch :update_ai_expression
       end
     end
     resources :tasks do
@@ -30,7 +32,7 @@ Rails.application.routes.draw do
 
     resources :ai_images, only: [ :index ] do
       collection do
-        post :update_ai_images
+        get :generate_image_url
       end
     end
   end

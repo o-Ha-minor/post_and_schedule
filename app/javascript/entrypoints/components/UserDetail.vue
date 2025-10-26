@@ -64,6 +64,21 @@
                   キャンセル
                 </button>
               </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">AIキャラクター</label>
+                <div class="grid grid-cols-3 gap-3">
+                  <div 
+                    v-for="avatar in aiAvatars" 
+                    :key="avatar.name" 
+                    class="cursor-pointer p-2 rounded-lg border"
+                    :class="avatar.name === selectedAvatar ? 'border-indigo-500 bg-indigo-50' : 'border-gray-300'"
+                    @click="selectAvatar(avatar)"
+                  >
+                    <img :src="avatar.url" class="w-20 h-20 object-cover rounded-lg mx-auto" />
+                    <p class="text-center text-sm mt-1 text-gray-700">{{ avatar.display_name.replace('.png','') }}</p>
+                  </div>
+                </div>
+              </div>
             </div>
             
             <!-- 表示モード -->
@@ -314,7 +329,9 @@ export default {
       creatingGroup: false,
       selectedGroup: null,
       groupMembers: [],
-      isMember: false
+      isMember: false,
+      aiAvatars: [],
+      selectedAvatar: null 
     }
   },
   computed: {
@@ -326,6 +343,7 @@ export default {
     // ユーザー情報が空の場合、APIから取得
     if (!this.user.id) {
       await this.fetchUser()
+      await this.loadAiAvatars()
     }
   },
   methods: {
@@ -509,9 +527,29 @@ export default {
         console.error("削除エラー:", err);
         alert("削除中にエラーが発生しました");
       }
+    },
+    async loadAiAvatars() {
+      try {
+        const res = await axios.get('/api/ai_images')
+        this.aiAvatars = res.data.data.avatars
+      } catch (err) {
+        console.error('AI画像一覧取得エラー:', err)
+      }
+    },
+    async selectAvatar(avatar) {
+      this.selectedAvatar = avatar.name
+      try {
+        const avatarName = avatar.name.endsWith('.png') ? avatar.name : `${avatar.name}.png`
+        await axios.patch('/api/users/update_ai_images', { avatar_name: avatarName })
+        alert('キャラクターを変更しました')
+      } catch (err) {
+        console.error('キャラ更新エラー:', err)
+        alert('変更に失敗しました')
+      }
     }
   }
 }
+
 
 
 </script>

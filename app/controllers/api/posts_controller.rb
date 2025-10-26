@@ -79,6 +79,7 @@ module Api
               sentiment_score: ai_comment[:score],
               ai_comment: ai_comment[:comment]
             )
+            @current_user.update(ai_expression: ai_comment[:label])
           end
         rescue => e
           Rails.logger.error("AI comment error: #{e.message}")

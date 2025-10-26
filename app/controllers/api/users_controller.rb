@@ -3,23 +3,45 @@ class Api::UsersController < ApplicationController
   skip_before_action :verify_authenticity_token
 
   def update_ai_images
-    ai_images_name = params[:avatar_name].to_s
+    raw = params[:avatar_name].to_s
+    return render_api_response(message: "パラメータが空です", success: false, status: :unprocessable_entity) if raw.blank?
+
+    # ファイル名からベース部分だけ取り出し
+    base = File.basename(raw).sub(/\.(png|jpe?g|gif)\z/i, "")
+    char = base.split("_").first
+
+    # 強制的に neutral に統一
+    filename = "#{char}_neutral.png"
     ai_images_dir = Rails.root.join("public", "ai_images")
-    if ai_images_name.blank? || !File.exist?(ai_images_dir.join(ai_images_name))
-      return render_api_response(message: "アバターが見つかりません", success: false, status: :unprocessable_entity)
+
+    unless File.exist?(ai_images_dir.join(filename))
+      return render_api_response(
+        message: "アバターが見つかりません (#{filename})",
+        success: false,
+        status: :unprocessable_entity
+      )
     end
 
-    if current_user.update(ai_character: avatar_name)
-      render_api_response(message: "アバターを更新しました", data: { avatar_url: "/ai_images/#{ai_images_name}" })
-    else
-      render_api_response(message: "アバターの更新に失敗しました", success: false, errors: current_user.errors.full_messages, status: :unprocessable_entity)
-    end
+    # バリデーション無視してDB更新
+    current_user.update_columns(ai_character: char, ai_expression: "neutral")
+
+    render_api_response(
+      message: "アバターを更新しました",
+      data: {
+        ai_character: char,
+        ai_expression: "neutral",
+        avatar_url: "/ai_images/#{filename}"
+      }
+    )
   end
-
   # 感情分析の結果を受け取り、ai_expression を更新する
   def update_ai_expression
-    expression = params[:expression].to_i
+    expression = params[:expression]
+    valid_expressions = %w[positive neutral negative]
 
+    unless valid_expressions.include?(expression)
+      return render_api_response(message: "感情値が不正です", success: false, status: :unprocessable_entity)
+    end
     # 感情分析の結果を保存
     if current_user.update(ai_expression: expression)
       render_api_response(message: "感情分析結果を更新しました", data: { expression: expression })
@@ -44,8 +66,6 @@ class Api::UsersController < ApplicationController
   def create
     user = User.new(user_params)
     if user.save
-      # JWT などのトークンを返すならここ
-      session[:user_id] = user.id
       render_api_response(
         message: "登録完了",
         data: { user: user.profile_data_for_json },
