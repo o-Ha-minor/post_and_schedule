@@ -66,6 +66,7 @@ class Api::UsersController < ApplicationController
   def create
     user = User.new(user_params)
     if user.save
+      session[:user_id] = user.id
       render_api_response(
         message: "登録完了",
         data: { user: user.profile_data_for_json },
