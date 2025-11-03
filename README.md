@@ -102,10 +102,10 @@ rails s
 ---
 
 ## 📷 画面イメージ
-[トップ](app/public/app_image/a_home.png)
-[投稿一覧](app/public/app_image/f_post_index.png)
-[カレンダー（タスク連携）](app/public/app_image/d_event.png)
-[AIコメントとキャラクター表示](app/public/app_image/g_post_show.png)
+[トップ](public/app_image/a_home.png)
+[投稿一覧](public/app_image/f_post_index.png)
+[カレンダー（タスク連携）](public/app_image/d_event.png)
+[AIコメントとキャラクター表示](public/app_image/g_post_show.png)
 
 ---
 
@@ -131,6 +131,6 @@ rails s
 ---
 
 ## 🏁 一言
-> 身近な課題から始まり、自身が日常生活においてAIに励まされることから機能を追加しました。 
-> 今後もバックエンド技術を中心に、AI・クラウド・UIデザインについて学習し、ユーザー体験をより豊かにしていきたいです。
+身近な課題から始まり、自身が日常生活においてAIに励まされることから機能を追加しました。 
+今後もバックエンド技術を中心に、AI・クラウド・UIデザインについて学習し、ユーザー体験をより豊かにしていきたいです。
 
