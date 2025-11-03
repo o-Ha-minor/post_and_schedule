@@ -1,113 +1,138 @@
-#  Post and Schedule(POST-Them)
+# Post and Schedule（POST-Them）
 
-## 概要
+![Rails](https://img.shields.io/badge/Ruby_on_Rails-8.0.1-red?logo=rubyonrails&logoColor=white)
+![Vue](https://img.shields.io/badge/Vue.js-3.x-4FC08D?logo=vue.js&logoColor=white)
+![TailwindCSS](https://img.shields.io/badge/Tailwind_CSS-3.x-06B6D4?logo=tailwindcss&logoColor=white)
+![AWS](https://img.shields.io/badge/AWS-EC2-orange?logo=amazon-aws&logoColor=white)
+![Python](https://img.shields.io/badge/Python-Flask_BERT-blue?logo=python&logoColor=white)
 
-Post and Schedule は、投稿・コメント・タスク・予定を一元管理できる Ruby on Rails 製の Web アプリケーションです。
+---
 
-趣味の音楽活動の中で、スケジュール調整やタスク共有、話題の管理が煩雑になっていた課題を解決するために開発しました。  
-投稿機能やToDo管理、カレンダー連携など、日々のやり取りを効率化できる機能をまとめています。
+## 🧭 概要
+**Post and Schedule（POST-Them）** は、  
+**投稿・コメント・タスク・スケジュールを一元管理できるフルスタックWebアプリケーション**です。
 
-![](./public/app_image/a_home.png)
+趣味の音楽活動や個人プロジェクトの中で生まれた  
+「スケジュール・話題・タスクの分散管理」を解決するために開発しました。
 
-## 制作の目的と背景
+**Rails × Vue × AWS × ChatGPT API** を統合し、  
+AI感情分析に応じてコメントやキャラクター画像が変化する、  
+“感情に寄り添うチーム管理アプリ”です。
 
-- 趣味の音楽仲間と共有するための「使える」アプリを目指し、設計・実装・UI改善を繰り返しました。
-- 複数の機能（投稿、コメント、予定、ToDo）を連携させる実装力をアピールできるように意識しました。
-- Webエンジニア（特にRailsやPython）としてのキャリアを目指し、未経験からでも実務に近い形のアプリケーション制作に取り組んでいます。
+---
 
+## 🎯 制作の目的
+- チームでの予定・話題・タスクを統合管理できる実践的Webアプリを構築  
+- RailsとVueを分離構成で連携し、SPAとしてUX向上を実現  
+- GPT APIによるAI感情分析と、Rails側での統合を経験  
+- AWS EC2で本番環境を構築し、インフラ理解を深める  
 
-##  使用技術
+---
 
-- フレームワーク: Ruby on Rails 8.0.1
-- 言語: Ruby, JavaScript, HTML, CSS
-- フロントエンド: HTML, CSS, Turbo
-- データベース: PostgleSQL
-- デプロイ: AWS EC2 (Nginx + Puma)
-- セキュリティ: brakeman（静的コード解析）
-- 画像アップロード: ActiveStorage（image機能で使用）
+## 🧩 使用技術
 
-##  主な機能
+| 分類 | 技術 |
+|------|------|
+| フレームワーク | Ruby on Rails 8.0.1 / Vite / Vue 3 / Pinia |
+| フロントエンド | Tailwind CSS / Vue Router / Toastification |
+| バックエンド | Ruby 3.3.6 / CSRFトークン認証 |
+| データベース | PostgreSQL |
+| AI連携 | Chat GPT API |
+| インフラ | AWS EC2 (Ubuntu, Nginx, Puma) |
+| セキュリティ | Brakeman / RuboCop / CSRF対策 |
+| その他 | GitHub Actions / ActiveStorage（画像管理） |
 
--   投稿（Post）
-  - ユーザーによる自由な投稿（画像添付に対応）
-  - コメント・いいね機能付き
-    ![](./public/app_image/d_post.png)
-    ![](./public/app_image/h_post_show.png)
+---
 
--   コメント（Comment）
-  - 投稿に対するコメント機能
-  - ユーザー間のやり取りが可能
-    ![](./public/app_image/j_comment.png)
+## 💡 主な機能
 
--   いいね（Like）
-  - 投稿へのリアクション機能
-    ![](./public/app_image/i_post_index.png)
+| 機能 | 概要 |
+|------|------|
+| 📝 投稿 | 画像付き投稿（コメント・いいね対応） |
+| 💬 コメント | AI感情分析に基づいたコメント生成機能（GPT API連携） |
+| 🗓️ スケジュール | イベント追加・表示・編集（FullCalendar連携） |
+| ✅ タスク | カレンダーと連携したToDo管理機能 |
+| 🎭 AIキャラクター画像 | 感情分析結果（positive / neutral / negative）に応じて表情を変化 |
+| 👥 グループ機能 | ユーザーがグループに参加・脱退できる機能を実装 |
+| 👤 ユーザー管理 | ログイン・新規登録・プロフィール画像対応 |
+| 🔐 セッション管理 | Cookie＋CSRFトークンベースの安全な認証方式 |
 
--   タスク管理（Task）
-  - 日々のタスク登録・一覧表示
-  - カレンダーと連携した可視化
-    ![](./public/app_image/e_To_do.png)
+---
 
--   イベント（Event）
-  - スケジュールの追加・表示
-  - タスクと合わせたカレンダー管理
-  - ![](./public/app_image/f_event.png)
+## 🧰 開発環境セットアップ
+```Bash
+git clone https://github.com/o-Ha-minor/post_and_schedule.git
+cd post_and_schedule
+bundle install
+rails db:create db:migrate
+```
+# フロントエンド
+bin/vite dev
 
--   ユーザー管理（User）
-  - `if @user&.authenticate(params[:password])` を実装
-    ![](./public/app_image/b_sign_in.png)
+# Railsサーバ起動
+rails s
 
-##  ディレクトリ構成（主要部抜粋）
--   アプリURL（デプロイ済）
-  - 本番環境はこちらからアクセス可能：
-    http://54.65.172.159/
-    ※AWS EC2（Ubuntu, Nginx, Puma）で構築・運用しています。
+アクセス先: http://localhost:3000
 
-##  ディレクトリ構成（主要部抜粋）
+## 🚀 デプロイ環境
+- AWS EC2 (Ubuntu 22.04)
+- Nginx + Puma 構成
+- SSL対応準備中
+- `RAILS_ENV=production` で assets:precompile 済み  
 
-app/  
-├── assets/  
-├── controllers/  
-├── javascript/  
-├── jobs/  
-├── mailers/  
-├── models/  
-└── views/  
+🔗 **本番URL**: [http://54.65.172.159/](http://54.65.172.159/)
 
+---
 
-##  セットアップ手順（開発環境）
+## 🎨 UI/UXの工夫
+- Tailwindで作成した柔らかい「付箋風UI」  
+- SPA化によるスムーズな画面遷移  
+- トースト通知で操作感を即時フィードバック  
+- AI感情分析結果に応じてAIキャラ画像を投稿コメント近くに表示  
+  （positive：微笑 / neutral：穏やか / negative：落ち込み）
 
-git clone https://github.com/o-Ha-minor/post_and_schedule.git  
-cd post_and_schedule  
+---
 
-bundle install  
-rails db:create  
-rails db:migrate  
+## 📈 今後の展望
+- [ ] 画像アップロードのS3移行  
+- [ ] HTTPS化（Let’s Encrypt）  
+- [ ] AIキャラのカスタマイズ機能拡張（ユーザーによる画像の設定など）  
+- [ ] 開発ドキュメント（ER図・設計書）の整備  
 
-rails s  
+---
 
-アクセス先：http://localhost:3000
+## 📷 画面イメージ
+> ※今後スクリーンショットまたはGIFを追加予定  
+> - 投稿一覧  
+> - カレンダー（タスク連携）  
+> - AIコメントとキャラクター表示部分  
 
-##  投稿画像について
-
-投稿に画像を添付可能。  
-ファイルアップロードには ActiveStorage を使用。  
-ユーザーのアイコン画像でも活用中。
-
-## UIの工夫
-
-- 「付箋風」で親しみやすく、直感的なUIを意識してデザイン
-- Bootstrapなどは使用せず、Rails標準とCSSでカスタマイズ
-
-##  今後の予定・ToDo
-
-- [△] UI/UXの改善・デザイン統一
-- [⚪︎] READMEに画面キャプチャやGIFの追加
-- [⚪︎] AWSへの本番デプロイ対応
+---
 
 ## 👤 作者
 
-- **名前**：o-Ha-minor
-- **経歴**：事務職8年目 → ITエンジニア転職を目指して開発中  
-- **資格**：基本情報技術者、ITパスポート、AWSクラウドプラクティショナー、Python3基礎
-- **学習中**：Rails, Python, AWS, HTML/CSS, Photoshop
+| 項目 | 内容 |
+|------|------|
+| 名前 | o-Ha-minor（たか） |
+| 経歴 | 公務員事務職 → ITエンジニア転職を目指して開発中 |
+| 保有資格 | 基本情報技術者 / 応用情報技術者 / AWSクラウドプラクティショナー / Python3基礎認定 |
+| 学習中 | Rails / Python / AWS SAA / HTML / Photoshop |
+| 趣味 | 音楽 / 写真 / 自転車 / アニメ |
+| SNS | [GitHub](https://github.com/o-Ha-minor) |
+
+---
+
+## 🧠 学んだこと
+- **Rails×Vue構成によるSPA設計とAPI連携**  
+- **CSRF・CORS・Cookie認証の理解と実装**  
+- **AWS本番環境構築・デプロイ**  
+- **AI感情分析APIとWebアプリの統合**  
+
+---
+
+## 🏁 一言
+> 「チームの“想い”と“予定”を、ひとつのアプリでつなぐ。」  
+> Post and Schedule は、その小さな挑戦から始まりました。  
+> 今後もAI・クラウド・UIデザインを磨き、ユーザー体験をより豊かにしていきます。
+
+
