@@ -32,11 +32,15 @@ app.use(Toast, {
 const toast = useToast();
 
 const setupAxios = () => {
-  const token = document.querySelector('[name="csrf-token"]')?.getAttribute('content')
-  if (token) {
-    axios.defaults.headers.common['X-CSRF-Token'] = token
+  if(!axios.defaults.headers.common['X-CSRF-Token']){
+    const metaToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content')
+    if (metaToken) {
+      axios.defaults.headers.common['X-CSRF-Token'] = metaToken
+    } else {
+      console.warn('CSRFトークンが見つかりませんでした');
+    }
+    axios.defaults.headers.common['Accept'] = 'application/json'
   }
-  axios.defaults.headers.common['Accept'] = 'application/json'
 
   // レスポンスインターセプター
   axios.interceptors.response.use(

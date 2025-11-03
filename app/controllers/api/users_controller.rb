@@ -69,6 +69,7 @@ class Api::UsersController < ApplicationController
       session[:user_id] = user.id
       render_api_response(
         message: "登録完了",
+        success: true,
         data: { user: user.profile_data_for_json },
         status: :created
       )

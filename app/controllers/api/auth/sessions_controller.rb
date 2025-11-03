@@ -11,13 +11,17 @@ module Api
       def check
         if logged_in?
           render_api_response(
+            success: true,
             data: {
               user: user_data(current_user),
               groups: current_user.groups.includes(:users).map { |g| group_data(g) }
             }
           )
         else
-          render_api_response(message: "未ログイン", success: false, status: :unauthorized)
+          render_api_response(message: "未ログイン",
+                             success: false,
+                             status: :unauthorized
+                             )
         end
       end
 
@@ -29,6 +33,7 @@ module Api
           ensure_default_group(user)
           render_api_response(
             message: "ログイン成功",
+            success: true,
             data: {
               user: user_data(user),
               groups: user.groups.map { |g| group_data(g) }
@@ -52,6 +57,7 @@ module Api
           ensure_default_group(user)
           render_api_response(
             message: "アカウントを作成しました",
+            success: true,
             data: {
               user: user_data(user),
               groups: user.groups.map { |g| group_data(g) }
