@@ -102,10 +102,10 @@ rails s
 ---
 
 ## 📷 画面イメージ
-![トップ](https://github.com/o-Ha-minor/post_and_schedule/blob/feature/vue-userdetail/public/app_image/a_home.png?raw=true)
-![投稿一覧](https://github.com/o-Ha-minor/post_and_schedule/blob/feature/vue-userdetail/public/app_image/f_post_index.png?raw=true)
-![カレンダー](https://github.com/o-Ha-minor/post_and_schedule/blob/feature/vue-userdetail/public/app_image/d_event.png?raw=true)
-![AIコメント](https://github.com/o-Ha-minor/post_and_schedule/blob/feature/vue-userdetail/public/app_image/g_post_show.png?raw=true)
+![トップ](https://github.com/o-Ha-minor/post_and_schedule/blob/main/public/app_image/a_home.png?raw=true)
+![投稿一覧](https://github.com/o-Ha-minor/post_and_schedule/blob/main/public/app_image/f_post_index.png?raw=true)
+![カレンダー](https://github.com/o-Ha-minor/post_and_schedule/blob/main/public/app_image/d_event.png?raw=true)
+![AIコメント](https://github.com/o-Ha-minor/post_and_schedule/blob/main/public/app_image/g_post_show.png?raw=true)
 
 
 ---
