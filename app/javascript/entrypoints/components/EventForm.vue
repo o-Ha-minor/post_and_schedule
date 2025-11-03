@@ -127,13 +127,11 @@ export default {
   },
 
   async mounted() {
-    // propsでgroupsが渡されていない場合のみAPIからfetch
     if (!this.groups || this.groups.length === 0) {
       await this.fetchGroups();
     }
     
-    // イベントデータが渡されている場合はフォームを初期化
-    if (this.eventData) {
+    if (this.eventData && Object.keys(this.eventData).length > 0) {
       this.initializeForm(this.eventData);
     }
     
@@ -145,10 +143,12 @@ export default {
   watch: {
     eventData: {
       handler(newEventData) {
-        console.log('EventData changed:', newEventData);
-        this.resetForm();
-        if (newEventData) {
+        if (newEventData && Object.keys(newEventData).length > 0) {
+          console.log('編集イベントを読み込みました:', newEventData);
           this.initializeForm(newEventData);
+        } else {
+          console.log('新規イベント作成モードに切り替え。');
+          this.resetForm();
         }
       },
       immediate: true,

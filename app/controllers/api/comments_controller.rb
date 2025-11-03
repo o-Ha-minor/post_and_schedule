@@ -28,6 +28,18 @@ module Api
         render json: { message: "コメントが削除されました", comment_id: params[:id] }, status: :ok
       end
 
+      def update
+        comment = @post.comments.find(params[:id])
+        return render json: { error: "forbidden" }, status: :forbidden unless comment.user_id == @current_user.id
+
+        if comment.update(comment_params)
+          render json: comment, status: :ok
+        else
+          render json: { errors: comment.errors.full_messages }, status: :unprocessable_entity
+        end
+      end
+
+
       private
       def set_post
         @post = Post.find_by(id: params[:post_id])

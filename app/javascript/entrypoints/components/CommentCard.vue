@@ -7,7 +7,6 @@
       <span class="text-xs text-gray-400">{{ formattedDate(comment.created_at) }}</span>
     </div>
     <p class="text-gray-700 mb-2">{{ comment.content }}</p>
-    <span class="text-xs text-gray-500">{{ comment.likes_count }} いいね！</span>
 
     <div v-if="comment.image_url" class="mt-2">
       <img :src="comment.image_url" alt="comment image" class="h-12 w-12 rounded-md object-cover" />

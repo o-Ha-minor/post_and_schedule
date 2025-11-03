@@ -157,14 +157,15 @@ export default {
       
       axios.get(`/api/events/${eventId}.json`)
       .then(responce => {
+        const data = responce.data;
         this.selectedEvent = {
-          id: responce.data.id,
-          title: responce.data.title,
-          start: responce.data.start_time || res.data.start,
-          end: responce.data.end_time || res.data.end,
-          description: responce.data.description,
-          group_id: responce.data.group_id,
-          group: responce.data.group
+          id: data.id,
+          title: data.title,
+          start: data.start_time || data.start,
+          end: data.end_time || data.end,
+          description: data.description,
+          group_id: data.group_id,
+          group: data.group
         };
         console.log('Selected event:', this.selectedEvent);
       })

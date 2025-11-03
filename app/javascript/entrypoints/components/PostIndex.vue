@@ -106,6 +106,7 @@
   // 初期データが設定されていない場合の処理
   onMounted(async() => {
     console.log('Groups from props:', props.groups)
+    if (props.groups.length > 0) selectedGroupId.value = props.groups[0].id
     if (!posts.value.length) await fetchPostsByGroup(selectedGroupId.value)
   })
 
