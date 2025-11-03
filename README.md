@@ -102,10 +102,10 @@ rails s
 ---
 
 ## 📷 画面イメージ
-> - トップ　app/public/app_image/a_home.png
-> - 投稿一覧  app/public/app_image/f_post_index.png
-> - カレンダー（タスク連携）  app/public/app_image/d_event.png
-> - AIコメントとキャラクター表示部分  app/public/app_image/g_post_show.png
+[トップ](app/public/app_image/a_home.png)
+[投稿一覧](app/public/app_image/f_post_index.png)
+[カレンダー（タスク連携）](app/public/app_image/d_event.png)
+[AIコメントとキャラクター表示](app/public/app_image/g_post_show.png)
 
 ---
 
