@@ -102,10 +102,11 @@ rails s
 ---
 
 ## 📷 画面イメージ
-[トップ](public/app_image/a_home.png)
-[投稿一覧](public/app_image/f_post_index.png)
-[カレンダー（タスク連携）](public/app_image/d_event.png)
-[AIコメントとキャラクター表示](public/app_image/g_post_show.png)
+![トップ](https://github.com/o-Ha-minor/post_and_schedule/blob/feature/vue-userdetail/public/app_image/a_home.png?raw=true)
+![投稿一覧](https://github.com/o-Ha-minor/post_and_schedule/blob/feature/vue-userdetail/public/app_image/f_post_index.png?raw=true)
+![カレンダー](https://github.com/o-Ha-minor/post_and_schedule/blob/feature/vue-userdetail/public/app_image/d_event.png?raw=true)
+![AIコメント](https://github.com/o-Ha-minor/post_and_schedule/blob/feature/vue-userdetail/public/app_image/g_post_show.png?raw=true)
+
 
 ---
 
