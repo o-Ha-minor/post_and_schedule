@@ -85,27 +85,33 @@ rails s
 ---
 
 ## 🎨 UI/UXの工夫
-- Tailwindで作成した柔らかい「付箋風UI」  
+- Tailwindで作成したモダンでわかりやすいデザイン  
 - SPA化によるスムーズな画面遷移  
 - トースト通知で操作感を即時フィードバック  
 - AI感情分析結果に応じてAIキャラ画像を投稿コメント近くに表示  
-  （positive：微笑 / neutral：穏やか / negative：落ち込み）
+  （positive：喜び / neutral：穏やか / negative：励まし）
 
 ---
 
 ## 📈 今後の展望
 - [ ] 画像アップロードのS3移行  
 - [ ] HTTPS化（Let’s Encrypt）  
-- [ ] AIキャラのカスタマイズ機能拡張（ユーザーによる画像カスタマイズなど）  
+- [ ] AIキャラのカスタマイズ機能拡張（AIキャラにより、方向の違うカウンセリングコメントを生成）
+- [ ] 投稿とカレンダー機能の連携（日記としての投稿をカレンダーに反映させる）
+- [ ] ユーザの感情分析データを可視化（Pythonによりグラフ表示）
 - [ ] 開発ドキュメント（ER図・設計書）の整備  
 
 ---
 
 ## 📷 画面イメージ
-![トップ](https://github.com/o-Ha-minor/post_and_schedule/blob/main/public/app_image/a_home.png?raw=true)
-![カレンダー](https://github.com/o-Ha-minor/post_and_schedule/blob/main/public/app_image/d_event.png?raw=true)
-![投稿一覧](https://github.com/o-Ha-minor/post_and_schedule/blob/main/public/app_image/f_post_index.png?raw=true)
-![AIコメント](https://github.com/o-Ha-minor/post_and_schedule/blob/main/public/app_image/g_post_show.png?raw=true)
+
+| トップ | カレンダー（タスク連携） |
+|--------|-----------|
+| ![トップ](https://github.com/o-Ha-minor/post_and_schedule/blob/main/public/app_image/a_home.png?raw=true) | ![カレンダー](https://github.com/o-Ha-minor/post_and_schedule/blob/main/public/app_image/d_event.png?raw=true) |
+
+| 投稿一覧| AIコメントとキャラクター表示 |
+|---------------------------|--------------------------------|
+| ![投稿一覧](https://github.com/o-Ha-minor/post_and_schedule/blob/main/public/app_image/f_post_index.png?raw=true) | ![AIコメント](https://github.com/o-Ha-minor/post_and_schedule/blob/main/public/app_image/g_post_show.png?raw=true) |
 
 
 ---
@@ -132,6 +138,12 @@ rails s
 ---
 
 ## 🏁 一言
-身近な課題から始まり、自身が日常生活においてAIに励まされることから機能を追加しました。 
-今後もバックエンド技術を中心に、AI・クラウド・UIデザインについて学習し、ユーザー体験をより豊かにしていきたいです。
+> 「チームの“想い”と“予定”を、ひとつのアプリでつなぐ。」
+
+身近な課題をきっかけに開発を始め、  
+自分がAIに励まされた経験からコメント機能を追加しました。  
+AIがユーザーの気持ちにプラスの影響を与えられるような機能を目指しています。  
+
+これからもバックエンドやAI・クラウド技術を学びながら、  
+“気持ちに寄り添うアプリ”を作り続けていきたいです。
 
