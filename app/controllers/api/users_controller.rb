@@ -1,6 +1,7 @@
 # app/controllers/api/users_controller.rb
 class Api::UsersController < ApplicationController
-  skip_before_action :verify_authenticity_token
+  before_action :set_user, only: [ :show, :update, :destroy ]
+  before_action :ensure_current_user!, only: [ :update, :destroy ]
 
   def update_ai_images
     raw = params[:avatar_name].to_s
@@ -59,8 +60,7 @@ class Api::UsersController < ApplicationController
   end
 
   def show
-    user = User.with_profile_data.find(params[:id])
-    render json: { success: true, data: user.profile_data_for_json }
+    render json: { success: true, data: @user.profile_data_for_json }
   end
 
   def create
@@ -75,30 +75,29 @@ class Api::UsersController < ApplicationController
       )
     else
       render_api_response(
-      message: "登録に失敗しました",
-      success: false,
-      errors: user.errors.full_messages,
-      status: :unprocessable_entity
-    )
+        message: "登録に失敗しました",
+        success: false,
+        errors: user.errors.full_messages,
+        status: :unprocessable_entity
+      )
     end
   end
 
   def update
-    user = User.find(params[:id])
-    if user.update(user_params)
-      render json: user.profile_data_for_json
+    if @user.update(user_params)
+      render json: { success: true, data: @user.profile_data_for_json }
     else
-      render json: { errors: user.errors.full_messages }, status: :unprocessable_entity
+      render json: { success: false, errors: @user.errors.full_messages },
+      status: :unprocessable_entity
     end
   end
 
   def destroy
-    user = User.find_by(id: params[:id])
-    if user
-      user.destroy
-      render json: { message: "削除しました", id: user.id }, status: :ok
+    if @user.destroy
+      render json: { success: true, message: "削除しました", id: @user.id }, status: :ok
     else
-      render json: { error: "削除できませんでした" }, status: :unprocessable_entity
+      render json: { success: false, errors: @user.errors.full_messages },
+      status: :unprocessable_entity
     end
   end
 
@@ -106,5 +105,15 @@ class Api::UsersController < ApplicationController
 
   def user_params
     params.require(:user).permit(:name, :email, :password, :password_confirmation, :image)
+  end
+
+  def set_user
+    @user = User.with_profile_data.find(params[:id])
+  end
+
+  def ensure_current_user!
+    unless @user == current_user
+      render json: { error: "権限がありません" }, status: :forbidden
+    end
   end
 end
