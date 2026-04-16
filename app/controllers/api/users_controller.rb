@@ -94,6 +94,7 @@ class Api::UsersController < ApplicationController
 
   def destroy
     if @user.destroy
+      reset_session
       render json: { success: true, message: "削除しました", id: @user.id }, status: :ok
     else
       render json: { success: false, errors: @user.errors.full_messages },

@@ -305,6 +305,7 @@
 
 <script>
 import axios from 'axios'
+import { useAuthStore } from '../stores/auth'
 
 export default {
   name: 'UserDetail',
@@ -517,8 +518,11 @@ export default {
       try {
         const response = await axios.delete(`/api/users/${this.user.id}`);
         if (response.data && response.data.success !== false) {
+          const authStore = useAuthStore()
+          authStore.clearAuth()
+
           alert("アカウントを削除しました");
-          this.$router.push('/');
+          this.$router.replace('/login');
         } else {
           const error = response.data || {}
           alert("削除に失敗しました: " + (error.error || "不明なエラー"));
