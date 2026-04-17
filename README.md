@@ -34,11 +34,11 @@ AI感情分析に応じてコメントやキャラクター画像が変化する
 |------|------|
 | フレームワーク | Ruby on Rails 8.0.1 / Vite / Vue 3 / Pinia |
 | フロントエンド | Tailwind CSS / Vue Router / Toastification |
-| バックエンド | Ruby 3.3.6 / CSRFトークン認証 |
+| バックエンド | Ruby 3.3.6 / Rails API / セッションベース認証 |
 | データベース | PostgreSQL |
 | AI連携 | ChatGPT API |
 | インフラ | AWS EC2 (Ubuntu, Nginx, Puma) |
-| セキュリティ | Brakeman / CSRF対策 |
+| セキュリティ | Brakeman / CSRF対策 / 認可チェック|
 | その他 | ActiveStorage（画像管理） |
 
 ---
@@ -54,7 +54,7 @@ AI感情分析に応じてコメントやキャラクター画像が変化する
 | AIキャラクター画像 | 感情分析結果（positive / neutral / negative）に応じて表情を変化 |
 | グループ機能 | ユーザーがグループに参加・脱退できる機能を実装 |
 | ユーザー管理 | ログイン・新規登録・プロフィール画像対応 |
-| セッション管理 | Cookie＋CSRFトークンベースの安全な認証方式 |
+| セッション管理 | Rails標準のセッションCookieを用いた認証。Vue側ではCSRFトークンをaxiosヘッダに付与し、ログイン・ログアウト・退会時の状態遷移を制御 |
 
 ---
 
@@ -130,8 +130,8 @@ rails s
 ---
 
 ## 学んだこと
-- **Rails×Vue構成によるSPA設計とAPI連携**  
-- **CSRF・CORS・Cookie認証の理解と実装**  
+- **Rails×Vue構成によるSPA設計とAPI連携**
+- **Railsセッション認証とCSRF対策を前提にしたSPA連携の実装**    
 - **AWS本番環境構築・デプロイ**  
 - **AI感情分析APIとWebアプリの統合**  
 
