@@ -3,9 +3,8 @@ module Api
   module Auth
     # 共通の認証ロジックをここに追加できます
     class SessionsController < ApplicationController
-      skip_before_action :set_current_user
-      before_action :set_current_user, except: [ :login, :register ]
-      before_action :require_login, only: [ :check ]
+      skip_before_action :set_current_user, only: [ :login, :register ]
+      before_action :require_login, only: [ :check, :logout ]
 
       # 認証状態確認
       def check

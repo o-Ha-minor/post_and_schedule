@@ -1,5 +1,4 @@
 class Api::AiImagesController < ApplicationController
-  skip_before_action :verify_authenticity_token
   # AIキャラ画像の一覧を返す
   def index
     ai_images_dir = Rails.root.join("public", "ai_images")

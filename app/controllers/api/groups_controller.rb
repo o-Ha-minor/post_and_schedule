@@ -14,7 +14,7 @@ module Api
 
     def show
       group = Group.find_by(id: params[:id])
-      return render_api_response(message: "Group not found", success: false, status: :not_found) unless group
+      return render_api_response(message: "グループが見つかりません", success: false, status: :not_found) unless group
 
       users = group.users.select(:id, :name)
       render json: { success: true, data: { id: group.id, name: group.name, description: group.description, users: users } }
