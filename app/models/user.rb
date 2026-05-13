@@ -6,6 +6,7 @@ class User < ApplicationRecord
   # グループ機能の実装
   has_many :group_users, dependent: :destroy
   has_many :groups, through: :group_users
+  belongs_to :default_group, class_name: "Group", optional: true
 
   # Active Storageのアタッチメント設定
   has_one_attached :image

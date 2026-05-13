@@ -53,5 +53,9 @@ class ApplicationController < ActionController::Base
       g.description = "自動作成グループ"
     end
     user.groups << default_group unless user.groups.exists?(default_group.id)
+
+    if user.default_group_id.blank?
+      user.update(default_group_id: default_group.id)
+    end
   end
 end

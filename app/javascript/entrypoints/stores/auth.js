@@ -16,7 +16,8 @@ export const useAuthStore = defineStore('auth', {
   getters: {
     currentUserId: (state) => state.user?.id,
     currentUserName: (state) => state.user?.name,
-    currentUserImageUrl: (state) => state.user?.image_url
+    currentUserImageUrl: (state) => state.user?.image_url,
+    currentUserDefaultGroupId: (state) => state.user?.default_group_id,
   },
 
   actions: {

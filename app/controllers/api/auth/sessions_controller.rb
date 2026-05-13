@@ -9,6 +9,7 @@ module Api
       # 認証状態確認
       def check
         if logged_in?
+        ensure_default_group(current_user)
           render_api_response(
             success: true,
             data: {
@@ -91,6 +92,7 @@ module Api
           name: user.name,
           email: user.email,
           image_url: user.image.attached? ? rails_blob_path(user.image, only_path: true) : nil,
+          default_group_id: user.default_group_id,
           created_at: user.created_at
         }
       end

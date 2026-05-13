@@ -24,6 +24,7 @@
           :current-user-id="authStore.currentUserId"
           :current-user-name="authStore.currentUserName"
           :groups="authStore.groups"
+          :current-user-default-group-id="authStore.currentUserDefaultGroupId"
         />
       </main>
     </div>

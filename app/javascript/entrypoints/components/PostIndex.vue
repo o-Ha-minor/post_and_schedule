@@ -88,6 +88,7 @@
     isLoggedIn: Boolean,
     currentUserId: [Number, String],
     currentUserName: String,
+    currentUserDefaultGroupId: [Number, String],
     groups: {
       type: Array,
       default: () => []
@@ -102,11 +103,18 @@
   const newPost = ref({ content: '', image: null, groupId: '' })
   const errorMessage = ref('')
   const selectedGroupId = ref('')
+  const defaultGroupId =  () => {
+    return props.currentUserDefaultGroupId || props.groups[0]?.id || ''
+  }
 
   // 初期データが設定されていない場合の処理
   onMounted(async() => {
     console.log('Groups from props:', props.groups)
-    if (props.groups.length > 0) selectedGroupId.value = props.groups[0].id
+
+    const initialGroupId = defaultGroupId()
+    selectedGroupId.value = initialGroupId
+    newPost.value.groupId = initialGroupId
+
     if (!posts.value.length) await fetchPostsByGroup(selectedGroupId.value)
   })
 
@@ -158,8 +166,8 @@
           if (newPostData) {
             posts.value.unshift(newPostData)
 
-            // フォームをリセット
-            newPost.value = { content: '', image: null, groupId: '' }
+            // フォームをリセットし、投稿先グループはデフォルトに戻す
+            newPost.value = { content: '', image: null, groupId: defaultGroupId() }
             const fileInput = document.querySelector('input[type="file"]')
             if (fileInput) fileInput.value = ''
 
